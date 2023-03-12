@@ -3,6 +3,7 @@ from azure.identity import ClientSecretCredential
 from azure.mgmt.compute import ComputeManagementClient
 from azure.mgmt.compute.models import InstanceViewTypes, InstanceViewStatus
 import psutil
+from Utilities import sql_query_runner
 
 
 def get_health_vm(vm_name="VM1"):
@@ -42,3 +43,8 @@ def get_health_vm(vm_name="VM1"):
     print(f"Disk usage: {disk_usage_percent}%")
 
 
+def get_all_nodes():
+    query = "SELECT * FROM infra.nodes"
+    res = sql_query_runner(query)
+    nodes = res['node_name'].tolist()
+    return nodes

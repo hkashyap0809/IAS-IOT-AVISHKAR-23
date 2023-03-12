@@ -1,7 +1,12 @@
 import psycopg2
+import pandas as pd
+import json
 
 
-def sql_runner(conn_json, sql):
+def sql_file_runner(sql_file):
+
+    with open('../Resources/Config/db_config.json', 'r') as f:
+        conn_json = json.load(f)
 
     # Connect to the PostgreSQL database
     conn = psycopg2.connect(
@@ -13,7 +18,7 @@ def sql_runner(conn_json, sql):
     )
 
     # Open the SQL file and read its contents
-    with open(sql, 'r') as f:
+    with open(sql_file, 'r') as f:
         sql = f.read()
 
     # Create a cursor object to execute SQL queries
@@ -28,3 +33,27 @@ def sql_runner(conn_json, sql):
     # Close the cursor and database connection
     cur.close()
     conn.close()
+
+
+def sql_query_runner(sql_query):
+
+    with open('../Resources/Config/db_config.json', 'r') as f:
+        conn_json = json.load(f)
+
+    # Connect to the PostgreSQL database
+    conn = psycopg2.connect(
+        host=conn_json["host"],
+        port=conn_json["port"],
+        database=conn_json["db"],
+        user=conn_json["uid"],
+        password=conn_json["pwd"]
+    )
+
+    # Execute an SQL query and get the results in a DataFrame
+    df = pd.read_sql_query(sql_query, conn)
+
+    # Close the database connection
+    conn.close()
+
+    # Print the DataFrame
+    return df
