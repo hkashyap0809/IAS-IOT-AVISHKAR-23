@@ -4,6 +4,8 @@ from azure.mgmt.compute import ComputeManagementClient
 from azure.mgmt.compute.models import InstanceViewTypes, InstanceViewStatus
 import psutil
 from Utilities import sql_query_runner
+import datetime
+import time
 
 
 class Node:
@@ -38,15 +40,26 @@ class Node:
                     if volume.status == InstanceViewStatus('Attached'):
                         disk_usage_percent += volume.disk_usage_percent
 
-        # Print the resource utilization of the VM
-        print(f"Resource Utilization for Node {self.vm_name}:")
-        print(f"CPU usage: {cpu_usage_percent}%")
-        print(f"Memory usage: {memory_usage_percent}%")
-        print(f"Disk usage: {disk_usage_percent}%\n")
-
         health = ((100 - cpu_usage_percent) + (100 - memory_usage_percent) + (100 - disk_usage_percent)) / 3
 
-        return health
+        return cpu_usage_percent, memory_usage_percent, disk_usage_percent, health
+
+    def monitor(self):
+        cpu_usage, memory_usage, disk_usage, health = self.get_health()
+
+        # log
+        query = f"INSERT INTO infra.node_health_log (node_name, cpu_usage, memory_usage, disk_usage, health, added_on) " \
+                f"VALUES ('{self.vm_name}', '{cpu_usage}', '{memory_usage}', '{disk_usage}', '{health}', '{datetime.datetime.now()}');"
+        sql_query_runner(query)
+
+        # Check for overload of resources
+        threshold = 90
+        if cpu_usage > threshold:
+            print("Alert: CPU Usage above threshold")
+        elif memory_usage > threshold:
+            print("Alert: Memory Usage above threshold")
+        elif disk_usage > threshold:
+            print("Alert: Disk Usage above threshold")
 
 
 def get_all_nodes():
@@ -66,8 +79,25 @@ def get_node_health():
     for i in range(len(vm_names)):
         node = Node(res_json["subscription_id"], res_json["resource_group_name"], vm_names[i], res_json["client_id"],
                       res_json["client_secret"], res_json["tenant_id"])
-        nodes_health[vm_names[i]] = node.get_health()
-        print(f"Node {vm_names[i]} Health: {nodes_health[vm_names[i]]}%\n")
+        cpu_usage, memory_usage, disk_usage, health = node.get_health()
+        nodes_health[vm_names[i]] = health
+        print(f"Resource Utilization for Node {vm_names[i]}:")
+        print(f"CPU usage: {cpu_usage}%")
+        print(f"Memory usage: {memory_usage}%")
+        print(f"Disk usage: {disk_usage}%\n")
+        print(f"Node {vm_names[i]} Health: {health}%\n")
 
     max_health_node = max(nodes_health, key=lambda x:nodes_health[x])
     print(f"Node {max_health_node} has maximum health of {nodes_health[max_health_node]}%")
+
+
+def monitor_nodes():
+    with open('../Resources/Config/nodes_config.json', 'r') as f:
+        res_json = json.load(f)
+
+    vm_names = get_all_nodes()
+
+    for i in range(len(vm_names)):
+        node = Node(res_json["subscription_id"], res_json["resource_group_name"], vm_names[i], res_json["client_id"],
+                      res_json["client_secret"], res_json["tenant_id"])
+        node.monitor()

@@ -49,11 +49,16 @@ def sql_query_runner(sql_query):
         password=conn_json["pwd"]
     )
 
-    # Execute an SQL query and get the results in a DataFrame
-    df = pd.read_sql_query(sql_query, conn)
+    if sql_query.startswith("SELECT"):
+        # Execute an SQL query and get the results in a DataFrame
+        df = pd.read_sql_query(sql_query, conn)
 
+        conn.close()
+        return df
+
+    cursor = conn.cursor()
+    cursor.execute(sql_query)
+    conn.commit()
+    cursor.close()
     # Close the database connection
     conn.close()
-
-    # Print the DataFrame
-    return df
