@@ -78,7 +78,7 @@ def get_node_health():
 
     for i in range(len(vm_names)):
         node = Node(res_json["subscription_id"], res_json["resource_group_name"], vm_names[i], res_json["client_id"],
-                      res_json["client_secret"], res_json["tenant_id"])
+                    res_json["client_secret"], res_json["tenant_id"])
         cpu_usage, memory_usage, disk_usage, health = node.get_health()
         nodes_health[vm_names[i]] = health
         print(f"Resource Utilization for Node {vm_names[i]}:")
@@ -87,7 +87,7 @@ def get_node_health():
         print(f"Disk usage: {disk_usage}%\n")
         print(f"Node {vm_names[i]} Health: {health}%\n")
 
-    max_health_node = max(nodes_health, key=lambda x:nodes_health[x])
+    max_health_node = max(nodes_health, key=lambda x: nodes_health[x])
     print(f"Node {max_health_node} has maximum health of {nodes_health[max_health_node]}%")
 
     res = vm_info[vm_info['node_name'] == max_health_node]
@@ -109,5 +109,10 @@ def monitor_nodes():
 
     for i in range(len(vm_names)):
         node = Node(res_json["subscription_id"], res_json["resource_group_name"], vm_names[i], res_json["client_id"],
-                      res_json["client_secret"], res_json["tenant_id"])
+                    res_json["client_secret"], res_json["tenant_id"])
         node.monitor()
+
+
+def delete_logs():
+    query = "DELETE FROM infra.node_health_log WHERE date(added_on) < CURRENT_DATE() - 7;"
+    sql_query_runner(query)

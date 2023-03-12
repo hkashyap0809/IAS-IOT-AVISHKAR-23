@@ -1,6 +1,6 @@
 import flask
 
-from healthCheck import get_node_health, monitor_nodes
+from healthCheck import get_node_health, monitor_nodes, delete_logs
 from flask import Flask
 from flask_cors import cross_origin
 
@@ -24,10 +24,9 @@ def get_log():
 @app.route("/nodemgr/delete-old-logs", methods=['DELETE'])
 @cross_origin()
 def delete_old_logs():
-    pass
+    delete_logs()
+    return "Success"
 
 
 if __name__ == "__main__":
-    get_node_health()
-    print("Hi, this is NodeManager")
-
+    app.run(host='0.0.0.0', port=7200, debug=True, threaded=True)
