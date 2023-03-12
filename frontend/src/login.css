@@ -1,0 +1,12 @@
+Body {  
+    font-family: Calibri, Helvetica, sans-serif;  
+    background-color: rgb(168, 156, 158);  
+  }  
+  .main{
+      margin-top: 30px;
+      margin: auto;
+      font-size: large;
+      height: 300px;
+      width: 500px;
+      padding: 30px
+  }
