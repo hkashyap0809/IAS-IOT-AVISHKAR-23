@@ -1,0 +1,6 @@
+azure.mgmt.compute
+Flask==2.2.3
+Flask_Cors==3.0.10
+psutil==5.9.4
+python_crontab==2.7.1
+azure.identity
