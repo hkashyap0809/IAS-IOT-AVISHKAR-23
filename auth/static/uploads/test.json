@@ -1,9 +1,0 @@
-{
-    "app_name": "Avishkar",
-    "controller_instance_info" : [
-        {
-            "controller_instance_index": 0,
-            "controller_instance_type" : "controller_type_1"
-        }
-    ]
-}
