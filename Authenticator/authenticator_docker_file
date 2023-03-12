@@ -1,5 +1,5 @@
 
 FROM python:3.10
-ADD main.py .
+ADD server.py .
 RUN pip install numpy pandas
-CMD python3 main.py
+CMD python3 server.py
