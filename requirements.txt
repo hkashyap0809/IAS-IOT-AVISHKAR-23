@@ -1,0 +1,6 @@
+python-dotenv
+Flask-RESTful
+PyJWT
+Flask-Bcrypt
+marshmallow
+Flask-SQLAlchemy

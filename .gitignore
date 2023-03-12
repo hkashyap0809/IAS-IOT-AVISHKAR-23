@@ -1,1 +1,5 @@
 .env
+auth/__pycache__
+auth/users/__pycache__
+auth/static/uploads/*
+auth/utils/__pycache__
