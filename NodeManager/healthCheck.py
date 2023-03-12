@@ -99,3 +99,15 @@ def get_node_health():
     print(res)
 
     return res
+
+
+def monitor_nodes():
+    with open('../Resources/Config/nodes_config.json', 'r') as f:
+        res_json = json.load(f)
+
+    vm_names = get_all_nodes()
+
+    for i in range(len(vm_names)):
+        node = Node(res_json["subscription_id"], res_json["resource_group_name"], vm_names[i], res_json["client_id"],
+                      res_json["client_secret"], res_json["tenant_id"])
+        node.monitor()

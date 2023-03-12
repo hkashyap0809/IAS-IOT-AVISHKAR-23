@@ -1,6 +1,6 @@
 import flask
 
-from healthCheck import get_node_health
+from healthCheck import get_node_health, monitor_nodes
 from flask import Flask
 from flask_cors import cross_origin
 
@@ -17,6 +17,7 @@ def get_deploy_node():
 @app.route("/nodemgr/log", methods=['GET'])
 @cross_origin()
 def get_log():
+    monitor_nodes()
     pass
 
 
