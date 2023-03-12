@@ -12,7 +12,8 @@ from users.validation import (
 )
 from utils.http_code import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from werkzeug.utils import secure_filename
-import json
+import json, random, string
+from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 
 def create_user(request, input_data):
     """
@@ -88,6 +89,46 @@ def login_user(request, input_data):
             message="Password is wrong", status=HTTP_400_BAD_REQUEST
         )
 
+def id_generator(size=32, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
+
+def upload_file(inpFile, fileName, filePath):
+    connect_str = environ.get('AZURE_CONN_STRING')
+    fileStorageContainer = environ.get('STORAGE_CONTAINER')
+
+    # Create a BlobServiceClient object using the connection string
+    blob_service_client = BlobServiceClient.from_connection_string(connect_str)
+    fileextension = fileName.rsplit('.',1)[1]
+    Randomfilename = id_generator()
+    fileName = Randomfilename + '.' + fileextension
+    blob_name = fileName
+    print(blob_name)
+    print(filePath)
+    # Create a ContainerClient object for the container
+    container_client = blob_service_client.get_container_client(fileStorageContainer)
+
+    # Upload the file to the container
+    with open(filePath, "rb") as data:
+        try:
+            container_client.upload_blob(blob_name, data)
+        except Exception as e:
+            print(e)
+
+
+
+    # fileStorageAcc = environ.get('STORAGE_ACC')
+    # fileStorageKey = environ.get('STORAGE_KEY')
+    # fileextension = fileName.rsplit('.',1)[1]
+    # Randomfilename = id_generator()
+    # fileName = Randomfilename + '.' + fileextension
+    # blob_service = BlobServiceClient(account_name=fileStorageAcc, account_key=fileStorageKey)
+    # try:
+    #     blob_service.create_blob_from_stream(fileStorageContainer, fileName, inpFile)
+    # except Exception:
+    #     print('Exception=' + Exception)
+    #     pass
+
+
 def validate_json(request, inpFile):
     if inpFile:
         fileName = secure_filename(inpFile.filename)
@@ -119,7 +160,7 @@ def validate_json(request, inpFile):
                             message="Missing key: %s" % (k),
                             status=HTTP_400_BAD_REQUEST
                         )
-
+    # upload_file(inpFile, fileName, filePath)
     return generate_response(
         message="Validation successful", status=HTTP_200_OK
     )

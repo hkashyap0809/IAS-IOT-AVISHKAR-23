@@ -5,3 +5,4 @@ Flask-Bcrypt
 marshmallow
 Flask-SQLAlchemy
 flask-cors
+azure-storage-blob
