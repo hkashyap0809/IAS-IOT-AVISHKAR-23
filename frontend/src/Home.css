@@ -2,11 +2,22 @@ Body {
     font-family: Calibri, Helvetica, sans-serif;  
     background-color: rgb(168, 156, 158);  
   }  
-  .main{
-      margin-top: 30px;
-      margin: auto;
-      font-size: large;
-      height: 300px;
-      width: 500px;
-      padding: 30px
-  }
+.main{
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+height: 400px;
+margin-top: 30px;
+margin: auto;
+font-size: large;
+color: rgb(240, 220, 217);
+}
+.logout{
+    margin-top: 30px;
+    width:100px;
+    height: 30px;
+    float:right;
+    margin-right: 70px;
+}
+

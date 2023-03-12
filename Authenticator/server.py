@@ -1,12 +1,13 @@
 """App entry point."""
 """Initialize Flask app."""
+
 import os
 from flask import Flask
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-
 db = SQLAlchemy()
+
 
 def create_app():
     """Construct the core application."""
