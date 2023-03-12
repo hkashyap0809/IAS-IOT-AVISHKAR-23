@@ -1,5 +1,6 @@
-from healthCheck import get_health_vm
+from healthCheck import get_node_health
 
 if __name__ == "__main__":
-    get_health_vm()
+    get_node_health()
     print("Hi, this is NodeManager")
+
