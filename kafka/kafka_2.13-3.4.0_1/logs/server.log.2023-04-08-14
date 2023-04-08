@@ -1,0 +1,1514 @@
+[2023-04-08 14:06:49,823] INFO Registered kafka:type=kafka.Log4jController MBean (kafka.utils.Log4jControllerRegistration$)
+[2023-04-08 14:06:50,220] INFO Setting -D jdk.tls.rejectClientInitiatedRenegotiation=true to disable client-initiated TLS renegotiation (org.apache.zookeeper.common.X509Util)
+[2023-04-08 14:06:50,443] INFO Registered signal handlers for TERM, INT, HUP (org.apache.kafka.common.utils.LoggingSignalHandler)
+[2023-04-08 14:06:50,446] INFO starting (kafka.server.KafkaServer)
+[2023-04-08 14:06:50,447] INFO Connecting to zookeeper on 127.0.0.1:2181 (kafka.server.KafkaServer)
+[2023-04-08 14:06:50,516] INFO [ZooKeeperClient Kafka server] Initializing a new session to 127.0.0.1:2181. (kafka.zookeeper.ZooKeeperClient)
+[2023-04-08 14:06:50,521] INFO Client environment:zookeeper.version=3.6.3--6401e4ad2087061bc6b9f80dec2d69f2e3c8660a, built on 04/08/2021 16:35 GMT (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:06:50,521] INFO Client environment:host.name=yashPathak-Ubuntu22.04 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:06:50,521] INFO Client environment:java.version=11.0.18 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:06:50,521] INFO Client environment:java.vendor=Ubuntu (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:06:50,522] INFO Client environment:java.home=/usr/lib/jvm/java-11-openjdk-amd64 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:06:50,522] INFO Client environment:java.class.path=/home/yash/kafka_2.13-3.4.0_1/bin/../libs/activation-1.1.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/aopalliance-repackaged-2.6.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/argparse4j-0.7.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/audience-annotations-0.5.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/commons-cli-1.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/commons-lang3-3.8.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-api-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-basic-auth-extension-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-json-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-mirror-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-mirror-client-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-runtime-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-transforms-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/hk2-api-2.6.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/hk2-locator-2.6.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/hk2-utils-2.6.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-annotations-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-core-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-databind-2.13.4.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-dataformat-csv-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-datatype-jdk8-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-jaxrs-base-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-jaxrs-json-provider-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-module-jaxb-annotations-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-module-scala_2.13-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.activation-api-1.2.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.annotation-api-1.3.5.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.inject-2.6.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.validation-api-2.0.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.ws.rs-api-2.1.6.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.xml.bind-api-2.3.3.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/javassist-3.27.0-GA.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/javax.annotation-api-1.3.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/javax.servlet-api-3.1.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/javax.ws.rs-api-2.1.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jaxb-api-2.3.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-client-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-common-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-container-servlet-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-container-servlet-core-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-hk2-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-server-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-client-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-continuation-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-http-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-io-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-security-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-server-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-servlet-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-servlets-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-util-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-util-ajax-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jline-3.21.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jopt-simple-5.0.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jose4j-0.7.9.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka_2.13-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-clients-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-group-coordinator-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-log4j-appender-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-metadata-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-raft-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-server-common-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-shell-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-storage-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-storage-api-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-streams-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-streams-examples-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-streams-scala_2.13-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-streams-test-utils-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-tools-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/lz4-java-1.8.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/maven-artifact-3.8.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/metrics-core-2.2.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/metrics-core-4.1.12.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-buffer-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-codec-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-common-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-handler-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-resolver-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-transport-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-transport-classes-epoll-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-transport-native-epoll-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-transport-native-unix-common-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/osgi-resource-locator-1.0.3.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/paranamer-2.8.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/plexus-utils-3.3.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/reflections-0.9.12.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/reload4j-1.2.19.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/rocksdbjni-7.1.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/scala-collection-compat_2.13-2.6.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/scala-java8-compat_2.13-1.0.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/scala-library-2.13.10.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/scala-logging_2.13-3.9.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/scala-reflect-2.13.10.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/slf4j-api-1.7.36.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/slf4j-reload4j-1.7.36.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/snappy-java-1.1.8.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/swagger-annotations-2.2.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/trogdor-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/zookeeper-3.6.3.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/zookeeper-jute-3.6.3.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/zstd-jni-1.5.2-1.jar (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:06:50,522] INFO Client environment:java.library.path=/usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:06:50,522] INFO Client environment:java.io.tmpdir=/tmp (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:06:50,522] INFO Client environment:java.compiler=<NA> (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:06:50,522] INFO Client environment:os.name=Linux (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:06:50,522] INFO Client environment:os.arch=amd64 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:06:50,522] INFO Client environment:os.version=5.19.0-35-generic (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:06:50,522] INFO Client environment:user.name=yash (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:06:50,522] INFO Client environment:user.home=/home/yash (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:06:50,522] INFO Client environment:user.dir=/home/yash/kafka_2.13-3.4.0_1 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:06:50,522] INFO Client environment:os.memory.free=1015MB (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:06:50,523] INFO Client environment:os.memory.max=1024MB (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:06:50,523] INFO Client environment:os.memory.total=1024MB (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:06:50,526] INFO Initiating client connection, connectString=127.0.0.1:2181 sessionTimeout=18000 watcher=kafka.zookeeper.ZooKeeperClient$ZooKeeperClientWatcher$@560348e6 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:06:50,543] INFO jute.maxbuffer value is 4194304 Bytes (org.apache.zookeeper.ClientCnxnSocket)
+[2023-04-08 14:06:50,549] INFO zookeeper.request.timeout value is 0. feature enabled=false (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:06:50,554] INFO [ZooKeeperClient Kafka server] Waiting until connected. (kafka.zookeeper.ZooKeeperClient)
+[2023-04-08 14:06:50,564] INFO Opening socket connection to server /127.0.0.1:2181. (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:06:50,570] INFO Socket connection established, initiating session, client: /127.0.0.1:60160, server: /127.0.0.1:2181 (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:06:50,605] INFO Session establishment complete on server /127.0.0.1:2181, session id = 0x10007dd27540006, negotiated timeout = 18000 (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:06:50,617] INFO [ZooKeeperClient Kafka server] Connected. (kafka.zookeeper.ZooKeeperClient)
+[2023-04-08 14:06:51,033] INFO Cluster ID = Ks0edeyqTYyBzcPpwNddxQ (kafka.server.KafkaServer)
+[2023-04-08 14:06:51,042] ERROR Fatal error during KafkaServer startup. Prepare to shutdown (kafka.server.KafkaServer)
+kafka.common.InconsistentBrokerIdException: Configured broker.id 1 doesn't match stored broker.id Some(0) in meta.properties. If you moved your data, make sure your configured broker.id matches. If you intend to create a new broker, you should remove all data in your data directories (log.dirs).
+	at kafka.server.KafkaServer.getOrGenerateBrokerId(KafkaServer.scala:980)
+	at kafka.server.KafkaServer.startup(KafkaServer.scala:237)
+	at kafka.Kafka$.main(Kafka.scala:115)
+	at kafka.Kafka.main(Kafka.scala)
+[2023-04-08 14:06:51,048] INFO shutting down (kafka.server.KafkaServer)
+[2023-04-08 14:06:51,055] INFO [ZooKeeperClient Kafka server] Closing. (kafka.zookeeper.ZooKeeperClient)
+[2023-04-08 14:06:51,061] WARN An exception was thrown while closing send thread for session 0x10007dd27540006. (org.apache.zookeeper.ClientCnxn)
+EndOfStreamException: Unable to read additional data from server sessionid 0x10007dd27540006, likely server has closed socket
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doIO(ClientCnxnSocketNIO.java:77)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doTransport(ClientCnxnSocketNIO.java:350)
+	at org.apache.zookeeper.ClientCnxn$SendThread.run(ClientCnxn.java:1290)
+[2023-04-08 14:06:51,167] INFO Session: 0x10007dd27540006 closed (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:06:51,168] INFO EventThread shut down for session: 0x10007dd27540006 (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:06:51,171] INFO [ZooKeeperClient Kafka server] Closed. (kafka.zookeeper.ZooKeeperClient)
+[2023-04-08 14:06:51,179] INFO App info kafka.server for 1 unregistered (org.apache.kafka.common.utils.AppInfoParser)
+[2023-04-08 14:06:51,179] INFO shut down completed (kafka.server.KafkaServer)
+[2023-04-08 14:06:51,179] ERROR Exiting Kafka due to fatal exception during startup. (kafka.Kafka$)
+kafka.common.InconsistentBrokerIdException: Configured broker.id 1 doesn't match stored broker.id Some(0) in meta.properties. If you moved your data, make sure your configured broker.id matches. If you intend to create a new broker, you should remove all data in your data directories (log.dirs).
+	at kafka.server.KafkaServer.getOrGenerateBrokerId(KafkaServer.scala:980)
+	at kafka.server.KafkaServer.startup(KafkaServer.scala:237)
+	at kafka.Kafka$.main(Kafka.scala:115)
+	at kafka.Kafka.main(Kafka.scala)
+[2023-04-08 14:06:51,207] INFO shutting down (kafka.server.KafkaServer)
+[2023-04-08 14:12:57,431] INFO Registered kafka:type=kafka.Log4jController MBean (kafka.utils.Log4jControllerRegistration$)
+[2023-04-08 14:12:58,060] INFO Setting -D jdk.tls.rejectClientInitiatedRenegotiation=true to disable client-initiated TLS renegotiation (org.apache.zookeeper.common.X509Util)
+[2023-04-08 14:12:58,197] INFO Registered signal handlers for TERM, INT, HUP (org.apache.kafka.common.utils.LoggingSignalHandler)
+[2023-04-08 14:12:58,200] INFO starting (kafka.server.KafkaServer)
+[2023-04-08 14:12:58,200] INFO Connecting to zookeeper on 127.0.0.1:2181 (kafka.server.KafkaServer)
+[2023-04-08 14:12:58,346] INFO [ZooKeeperClient Kafka server] Initializing a new session to 127.0.0.1:2181. (kafka.zookeeper.ZooKeeperClient)
+[2023-04-08 14:12:58,355] INFO Client environment:zookeeper.version=3.6.3--6401e4ad2087061bc6b9f80dec2d69f2e3c8660a, built on 04/08/2021 16:35 GMT (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:12:58,355] INFO Client environment:host.name=yashPathak-Ubuntu22.04 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:12:58,355] INFO Client environment:java.version=11.0.18 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:12:58,355] INFO Client environment:java.vendor=Ubuntu (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:12:58,355] INFO Client environment:java.home=/usr/lib/jvm/java-11-openjdk-amd64 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:12:58,355] INFO Client environment:java.class.path=/home/yash/kafka_2.13-3.4.0_1/bin/../libs/activation-1.1.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/aopalliance-repackaged-2.6.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/argparse4j-0.7.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/audience-annotations-0.5.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/commons-cli-1.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/commons-lang3-3.8.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-api-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-basic-auth-extension-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-json-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-mirror-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-mirror-client-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-runtime-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-transforms-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/hk2-api-2.6.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/hk2-locator-2.6.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/hk2-utils-2.6.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-annotations-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-core-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-databind-2.13.4.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-dataformat-csv-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-datatype-jdk8-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-jaxrs-base-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-jaxrs-json-provider-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-module-jaxb-annotations-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-module-scala_2.13-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.activation-api-1.2.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.annotation-api-1.3.5.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.inject-2.6.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.validation-api-2.0.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.ws.rs-api-2.1.6.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.xml.bind-api-2.3.3.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/javassist-3.27.0-GA.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/javax.annotation-api-1.3.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/javax.servlet-api-3.1.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/javax.ws.rs-api-2.1.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jaxb-api-2.3.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-client-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-common-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-container-servlet-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-container-servlet-core-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-hk2-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-server-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-client-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-continuation-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-http-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-io-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-security-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-server-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-servlet-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-servlets-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-util-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-util-ajax-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jline-3.21.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jopt-simple-5.0.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jose4j-0.7.9.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka_2.13-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-clients-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-group-coordinator-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-log4j-appender-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-metadata-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-raft-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-server-common-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-shell-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-storage-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-storage-api-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-streams-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-streams-examples-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-streams-scala_2.13-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-streams-test-utils-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-tools-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/lz4-java-1.8.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/maven-artifact-3.8.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/metrics-core-2.2.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/metrics-core-4.1.12.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-buffer-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-codec-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-common-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-handler-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-resolver-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-transport-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-transport-classes-epoll-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-transport-native-epoll-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-transport-native-unix-common-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/osgi-resource-locator-1.0.3.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/paranamer-2.8.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/plexus-utils-3.3.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/reflections-0.9.12.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/reload4j-1.2.19.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/rocksdbjni-7.1.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/scala-collection-compat_2.13-2.6.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/scala-java8-compat_2.13-1.0.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/scala-library-2.13.10.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/scala-logging_2.13-3.9.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/scala-reflect-2.13.10.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/slf4j-api-1.7.36.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/slf4j-reload4j-1.7.36.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/snappy-java-1.1.8.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/swagger-annotations-2.2.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/trogdor-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/zookeeper-3.6.3.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/zookeeper-jute-3.6.3.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/zstd-jni-1.5.2-1.jar (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:12:58,355] INFO Client environment:java.library.path=/usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:12:58,355] INFO Client environment:java.io.tmpdir=/tmp (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:12:58,356] INFO Client environment:java.compiler=<NA> (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:12:58,356] INFO Client environment:os.name=Linux (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:12:58,356] INFO Client environment:os.arch=amd64 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:12:58,356] INFO Client environment:os.version=5.19.0-35-generic (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:12:58,356] INFO Client environment:user.name=yash (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:12:58,356] INFO Client environment:user.home=/home/yash (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:12:58,356] INFO Client environment:user.dir=/home/yash/kafka_2.13-3.4.0_1 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:12:58,356] INFO Client environment:os.memory.free=1014MB (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:12:58,356] INFO Client environment:os.memory.max=1024MB (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:12:58,356] INFO Client environment:os.memory.total=1024MB (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:12:58,360] INFO Initiating client connection, connectString=127.0.0.1:2181 sessionTimeout=18000 watcher=kafka.zookeeper.ZooKeeperClient$ZooKeeperClientWatcher$@7d94beb9 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:12:58,374] INFO jute.maxbuffer value is 4194304 Bytes (org.apache.zookeeper.ClientCnxnSocket)
+[2023-04-08 14:12:58,387] INFO zookeeper.request.timeout value is 0. feature enabled=false (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:12:58,403] INFO [ZooKeeperClient Kafka server] Waiting until connected. (kafka.zookeeper.ZooKeeperClient)
+[2023-04-08 14:12:58,406] INFO Opening socket connection to server /127.0.0.1:2181. (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:12:58,425] INFO Socket connection established, initiating session, client: /127.0.0.1:50206, server: /127.0.0.1:2181 (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:12:58,437] INFO Session establishment complete on server /127.0.0.1:2181, session id = 0x10008c772da0001, negotiated timeout = 18000 (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:12:58,453] INFO [ZooKeeperClient Kafka server] Connected. (kafka.zookeeper.ZooKeeperClient)
+[2023-04-08 14:12:58,949] INFO Cluster ID = Ks0edeyqTYyBzcPpwNddxQ (kafka.server.KafkaServer)
+[2023-04-08 14:12:58,952] WARN No meta.properties file under dir /home/yash/kafka-logs/log2/meta.properties (kafka.server.BrokerMetadataCheckpoint)
+[2023-04-08 14:12:59,010] INFO KafkaConfig values: 
+	advertised.listeners = PLAINTEXT://127.0.0.1:9093
+	alter.config.policy.class.name = null
+	alter.log.dirs.replication.quota.window.num = 11
+	alter.log.dirs.replication.quota.window.size.seconds = 1
+	authorizer.class.name = 
+	auto.create.topics.enable = true
+	auto.include.jmx.reporter = true
+	auto.leader.rebalance.enable = true
+	background.threads = 10
+	broker.heartbeat.interval.ms = 2000
+	broker.id = 1
+	broker.id.generation.enable = true
+	broker.rack = null
+	broker.session.timeout.ms = 9000
+	client.quota.callback.class = null
+	compression.type = producer
+	connection.failed.authentication.delay.ms = 100
+	connections.max.idle.ms = 600000
+	connections.max.reauth.ms = 0
+	control.plane.listener.name = null
+	controlled.shutdown.enable = true
+	controlled.shutdown.max.retries = 3
+	controlled.shutdown.retry.backoff.ms = 5000
+	controller.listener.names = null
+	controller.quorum.append.linger.ms = 25
+	controller.quorum.election.backoff.max.ms = 1000
+	controller.quorum.election.timeout.ms = 1000
+	controller.quorum.fetch.timeout.ms = 2000
+	controller.quorum.request.timeout.ms = 2000
+	controller.quorum.retry.backoff.ms = 20
+	controller.quorum.voters = []
+	controller.quota.window.num = 11
+	controller.quota.window.size.seconds = 1
+	controller.socket.timeout.ms = 30000
+	create.topic.policy.class.name = null
+	default.replication.factor = 1
+	delegation.token.expiry.check.interval.ms = 3600000
+	delegation.token.expiry.time.ms = 86400000
+	delegation.token.master.key = null
+	delegation.token.max.lifetime.ms = 604800000
+	delegation.token.secret.key = null
+	delete.records.purgatory.purge.interval.requests = 1
+	delete.topic.enable = true
+	early.start.listeners = null
+	fetch.max.bytes = 57671680
+	fetch.purgatory.purge.interval.requests = 1000
+	group.initial.rebalance.delay.ms = 0
+	group.max.session.timeout.ms = 1800000
+	group.max.size = 2147483647
+	group.min.session.timeout.ms = 6000
+	initial.broker.registration.timeout.ms = 60000
+	inter.broker.listener.name = null
+	inter.broker.protocol.version = 3.4-IV0
+	kafka.metrics.polling.interval.secs = 10
+	kafka.metrics.reporters = []
+	leader.imbalance.check.interval.seconds = 300
+	leader.imbalance.per.broker.percentage = 10
+	listener.security.protocol.map = PLAINTEXT:PLAINTEXT,SSL:SSL,SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_SSL:SASL_SSL
+	listeners = PLAINTEXT://127.0.0.1:9093
+	log.cleaner.backoff.ms = 15000
+	log.cleaner.dedupe.buffer.size = 134217728
+	log.cleaner.delete.retention.ms = 86400000
+	log.cleaner.enable = true
+	log.cleaner.io.buffer.load.factor = 0.9
+	log.cleaner.io.buffer.size = 524288
+	log.cleaner.io.max.bytes.per.second = 1.7976931348623157E308
+	log.cleaner.max.compaction.lag.ms = 9223372036854775807
+	log.cleaner.min.cleanable.ratio = 0.5
+	log.cleaner.min.compaction.lag.ms = 0
+	log.cleaner.threads = 1
+	log.cleanup.policy = [delete]
+	log.dir = /tmp/kafka-logs
+	log.dirs = /home/yash/kafka-logs/log2
+	log.flush.interval.messages = 9223372036854775807
+	log.flush.interval.ms = null
+	log.flush.offset.checkpoint.interval.ms = 60000
+	log.flush.scheduler.interval.ms = 9223372036854775807
+	log.flush.start.offset.checkpoint.interval.ms = 60000
+	log.index.interval.bytes = 4096
+	log.index.size.max.bytes = 10485760
+	log.message.downconversion.enable = true
+	log.message.format.version = 3.0-IV1
+	log.message.timestamp.difference.max.ms = 9223372036854775807
+	log.message.timestamp.type = CreateTime
+	log.preallocate = false
+	log.retention.bytes = -1
+	log.retention.check.interval.ms = 300000
+	log.retention.hours = 168
+	log.retention.minutes = null
+	log.retention.ms = null
+	log.roll.hours = 168
+	log.roll.jitter.hours = 0
+	log.roll.jitter.ms = null
+	log.roll.ms = null
+	log.segment.bytes = 1073741824
+	log.segment.delete.delay.ms = 60000
+	max.connection.creation.rate = 2147483647
+	max.connections = 2147483647
+	max.connections.per.ip = 2147483647
+	max.connections.per.ip.overrides = 
+	max.incremental.fetch.session.cache.slots = 1000
+	message.max.bytes = 1048588
+	metadata.log.dir = null
+	metadata.log.max.record.bytes.between.snapshots = 20971520
+	metadata.log.max.snapshot.interval.ms = 3600000
+	metadata.log.segment.bytes = 1073741824
+	metadata.log.segment.min.bytes = 8388608
+	metadata.log.segment.ms = 604800000
+	metadata.max.idle.interval.ms = 500
+	metadata.max.retention.bytes = 104857600
+	metadata.max.retention.ms = 604800000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	min.insync.replicas = 1
+	node.id = 1
+	num.io.threads = 8
+	num.network.threads = 3
+	num.partitions = 1
+	num.recovery.threads.per.data.dir = 1
+	num.replica.alter.log.dirs.threads = null
+	num.replica.fetchers = 1
+	offset.metadata.max.bytes = 4096
+	offsets.commit.required.acks = -1
+	offsets.commit.timeout.ms = 5000
+	offsets.load.buffer.size = 5242880
+	offsets.retention.check.interval.ms = 600000
+	offsets.retention.minutes = 10080
+	offsets.topic.compression.codec = 0
+	offsets.topic.num.partitions = 50
+	offsets.topic.replication.factor = 1
+	offsets.topic.segment.bytes = 104857600
+	password.encoder.cipher.algorithm = AES/CBC/PKCS5Padding
+	password.encoder.iterations = 4096
+	password.encoder.key.length = 128
+	password.encoder.keyfactory.algorithm = null
+	password.encoder.old.secret = null
+	password.encoder.secret = null
+	principal.builder.class = class org.apache.kafka.common.security.authenticator.DefaultKafkaPrincipalBuilder
+	process.roles = []
+	producer.id.expiration.check.interval.ms = 600000
+	producer.id.expiration.ms = 86400000
+	producer.purgatory.purge.interval.requests = 1000
+	queued.max.request.bytes = -1
+	queued.max.requests = 500
+	quota.window.num = 11
+	quota.window.size.seconds = 1
+	remote.log.index.file.cache.total.size.bytes = 1073741824
+	remote.log.manager.task.interval.ms = 30000
+	remote.log.manager.task.retry.backoff.max.ms = 30000
+	remote.log.manager.task.retry.backoff.ms = 500
+	remote.log.manager.task.retry.jitter = 0.2
+	remote.log.manager.thread.pool.size = 10
+	remote.log.metadata.manager.class.name = null
+	remote.log.metadata.manager.class.path = null
+	remote.log.metadata.manager.impl.prefix = null
+	remote.log.metadata.manager.listener.name = null
+	remote.log.reader.max.pending.tasks = 100
+	remote.log.reader.threads = 10
+	remote.log.storage.manager.class.name = null
+	remote.log.storage.manager.class.path = null
+	remote.log.storage.manager.impl.prefix = null
+	remote.log.storage.system.enable = false
+	replica.fetch.backoff.ms = 1000
+	replica.fetch.max.bytes = 1048576
+	replica.fetch.min.bytes = 1
+	replica.fetch.response.max.bytes = 10485760
+	replica.fetch.wait.max.ms = 500
+	replica.high.watermark.checkpoint.interval.ms = 5000
+	replica.lag.time.max.ms = 30000
+	replica.selector.class = null
+	replica.socket.receive.buffer.bytes = 65536
+	replica.socket.timeout.ms = 30000
+	replication.quota.window.num = 11
+	replication.quota.window.size.seconds = 1
+	request.timeout.ms = 30000
+	reserved.broker.max.id = 1000
+	sasl.client.callback.handler.class = null
+	sasl.enabled.mechanisms = [GSSAPI]
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.principal.to.local.rules = [DEFAULT]
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism.controller.protocol = GSSAPI
+	sasl.mechanism.inter.broker.protocol = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	sasl.server.callback.handler.class = null
+	sasl.server.max.receive.size = 524288
+	security.inter.broker.protocol = PLAINTEXT
+	security.providers = null
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	socket.listen.backlog.size = 50
+	socket.receive.buffer.bytes = 102400
+	socket.request.max.bytes = 104857600
+	socket.send.buffer.bytes = 102400
+	ssl.cipher.suites = []
+	ssl.client.auth = none
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.principal.mapping.rules = DEFAULT
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.abort.timed.out.transaction.cleanup.interval.ms = 10000
+	transaction.max.timeout.ms = 900000
+	transaction.remove.expired.transaction.cleanup.interval.ms = 3600000
+	transaction.state.log.load.buffer.size = 5242880
+	transaction.state.log.min.isr = 1
+	transaction.state.log.num.partitions = 50
+	transaction.state.log.replication.factor = 1
+	transaction.state.log.segment.bytes = 104857600
+	transactional.id.expiration.ms = 604800000
+	unclean.leader.election.enable = false
+	zookeeper.clientCnxnSocket = null
+	zookeeper.connect = 127.0.0.1:2181
+	zookeeper.connection.timeout.ms = 18000
+	zookeeper.max.in.flight.requests = 10
+	zookeeper.metadata.migration.enable = false
+	zookeeper.session.timeout.ms = 18000
+	zookeeper.set.acl = false
+	zookeeper.ssl.cipher.suites = null
+	zookeeper.ssl.client.enable = false
+	zookeeper.ssl.crl.enable = false
+	zookeeper.ssl.enabled.protocols = null
+	zookeeper.ssl.endpoint.identification.algorithm = HTTPS
+	zookeeper.ssl.keystore.location = null
+	zookeeper.ssl.keystore.password = null
+	zookeeper.ssl.keystore.type = null
+	zookeeper.ssl.ocsp.enable = false
+	zookeeper.ssl.protocol = TLSv1.2
+	zookeeper.ssl.truststore.location = null
+	zookeeper.ssl.truststore.password = null
+	zookeeper.ssl.truststore.type = null
+ (kafka.server.KafkaConfig)
+[2023-04-08 14:12:59,097] INFO [ThrottledChannelReaper-Fetch]: Starting (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:12:59,097] INFO [ThrottledChannelReaper-Produce]: Starting (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:12:59,113] INFO [ThrottledChannelReaper-ControllerMutation]: Starting (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:12:59,116] INFO [ThrottledChannelReaper-Request]: Starting (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:12:59,239] INFO Loading logs from log dirs ArraySeq(/home/yash/kafka-logs/log2) (kafka.log.LogManager)
+[2023-04-08 14:12:59,242] INFO Attempting recovery for all logs in /home/yash/kafka-logs/log2 since no clean shutdown file was found (kafka.log.LogManager)
+[2023-04-08 14:12:59,266] INFO Loaded 0 logs in 27ms. (kafka.log.LogManager)
+[2023-04-08 14:12:59,268] INFO Starting log cleanup with a period of 300000 ms. (kafka.log.LogManager)
+[2023-04-08 14:12:59,271] INFO Starting log flusher with a default period of 9223372036854775807 ms. (kafka.log.LogManager)
+[2023-04-08 14:13:00,515] INFO [feature-zk-node-event-process-thread]: Starting (kafka.server.FinalizedFeatureChangeListener$ChangeNotificationProcessorThread)
+[2023-04-08 14:13:00,569] INFO [MetadataCache brokerId=1] Updated cache from existing <empty> to latest FinalizedFeaturesAndEpoch(features=Map(), epoch=0). (kafka.server.metadata.ZkMetadataCache)
+[2023-04-08 14:13:00,666] INFO [BrokerToControllerChannelManager broker=1 name=forwarding]: Starting (kafka.server.BrokerToControllerRequestThread)
+[2023-04-08 14:13:01,253] INFO Updated connection-accept-rate max connection creation rate to 2147483647 (kafka.network.ConnectionQuotas)
+[2023-04-08 14:13:01,259] INFO Awaiting socket connections on 127.0.0.1:9093. (kafka.network.DataPlaneAcceptor)
+[2023-04-08 14:13:01,283] INFO [SocketServer listenerType=ZK_BROKER, nodeId=1] Created data-plane acceptor and processors for endpoint : ListenerName(PLAINTEXT) (kafka.network.SocketServer)
+[2023-04-08 14:13:01,305] INFO [BrokerToControllerChannelManager broker=1 name=alterPartition]: Starting (kafka.server.BrokerToControllerRequestThread)
+[2023-04-08 14:13:01,337] INFO [ExpirationReaper-1-Produce]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:13:01,352] INFO [ExpirationReaper-1-Fetch]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:13:01,354] INFO [ExpirationReaper-1-ElectLeader]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:13:01,352] INFO [ExpirationReaper-1-DeleteRecords]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:13:01,396] INFO [LogDirFailureHandler]: Starting (kafka.server.ReplicaManager$LogDirFailureHandler)
+[2023-04-08 14:13:01,463] INFO Creating /brokers/ids/1 (is it secure? false) (kafka.zk.KafkaZkClient)
+[2023-04-08 14:13:01,503] INFO Stat of the created znode at /brokers/ids/1 is: 191,191,1680943381474,1680943381474,1,0,0,72067246756331521,202,0,191
+ (kafka.zk.KafkaZkClient)
+[2023-04-08 14:13:01,504] INFO Registered broker 1 at path /brokers/ids/1 with addresses: PLAINTEXT://127.0.0.1:9093, czxid (broker epoch): 191 (kafka.zk.KafkaZkClient)
+[2023-04-08 14:13:01,594] INFO [ExpirationReaper-1-topic]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:13:01,608] INFO [ExpirationReaper-1-Heartbeat]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:13:01,611] INFO [ExpirationReaper-1-Rebalance]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:13:01,644] INFO [GroupCoordinator 1]: Starting up. (kafka.coordinator.group.GroupCoordinator)
+[2023-04-08 14:13:01,654] INFO [GroupCoordinator 1]: Startup complete. (kafka.coordinator.group.GroupCoordinator)
+[2023-04-08 14:13:01,703] INFO [TransactionCoordinator id=1] Starting up. (kafka.coordinator.transaction.TransactionCoordinator)
+[2023-04-08 14:13:01,710] INFO [TransactionCoordinator id=1] Startup complete. (kafka.coordinator.transaction.TransactionCoordinator)
+[2023-04-08 14:13:01,712] INFO [Transaction Marker Channel Manager 1]: Starting (kafka.coordinator.transaction.TransactionMarkerChannelManager)
+[2023-04-08 14:13:01,758] INFO [ExpirationReaper-1-AlterAcls]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:13:01,812] INFO [/config/changes-event-process-thread]: Starting (kafka.common.ZkNodeChangeNotificationListener$ChangeEventProcessThread)
+[2023-04-08 14:13:01,842] INFO [SocketServer listenerType=ZK_BROKER, nodeId=1] Enabling request processing. (kafka.network.SocketServer)
+[2023-04-08 14:13:01,864] INFO Kafka version: 3.4.0 (org.apache.kafka.common.utils.AppInfoParser)
+[2023-04-08 14:13:01,864] INFO Kafka commitId: 2e1947d240607d53 (org.apache.kafka.common.utils.AppInfoParser)
+[2023-04-08 14:13:01,864] INFO Kafka startTimeMs: 1680943381847 (org.apache.kafka.common.utils.AppInfoParser)
+[2023-04-08 14:13:01,866] INFO [KafkaServer id=1] started (kafka.server.KafkaServer)
+[2023-04-08 14:13:01,938] INFO [BrokerToControllerChannelManager broker=1 name=alterPartition]: Recorded new controller, from now on will use node 127.0.0.1:9092 (id: 0 rack: null) (kafka.server.BrokerToControllerRequestThread)
+[2023-04-08 14:13:02,013] INFO [BrokerToControllerChannelManager broker=1 name=forwarding]: Recorded new controller, from now on will use node 127.0.0.1:9092 (id: 0 rack: null) (kafka.server.BrokerToControllerRequestThread)
+[2023-04-08 14:19:47,966] WARN Session 0x10008c772da0001 for sever /127.0.0.1:2181, Closing socket connection. Attempting reconnect except it is a SessionExpiredException. (org.apache.zookeeper.ClientCnxn)
+EndOfStreamException: Unable to read additional data from server sessionid 0x10008c772da0001, likely server has closed socket
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doIO(ClientCnxnSocketNIO.java:77)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doTransport(ClientCnxnSocketNIO.java:350)
+	at org.apache.zookeeper.ClientCnxn$SendThread.run(ClientCnxn.java:1290)
+[2023-04-08 14:19:50,048] INFO Opening socket connection to server /127.0.0.1:2181. (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:19:50,050] WARN Session 0x10008c772da0001 for sever /127.0.0.1:2181, Closing socket connection. Attempting reconnect except it is a SessionExpiredException. (org.apache.zookeeper.ClientCnxn)
+java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at java.base/sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:777)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doTransport(ClientCnxnSocketNIO.java:344)
+	at org.apache.zookeeper.ClientCnxn$SendThread.run(ClientCnxn.java:1290)
+[2023-04-08 14:19:52,118] INFO Opening socket connection to server /127.0.0.1:2181. (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:19:52,119] WARN Session 0x10008c772da0001 for sever /127.0.0.1:2181, Closing socket connection. Attempting reconnect except it is a SessionExpiredException. (org.apache.zookeeper.ClientCnxn)
+java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at java.base/sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:777)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doTransport(ClientCnxnSocketNIO.java:344)
+	at org.apache.zookeeper.ClientCnxn$SendThread.run(ClientCnxn.java:1290)
+[2023-04-08 14:19:53,981] INFO Opening socket connection to server /127.0.0.1:2181. (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:19:53,982] WARN Session 0x10008c772da0001 for sever /127.0.0.1:2181, Closing socket connection. Attempting reconnect except it is a SessionExpiredException. (org.apache.zookeeper.ClientCnxn)
+java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at java.base/sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:777)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doTransport(ClientCnxnSocketNIO.java:344)
+	at org.apache.zookeeper.ClientCnxn$SendThread.run(ClientCnxn.java:1290)
+[2023-04-08 14:19:55,492] INFO Opening socket connection to server /127.0.0.1:2181. (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:19:55,493] WARN Session 0x10008c772da0001 for sever /127.0.0.1:2181, Closing socket connection. Attempting reconnect except it is a SessionExpiredException. (org.apache.zookeeper.ClientCnxn)
+java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at java.base/sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:777)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doTransport(ClientCnxnSocketNIO.java:344)
+	at org.apache.zookeeper.ClientCnxn$SendThread.run(ClientCnxn.java:1290)
+[2023-04-08 14:19:56,869] INFO Opening socket connection to server /127.0.0.1:2181. (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:19:56,870] WARN Session 0x10008c772da0001 for sever /127.0.0.1:2181, Closing socket connection. Attempting reconnect except it is a SessionExpiredException. (org.apache.zookeeper.ClientCnxn)
+java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at java.base/sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:777)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doTransport(ClientCnxnSocketNIO.java:344)
+	at org.apache.zookeeper.ClientCnxn$SendThread.run(ClientCnxn.java:1290)
+[2023-04-08 14:19:58,394] INFO Opening socket connection to server /127.0.0.1:2181. (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:19:58,394] WARN Session 0x10008c772da0001 for sever /127.0.0.1:2181, Closing socket connection. Attempting reconnect except it is a SessionExpiredException. (org.apache.zookeeper.ClientCnxn)
+java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at java.base/sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:777)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doTransport(ClientCnxnSocketNIO.java:344)
+	at org.apache.zookeeper.ClientCnxn$SendThread.run(ClientCnxn.java:1290)
+[2023-04-08 14:19:58,503] INFO Terminating process due to signal SIGINT (org.apache.kafka.common.utils.LoggingSignalHandler)
+[2023-04-08 14:19:58,512] INFO [KafkaServer id=1] shutting down (kafka.server.KafkaServer)
+[2023-04-08 14:19:58,519] INFO [KafkaServer id=1] Starting controlled shutdown (kafka.server.KafkaServer)
+[2023-04-08 14:19:58,564] INFO [KafkaServer id=1] Controlled shutdown request returned successfully after 19ms (kafka.server.KafkaServer)
+[2023-04-08 14:19:58,569] INFO [/config/changes-event-process-thread]: Shutting down (kafka.common.ZkNodeChangeNotificationListener$ChangeEventProcessThread)
+[2023-04-08 14:19:58,573] INFO [/config/changes-event-process-thread]: Stopped (kafka.common.ZkNodeChangeNotificationListener$ChangeEventProcessThread)
+[2023-04-08 14:19:58,575] INFO [/config/changes-event-process-thread]: Shutdown completed (kafka.common.ZkNodeChangeNotificationListener$ChangeEventProcessThread)
+[2023-04-08 14:19:58,583] INFO [SocketServer listenerType=ZK_BROKER, nodeId=1] Stopping socket server request processors (kafka.network.SocketServer)
+[2023-04-08 14:19:58,608] INFO [SocketServer listenerType=ZK_BROKER, nodeId=1] Stopped socket server request processors (kafka.network.SocketServer)
+[2023-04-08 14:19:58,610] INFO [data-plane Kafka Request Handler on Broker 1], shutting down (kafka.server.KafkaRequestHandlerPool)
+[2023-04-08 14:19:58,628] INFO [data-plane Kafka Request Handler on Broker 1], shut down completely (kafka.server.KafkaRequestHandlerPool)
+[2023-04-08 14:19:58,656] INFO [ExpirationReaper-1-AlterAcls]: Shutting down (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:19:58,663] INFO [ExpirationReaper-1-AlterAcls]: Stopped (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:19:58,663] INFO [ExpirationReaper-1-AlterAcls]: Shutdown completed (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:19:58,677] INFO [KafkaApi-1] Shutdown complete. (kafka.server.KafkaApis)
+[2023-04-08 14:19:58,681] INFO [ExpirationReaper-1-topic]: Shutting down (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:19:58,685] INFO [ExpirationReaper-1-topic]: Stopped (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:19:58,686] INFO [ExpirationReaper-1-topic]: Shutdown completed (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:19:58,696] INFO [TransactionCoordinator id=1] Shutting down. (kafka.coordinator.transaction.TransactionCoordinator)
+[2023-04-08 14:19:58,704] INFO [Transaction State Manager 1]: Shutdown complete (kafka.coordinator.transaction.TransactionStateManager)
+[2023-04-08 14:19:58,705] INFO [Transaction Marker Channel Manager 1]: Shutting down (kafka.coordinator.transaction.TransactionMarkerChannelManager)
+[2023-04-08 14:19:58,723] INFO [Transaction Marker Channel Manager 1]: Stopped (kafka.coordinator.transaction.TransactionMarkerChannelManager)
+[2023-04-08 14:19:58,724] INFO [Transaction Marker Channel Manager 1]: Shutdown completed (kafka.coordinator.transaction.TransactionMarkerChannelManager)
+[2023-04-08 14:19:58,731] INFO [TransactionCoordinator id=1] Shutdown complete. (kafka.coordinator.transaction.TransactionCoordinator)
+[2023-04-08 14:19:58,732] INFO [GroupCoordinator 1]: Shutting down. (kafka.coordinator.group.GroupCoordinator)
+[2023-04-08 14:19:58,737] INFO [ExpirationReaper-1-Heartbeat]: Shutting down (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:19:58,742] INFO [ExpirationReaper-1-Heartbeat]: Stopped (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:19:58,742] INFO [ExpirationReaper-1-Heartbeat]: Shutdown completed (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:19:58,743] INFO [ExpirationReaper-1-Rebalance]: Shutting down (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:19:58,745] INFO [ExpirationReaper-1-Rebalance]: Stopped (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:19:58,746] INFO [ExpirationReaper-1-Rebalance]: Shutdown completed (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:19:58,748] INFO [GroupCoordinator 1]: Shutdown complete. (kafka.coordinator.group.GroupCoordinator)
+[2023-04-08 14:19:58,749] INFO [ReplicaManager broker=1] Shutting down (kafka.server.ReplicaManager)
+[2023-04-08 14:19:58,750] INFO [LogDirFailureHandler]: Shutting down (kafka.server.ReplicaManager$LogDirFailureHandler)
+[2023-04-08 14:19:58,752] INFO [LogDirFailureHandler]: Shutdown completed (kafka.server.ReplicaManager$LogDirFailureHandler)
+[2023-04-08 14:19:58,752] INFO [LogDirFailureHandler]: Stopped (kafka.server.ReplicaManager$LogDirFailureHandler)
+[2023-04-08 14:19:58,761] INFO [ReplicaFetcherManager on broker 1] shutting down (kafka.server.ReplicaFetcherManager)
+[2023-04-08 14:19:58,768] INFO [ReplicaFetcherManager on broker 1] shutdown completed (kafka.server.ReplicaFetcherManager)
+[2023-04-08 14:19:58,768] INFO [ReplicaAlterLogDirsManager on broker 1] shutting down (kafka.server.ReplicaAlterLogDirsManager)
+[2023-04-08 14:19:58,769] INFO [ReplicaAlterLogDirsManager on broker 1] shutdown completed (kafka.server.ReplicaAlterLogDirsManager)
+[2023-04-08 14:19:58,769] INFO [ExpirationReaper-1-Fetch]: Shutting down (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:19:58,775] INFO [ExpirationReaper-1-Fetch]: Stopped (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:19:58,776] INFO [ExpirationReaper-1-Fetch]: Shutdown completed (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:19:58,777] INFO [ExpirationReaper-1-Produce]: Shutting down (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:19:58,780] INFO [ExpirationReaper-1-Produce]: Stopped (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:19:58,780] INFO [ExpirationReaper-1-Produce]: Shutdown completed (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:19:58,781] INFO [ExpirationReaper-1-DeleteRecords]: Shutting down (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:19:58,784] INFO [ExpirationReaper-1-DeleteRecords]: Stopped (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:19:58,789] INFO [ExpirationReaper-1-DeleteRecords]: Shutdown completed (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:19:58,791] INFO [ExpirationReaper-1-ElectLeader]: Shutting down (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:19:58,802] INFO [ExpirationReaper-1-ElectLeader]: Stopped (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:19:58,804] INFO [ExpirationReaper-1-ElectLeader]: Shutdown completed (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:19:58,811] INFO Terminating process due to signal SIGINT (org.apache.kafka.common.utils.LoggingSignalHandler)
+[2023-04-08 14:19:58,821] INFO [ReplicaManager broker=1] Shut down completely (kafka.server.ReplicaManager)
+[2023-04-08 14:19:58,822] INFO [BrokerToControllerChannelManager broker=1 name=alterPartition]: Shutting down (kafka.server.BrokerToControllerRequestThread)
+[2023-04-08 14:19:58,824] INFO [BrokerToControllerChannelManager broker=1 name=alterPartition]: Stopped (kafka.server.BrokerToControllerRequestThread)
+[2023-04-08 14:19:58,826] INFO [BrokerToControllerChannelManager broker=1 name=alterPartition]: Shutdown completed (kafka.server.BrokerToControllerRequestThread)
+[2023-04-08 14:19:58,835] INFO Broker to controller channel manager for alterPartition shutdown (kafka.server.BrokerToControllerChannelManagerImpl)
+[2023-04-08 14:19:58,836] INFO [BrokerToControllerChannelManager broker=1 name=forwarding]: Shutting down (kafka.server.BrokerToControllerRequestThread)
+[2023-04-08 14:19:58,839] INFO [BrokerToControllerChannelManager broker=1 name=forwarding]: Stopped (kafka.server.BrokerToControllerRequestThread)
+[2023-04-08 14:19:58,839] INFO [BrokerToControllerChannelManager broker=1 name=forwarding]: Shutdown completed (kafka.server.BrokerToControllerRequestThread)
+[2023-04-08 14:19:58,841] INFO Broker to controller channel manager for forwarding shutdown (kafka.server.BrokerToControllerChannelManagerImpl)
+[2023-04-08 14:19:58,843] INFO Shutting down. (kafka.log.LogManager)
+[2023-04-08 14:19:58,879] INFO Shutdown complete. (kafka.log.LogManager)
+[2023-04-08 14:19:58,888] INFO [feature-zk-node-event-process-thread]: Shutting down (kafka.server.FinalizedFeatureChangeListener$ChangeNotificationProcessorThread)
+[2023-04-08 14:19:58,889] INFO [feature-zk-node-event-process-thread]: Shutdown completed (kafka.server.FinalizedFeatureChangeListener$ChangeNotificationProcessorThread)
+[2023-04-08 14:19:58,888] INFO [feature-zk-node-event-process-thread]: Stopped (kafka.server.FinalizedFeatureChangeListener$ChangeNotificationProcessorThread)
+[2023-04-08 14:19:58,890] INFO [ZooKeeperClient Kafka server] Closing. (kafka.zookeeper.ZooKeeperClient)
+[2023-04-08 14:19:59,035] INFO Terminating process due to signal SIGINT (org.apache.kafka.common.utils.LoggingSignalHandler)
+[2023-04-08 14:19:59,234] INFO Terminating process due to signal SIGINT (org.apache.kafka.common.utils.LoggingSignalHandler)
+[2023-04-08 14:19:59,444] INFO Terminating process due to signal SIGINT (org.apache.kafka.common.utils.LoggingSignalHandler)
+[2023-04-08 14:19:59,655] INFO Terminating process due to signal SIGINT (org.apache.kafka.common.utils.LoggingSignalHandler)
+[2023-04-08 14:19:59,861] INFO Terminating process due to signal SIGINT (org.apache.kafka.common.utils.LoggingSignalHandler)
+[2023-04-08 14:20:00,082] INFO Terminating process due to signal SIGINT (org.apache.kafka.common.utils.LoggingSignalHandler)
+[2023-04-08 14:20:00,205] INFO Opening socket connection to server /127.0.0.1:2181. (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:20:00,205] WARN An exception was thrown while closing send thread for session 0x10008c772da0001. (org.apache.zookeeper.ClientCnxn)
+java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at java.base/sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:777)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doTransport(ClientCnxnSocketNIO.java:344)
+	at org.apache.zookeeper.ClientCnxn$SendThread.run(ClientCnxn.java:1290)
+[2023-04-08 14:20:00,309] INFO Session: 0x10008c772da0001 closed (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:20:00,311] INFO EventThread shut down for session: 0x10008c772da0001 (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:20:00,312] INFO [ZooKeeperClient Kafka server] Closed. (kafka.zookeeper.ZooKeeperClient)
+[2023-04-08 14:20:00,312] INFO [ThrottledChannelReaper-Fetch]: Shutting down (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:20:00,316] INFO [ThrottledChannelReaper-Fetch]: Stopped (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:20:00,316] INFO [ThrottledChannelReaper-Fetch]: Shutdown completed (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:20:00,316] INFO [ThrottledChannelReaper-Produce]: Shutting down (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:20:00,317] INFO [ThrottledChannelReaper-Produce]: Stopped (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:20:00,317] INFO [ThrottledChannelReaper-Produce]: Shutdown completed (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:20:00,317] INFO [ThrottledChannelReaper-Request]: Shutting down (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:20:00,317] INFO [ThrottledChannelReaper-Request]: Stopped (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:20:00,317] INFO [ThrottledChannelReaper-Request]: Shutdown completed (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:20:00,318] INFO [ThrottledChannelReaper-ControllerMutation]: Shutting down (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:20:00,318] INFO [ThrottledChannelReaper-ControllerMutation]: Stopped (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:20:00,318] INFO [ThrottledChannelReaper-ControllerMutation]: Shutdown completed (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:20:00,319] INFO [SocketServer listenerType=ZK_BROKER, nodeId=1] Shutting down socket server (kafka.network.SocketServer)
+[2023-04-08 14:20:00,341] INFO [SocketServer listenerType=ZK_BROKER, nodeId=1] Shutdown completed (kafka.network.SocketServer)
+[2023-04-08 14:20:00,342] INFO Metrics scheduler closed (org.apache.kafka.common.metrics.Metrics)
+[2023-04-08 14:20:00,343] INFO Closing reporter org.apache.kafka.common.metrics.JmxReporter (org.apache.kafka.common.metrics.Metrics)
+[2023-04-08 14:20:00,343] INFO Metrics reporters closed (org.apache.kafka.common.metrics.Metrics)
+[2023-04-08 14:20:00,344] INFO Broker and topic stats closed (kafka.server.BrokerTopicStats)
+[2023-04-08 14:20:00,346] INFO App info kafka.server for 1 unregistered (org.apache.kafka.common.utils.AppInfoParser)
+[2023-04-08 14:20:00,347] INFO [KafkaServer id=1] shut down completed (kafka.server.KafkaServer)
+[2023-04-08 14:22:57,593] INFO Registered kafka:type=kafka.Log4jController MBean (kafka.utils.Log4jControllerRegistration$)
+[2023-04-08 14:22:57,865] INFO Setting -D jdk.tls.rejectClientInitiatedRenegotiation=true to disable client-initiated TLS renegotiation (org.apache.zookeeper.common.X509Util)
+[2023-04-08 14:22:57,944] INFO Registered signal handlers for TERM, INT, HUP (org.apache.kafka.common.utils.LoggingSignalHandler)
+[2023-04-08 14:22:57,946] INFO starting (kafka.server.KafkaServer)
+[2023-04-08 14:22:57,947] INFO Connecting to zookeeper on 127.0.0.1:2181 (kafka.server.KafkaServer)
+[2023-04-08 14:22:57,983] INFO [ZooKeeperClient Kafka server] Initializing a new session to 127.0.0.1:2181. (kafka.zookeeper.ZooKeeperClient)
+[2023-04-08 14:22:57,987] INFO Client environment:zookeeper.version=3.6.3--6401e4ad2087061bc6b9f80dec2d69f2e3c8660a, built on 04/08/2021 16:35 GMT (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:22:57,987] INFO Client environment:host.name=yashPathak-Ubuntu22.04 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:22:57,987] INFO Client environment:java.version=11.0.18 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:22:57,987] INFO Client environment:java.vendor=Ubuntu (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:22:57,988] INFO Client environment:java.home=/usr/lib/jvm/java-11-openjdk-amd64 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:22:57,988] INFO Client environment:java.class.path=/home/yash/kafka_2.13-3.4.0_1/bin/../libs/activation-1.1.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/aopalliance-repackaged-2.6.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/argparse4j-0.7.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/audience-annotations-0.5.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/commons-cli-1.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/commons-lang3-3.8.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-api-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-basic-auth-extension-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-json-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-mirror-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-mirror-client-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-runtime-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-transforms-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/hk2-api-2.6.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/hk2-locator-2.6.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/hk2-utils-2.6.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-annotations-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-core-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-databind-2.13.4.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-dataformat-csv-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-datatype-jdk8-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-jaxrs-base-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-jaxrs-json-provider-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-module-jaxb-annotations-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-module-scala_2.13-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.activation-api-1.2.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.annotation-api-1.3.5.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.inject-2.6.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.validation-api-2.0.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.ws.rs-api-2.1.6.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.xml.bind-api-2.3.3.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/javassist-3.27.0-GA.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/javax.annotation-api-1.3.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/javax.servlet-api-3.1.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/javax.ws.rs-api-2.1.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jaxb-api-2.3.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-client-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-common-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-container-servlet-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-container-servlet-core-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-hk2-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-server-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-client-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-continuation-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-http-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-io-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-security-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-server-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-servlet-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-servlets-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-util-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-util-ajax-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jline-3.21.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jopt-simple-5.0.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jose4j-0.7.9.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka_2.13-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-clients-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-group-coordinator-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-log4j-appender-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-metadata-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-raft-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-server-common-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-shell-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-storage-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-storage-api-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-streams-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-streams-examples-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-streams-scala_2.13-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-streams-test-utils-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-tools-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/lz4-java-1.8.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/maven-artifact-3.8.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/metrics-core-2.2.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/metrics-core-4.1.12.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-buffer-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-codec-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-common-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-handler-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-resolver-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-transport-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-transport-classes-epoll-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-transport-native-epoll-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-transport-native-unix-common-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/osgi-resource-locator-1.0.3.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/paranamer-2.8.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/plexus-utils-3.3.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/reflections-0.9.12.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/reload4j-1.2.19.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/rocksdbjni-7.1.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/scala-collection-compat_2.13-2.6.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/scala-java8-compat_2.13-1.0.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/scala-library-2.13.10.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/scala-logging_2.13-3.9.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/scala-reflect-2.13.10.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/slf4j-api-1.7.36.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/slf4j-reload4j-1.7.36.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/snappy-java-1.1.8.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/swagger-annotations-2.2.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/trogdor-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/zookeeper-3.6.3.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/zookeeper-jute-3.6.3.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/zstd-jni-1.5.2-1.jar (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:22:57,988] INFO Client environment:java.library.path=/usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:22:57,988] INFO Client environment:java.io.tmpdir=/tmp (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:22:57,988] INFO Client environment:java.compiler=<NA> (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:22:57,988] INFO Client environment:os.name=Linux (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:22:57,988] INFO Client environment:os.arch=amd64 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:22:57,988] INFO Client environment:os.version=5.19.0-35-generic (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:22:57,988] INFO Client environment:user.name=yash (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:22:57,988] INFO Client environment:user.home=/home/yash (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:22:57,988] INFO Client environment:user.dir=/home/yash/kafka_2.13-3.4.0_1 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:22:57,988] INFO Client environment:os.memory.free=1015MB (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:22:57,989] INFO Client environment:os.memory.max=1024MB (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:22:57,989] INFO Client environment:os.memory.total=1024MB (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:22:57,991] INFO Initiating client connection, connectString=127.0.0.1:2181 sessionTimeout=18000 watcher=kafka.zookeeper.ZooKeeperClient$ZooKeeperClientWatcher$@7d94beb9 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:22:57,995] INFO jute.maxbuffer value is 4194304 Bytes (org.apache.zookeeper.ClientCnxnSocket)
+[2023-04-08 14:22:57,999] INFO zookeeper.request.timeout value is 0. feature enabled=false (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:22:58,005] INFO [ZooKeeperClient Kafka server] Waiting until connected. (kafka.zookeeper.ZooKeeperClient)
+[2023-04-08 14:22:58,010] INFO Opening socket connection to server /127.0.0.1:2181. (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:22:58,032] INFO Socket connection established, initiating session, client: /127.0.0.1:37330, server: /127.0.0.1:2181 (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:22:58,064] INFO Session establishment complete on server /127.0.0.1:2181, session id = 0x10008d0b3510000, negotiated timeout = 18000 (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:22:58,069] INFO [ZooKeeperClient Kafka server] Connected. (kafka.zookeeper.ZooKeeperClient)
+[2023-04-08 14:22:58,308] INFO Cluster ID = 9yOsP_X2SQGTGN5gEaXRHw (kafka.server.KafkaServer)
+[2023-04-08 14:22:58,314] ERROR Fatal error during KafkaServer startup. Prepare to shutdown (kafka.server.KafkaServer)
+kafka.common.InconsistentClusterIdException: The Cluster ID 9yOsP_X2SQGTGN5gEaXRHw doesn't match stored clusterId Some(Ks0edeyqTYyBzcPpwNddxQ) in meta.properties. The broker is trying to join the wrong cluster. Configured zookeeper.connect may be wrong.
+	at kafka.server.KafkaServer.startup(KafkaServer.scala:234)
+	at kafka.Kafka$.main(Kafka.scala:115)
+	at kafka.Kafka.main(Kafka.scala)
+[2023-04-08 14:22:58,316] INFO shutting down (kafka.server.KafkaServer)
+[2023-04-08 14:22:58,319] INFO [ZooKeeperClient Kafka server] Closing. (kafka.zookeeper.ZooKeeperClient)
+[2023-04-08 14:22:58,435] INFO EventThread shut down for session: 0x10008d0b3510000 (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:22:58,435] INFO Session: 0x10008d0b3510000 closed (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:22:58,439] INFO [ZooKeeperClient Kafka server] Closed. (kafka.zookeeper.ZooKeeperClient)
+[2023-04-08 14:22:58,444] INFO App info kafka.server for 1 unregistered (org.apache.kafka.common.utils.AppInfoParser)
+[2023-04-08 14:22:58,445] INFO shut down completed (kafka.server.KafkaServer)
+[2023-04-08 14:22:58,445] ERROR Exiting Kafka due to fatal exception during startup. (kafka.Kafka$)
+kafka.common.InconsistentClusterIdException: The Cluster ID 9yOsP_X2SQGTGN5gEaXRHw doesn't match stored clusterId Some(Ks0edeyqTYyBzcPpwNddxQ) in meta.properties. The broker is trying to join the wrong cluster. Configured zookeeper.connect may be wrong.
+	at kafka.server.KafkaServer.startup(KafkaServer.scala:234)
+	at kafka.Kafka$.main(Kafka.scala:115)
+	at kafka.Kafka.main(Kafka.scala)
+[2023-04-08 14:22:58,446] INFO shutting down (kafka.server.KafkaServer)
+[2023-04-08 14:24:51,559] INFO Registered kafka:type=kafka.Log4jController MBean (kafka.utils.Log4jControllerRegistration$)
+[2023-04-08 14:24:51,812] INFO Setting -D jdk.tls.rejectClientInitiatedRenegotiation=true to disable client-initiated TLS renegotiation (org.apache.zookeeper.common.X509Util)
+[2023-04-08 14:24:51,917] INFO Registered signal handlers for TERM, INT, HUP (org.apache.kafka.common.utils.LoggingSignalHandler)
+[2023-04-08 14:24:51,919] INFO starting (kafka.server.KafkaServer)
+[2023-04-08 14:24:51,919] INFO Connecting to zookeeper on 127.0.0.1:2181 (kafka.server.KafkaServer)
+[2023-04-08 14:24:51,965] INFO [ZooKeeperClient Kafka server] Initializing a new session to 127.0.0.1:2181. (kafka.zookeeper.ZooKeeperClient)
+[2023-04-08 14:24:51,969] INFO Client environment:zookeeper.version=3.6.3--6401e4ad2087061bc6b9f80dec2d69f2e3c8660a, built on 04/08/2021 16:35 GMT (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:24:51,969] INFO Client environment:host.name=yashPathak-Ubuntu22.04 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:24:51,969] INFO Client environment:java.version=11.0.18 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:24:51,969] INFO Client environment:java.vendor=Ubuntu (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:24:51,969] INFO Client environment:java.home=/usr/lib/jvm/java-11-openjdk-amd64 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:24:51,969] INFO Client environment:java.class.path=/home/yash/kafka_2.13-3.4.0_1/bin/../libs/activation-1.1.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/aopalliance-repackaged-2.6.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/argparse4j-0.7.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/audience-annotations-0.5.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/commons-cli-1.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/commons-lang3-3.8.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-api-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-basic-auth-extension-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-json-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-mirror-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-mirror-client-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-runtime-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-transforms-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/hk2-api-2.6.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/hk2-locator-2.6.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/hk2-utils-2.6.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-annotations-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-core-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-databind-2.13.4.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-dataformat-csv-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-datatype-jdk8-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-jaxrs-base-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-jaxrs-json-provider-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-module-jaxb-annotations-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-module-scala_2.13-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.activation-api-1.2.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.annotation-api-1.3.5.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.inject-2.6.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.validation-api-2.0.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.ws.rs-api-2.1.6.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.xml.bind-api-2.3.3.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/javassist-3.27.0-GA.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/javax.annotation-api-1.3.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/javax.servlet-api-3.1.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/javax.ws.rs-api-2.1.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jaxb-api-2.3.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-client-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-common-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-container-servlet-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-container-servlet-core-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-hk2-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-server-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-client-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-continuation-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-http-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-io-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-security-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-server-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-servlet-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-servlets-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-util-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-util-ajax-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jline-3.21.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jopt-simple-5.0.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jose4j-0.7.9.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka_2.13-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-clients-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-group-coordinator-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-log4j-appender-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-metadata-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-raft-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-server-common-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-shell-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-storage-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-storage-api-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-streams-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-streams-examples-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-streams-scala_2.13-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-streams-test-utils-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-tools-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/lz4-java-1.8.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/maven-artifact-3.8.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/metrics-core-2.2.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/metrics-core-4.1.12.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-buffer-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-codec-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-common-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-handler-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-resolver-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-transport-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-transport-classes-epoll-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-transport-native-epoll-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-transport-native-unix-common-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/osgi-resource-locator-1.0.3.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/paranamer-2.8.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/plexus-utils-3.3.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/reflections-0.9.12.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/reload4j-1.2.19.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/rocksdbjni-7.1.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/scala-collection-compat_2.13-2.6.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/scala-java8-compat_2.13-1.0.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/scala-library-2.13.10.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/scala-logging_2.13-3.9.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/scala-reflect-2.13.10.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/slf4j-api-1.7.36.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/slf4j-reload4j-1.7.36.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/snappy-java-1.1.8.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/swagger-annotations-2.2.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/trogdor-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/zookeeper-3.6.3.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/zookeeper-jute-3.6.3.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/zstd-jni-1.5.2-1.jar (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:24:51,970] INFO Client environment:java.library.path=/usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:24:51,970] INFO Client environment:java.io.tmpdir=/tmp (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:24:51,970] INFO Client environment:java.compiler=<NA> (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:24:51,970] INFO Client environment:os.name=Linux (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:24:51,970] INFO Client environment:os.arch=amd64 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:24:51,970] INFO Client environment:os.version=5.19.0-35-generic (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:24:51,970] INFO Client environment:user.name=yash (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:24:51,970] INFO Client environment:user.home=/home/yash (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:24:51,973] INFO Client environment:user.dir=/home/yash/kafka_2.13-3.4.0_1 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:24:51,973] INFO Client environment:os.memory.free=1015MB (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:24:51,973] INFO Client environment:os.memory.max=1024MB (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:24:51,973] INFO Client environment:os.memory.total=1024MB (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:24:51,976] INFO Initiating client connection, connectString=127.0.0.1:2181 sessionTimeout=18000 watcher=kafka.zookeeper.ZooKeeperClient$ZooKeeperClientWatcher$@7d94beb9 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:24:51,979] INFO jute.maxbuffer value is 4194304 Bytes (org.apache.zookeeper.ClientCnxnSocket)
+[2023-04-08 14:24:51,991] INFO zookeeper.request.timeout value is 0. feature enabled=false (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:24:51,997] INFO [ZooKeeperClient Kafka server] Waiting until connected. (kafka.zookeeper.ZooKeeperClient)
+[2023-04-08 14:24:51,999] INFO Opening socket connection to server /127.0.0.1:2181. (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:24:52,012] INFO Socket connection established, initiating session, client: /127.0.0.1:35382, server: /127.0.0.1:2181 (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:24:52,029] INFO Session establishment complete on server /127.0.0.1:2181, session id = 0x10008d267320001, negotiated timeout = 18000 (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:24:52,032] INFO [ZooKeeperClient Kafka server] Connected. (kafka.zookeeper.ZooKeeperClient)
+[2023-04-08 14:24:52,269] INFO Cluster ID = 9yOsP_X2SQGTGN5gEaXRHw (kafka.server.KafkaServer)
+[2023-04-08 14:24:52,272] WARN No meta.properties file under dir /home/yash/kafka-logs/log2/meta.properties (kafka.server.BrokerMetadataCheckpoint)
+[2023-04-08 14:24:52,339] INFO KafkaConfig values: 
+	advertised.listeners = PLAINTEXT://127.0.0.1:9093
+	alter.config.policy.class.name = null
+	alter.log.dirs.replication.quota.window.num = 11
+	alter.log.dirs.replication.quota.window.size.seconds = 1
+	authorizer.class.name = 
+	auto.create.topics.enable = true
+	auto.include.jmx.reporter = true
+	auto.leader.rebalance.enable = true
+	background.threads = 10
+	broker.heartbeat.interval.ms = 2000
+	broker.id = 1
+	broker.id.generation.enable = true
+	broker.rack = null
+	broker.session.timeout.ms = 9000
+	client.quota.callback.class = null
+	compression.type = producer
+	connection.failed.authentication.delay.ms = 100
+	connections.max.idle.ms = 600000
+	connections.max.reauth.ms = 0
+	control.plane.listener.name = null
+	controlled.shutdown.enable = true
+	controlled.shutdown.max.retries = 3
+	controlled.shutdown.retry.backoff.ms = 5000
+	controller.listener.names = null
+	controller.quorum.append.linger.ms = 25
+	controller.quorum.election.backoff.max.ms = 1000
+	controller.quorum.election.timeout.ms = 1000
+	controller.quorum.fetch.timeout.ms = 2000
+	controller.quorum.request.timeout.ms = 2000
+	controller.quorum.retry.backoff.ms = 20
+	controller.quorum.voters = []
+	controller.quota.window.num = 11
+	controller.quota.window.size.seconds = 1
+	controller.socket.timeout.ms = 30000
+	create.topic.policy.class.name = null
+	default.replication.factor = 1
+	delegation.token.expiry.check.interval.ms = 3600000
+	delegation.token.expiry.time.ms = 86400000
+	delegation.token.master.key = null
+	delegation.token.max.lifetime.ms = 604800000
+	delegation.token.secret.key = null
+	delete.records.purgatory.purge.interval.requests = 1
+	delete.topic.enable = true
+	early.start.listeners = null
+	fetch.max.bytes = 57671680
+	fetch.purgatory.purge.interval.requests = 1000
+	group.initial.rebalance.delay.ms = 0
+	group.max.session.timeout.ms = 1800000
+	group.max.size = 2147483647
+	group.min.session.timeout.ms = 6000
+	initial.broker.registration.timeout.ms = 60000
+	inter.broker.listener.name = null
+	inter.broker.protocol.version = 3.4-IV0
+	kafka.metrics.polling.interval.secs = 10
+	kafka.metrics.reporters = []
+	leader.imbalance.check.interval.seconds = 300
+	leader.imbalance.per.broker.percentage = 10
+	listener.security.protocol.map = PLAINTEXT:PLAINTEXT,SSL:SSL,SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_SSL:SASL_SSL
+	listeners = PLAINTEXT://127.0.0.1:9093
+	log.cleaner.backoff.ms = 15000
+	log.cleaner.dedupe.buffer.size = 134217728
+	log.cleaner.delete.retention.ms = 86400000
+	log.cleaner.enable = true
+	log.cleaner.io.buffer.load.factor = 0.9
+	log.cleaner.io.buffer.size = 524288
+	log.cleaner.io.max.bytes.per.second = 1.7976931348623157E308
+	log.cleaner.max.compaction.lag.ms = 9223372036854775807
+	log.cleaner.min.cleanable.ratio = 0.5
+	log.cleaner.min.compaction.lag.ms = 0
+	log.cleaner.threads = 1
+	log.cleanup.policy = [delete]
+	log.dir = /tmp/kafka-logs
+	log.dirs = /home/yash/kafka-logs/log2
+	log.flush.interval.messages = 9223372036854775807
+	log.flush.interval.ms = null
+	log.flush.offset.checkpoint.interval.ms = 60000
+	log.flush.scheduler.interval.ms = 9223372036854775807
+	log.flush.start.offset.checkpoint.interval.ms = 60000
+	log.index.interval.bytes = 4096
+	log.index.size.max.bytes = 10485760
+	log.message.downconversion.enable = true
+	log.message.format.version = 3.0-IV1
+	log.message.timestamp.difference.max.ms = 9223372036854775807
+	log.message.timestamp.type = CreateTime
+	log.preallocate = false
+	log.retention.bytes = -1
+	log.retention.check.interval.ms = 300000
+	log.retention.hours = 168
+	log.retention.minutes = null
+	log.retention.ms = null
+	log.roll.hours = 168
+	log.roll.jitter.hours = 0
+	log.roll.jitter.ms = null
+	log.roll.ms = null
+	log.segment.bytes = 1073741824
+	log.segment.delete.delay.ms = 60000
+	max.connection.creation.rate = 2147483647
+	max.connections = 2147483647
+	max.connections.per.ip = 2147483647
+	max.connections.per.ip.overrides = 
+	max.incremental.fetch.session.cache.slots = 1000
+	message.max.bytes = 1048588
+	metadata.log.dir = null
+	metadata.log.max.record.bytes.between.snapshots = 20971520
+	metadata.log.max.snapshot.interval.ms = 3600000
+	metadata.log.segment.bytes = 1073741824
+	metadata.log.segment.min.bytes = 8388608
+	metadata.log.segment.ms = 604800000
+	metadata.max.idle.interval.ms = 500
+	metadata.max.retention.bytes = 104857600
+	metadata.max.retention.ms = 604800000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	min.insync.replicas = 1
+	node.id = 1
+	num.io.threads = 8
+	num.network.threads = 3
+	num.partitions = 1
+	num.recovery.threads.per.data.dir = 1
+	num.replica.alter.log.dirs.threads = null
+	num.replica.fetchers = 1
+	offset.metadata.max.bytes = 4096
+	offsets.commit.required.acks = -1
+	offsets.commit.timeout.ms = 5000
+	offsets.load.buffer.size = 5242880
+	offsets.retention.check.interval.ms = 600000
+	offsets.retention.minutes = 10080
+	offsets.topic.compression.codec = 0
+	offsets.topic.num.partitions = 50
+	offsets.topic.replication.factor = 1
+	offsets.topic.segment.bytes = 104857600
+	password.encoder.cipher.algorithm = AES/CBC/PKCS5Padding
+	password.encoder.iterations = 4096
+	password.encoder.key.length = 128
+	password.encoder.keyfactory.algorithm = null
+	password.encoder.old.secret = null
+	password.encoder.secret = null
+	principal.builder.class = class org.apache.kafka.common.security.authenticator.DefaultKafkaPrincipalBuilder
+	process.roles = []
+	producer.id.expiration.check.interval.ms = 600000
+	producer.id.expiration.ms = 86400000
+	producer.purgatory.purge.interval.requests = 1000
+	queued.max.request.bytes = -1
+	queued.max.requests = 500
+	quota.window.num = 11
+	quota.window.size.seconds = 1
+	remote.log.index.file.cache.total.size.bytes = 1073741824
+	remote.log.manager.task.interval.ms = 30000
+	remote.log.manager.task.retry.backoff.max.ms = 30000
+	remote.log.manager.task.retry.backoff.ms = 500
+	remote.log.manager.task.retry.jitter = 0.2
+	remote.log.manager.thread.pool.size = 10
+	remote.log.metadata.manager.class.name = null
+	remote.log.metadata.manager.class.path = null
+	remote.log.metadata.manager.impl.prefix = null
+	remote.log.metadata.manager.listener.name = null
+	remote.log.reader.max.pending.tasks = 100
+	remote.log.reader.threads = 10
+	remote.log.storage.manager.class.name = null
+	remote.log.storage.manager.class.path = null
+	remote.log.storage.manager.impl.prefix = null
+	remote.log.storage.system.enable = false
+	replica.fetch.backoff.ms = 1000
+	replica.fetch.max.bytes = 1048576
+	replica.fetch.min.bytes = 1
+	replica.fetch.response.max.bytes = 10485760
+	replica.fetch.wait.max.ms = 500
+	replica.high.watermark.checkpoint.interval.ms = 5000
+	replica.lag.time.max.ms = 30000
+	replica.selector.class = null
+	replica.socket.receive.buffer.bytes = 65536
+	replica.socket.timeout.ms = 30000
+	replication.quota.window.num = 11
+	replication.quota.window.size.seconds = 1
+	request.timeout.ms = 30000
+	reserved.broker.max.id = 1000
+	sasl.client.callback.handler.class = null
+	sasl.enabled.mechanisms = [GSSAPI]
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.principal.to.local.rules = [DEFAULT]
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism.controller.protocol = GSSAPI
+	sasl.mechanism.inter.broker.protocol = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	sasl.server.callback.handler.class = null
+	sasl.server.max.receive.size = 524288
+	security.inter.broker.protocol = PLAINTEXT
+	security.providers = null
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	socket.listen.backlog.size = 50
+	socket.receive.buffer.bytes = 102400
+	socket.request.max.bytes = 104857600
+	socket.send.buffer.bytes = 102400
+	ssl.cipher.suites = []
+	ssl.client.auth = none
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.principal.mapping.rules = DEFAULT
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.abort.timed.out.transaction.cleanup.interval.ms = 10000
+	transaction.max.timeout.ms = 900000
+	transaction.remove.expired.transaction.cleanup.interval.ms = 3600000
+	transaction.state.log.load.buffer.size = 5242880
+	transaction.state.log.min.isr = 1
+	transaction.state.log.num.partitions = 50
+	transaction.state.log.replication.factor = 1
+	transaction.state.log.segment.bytes = 104857600
+	transactional.id.expiration.ms = 604800000
+	unclean.leader.election.enable = false
+	zookeeper.clientCnxnSocket = null
+	zookeeper.connect = 127.0.0.1:2181
+	zookeeper.connection.timeout.ms = 18000
+	zookeeper.max.in.flight.requests = 10
+	zookeeper.metadata.migration.enable = false
+	zookeeper.session.timeout.ms = 18000
+	zookeeper.set.acl = false
+	zookeeper.ssl.cipher.suites = null
+	zookeeper.ssl.client.enable = false
+	zookeeper.ssl.crl.enable = false
+	zookeeper.ssl.enabled.protocols = null
+	zookeeper.ssl.endpoint.identification.algorithm = HTTPS
+	zookeeper.ssl.keystore.location = null
+	zookeeper.ssl.keystore.password = null
+	zookeeper.ssl.keystore.type = null
+	zookeeper.ssl.ocsp.enable = false
+	zookeeper.ssl.protocol = TLSv1.2
+	zookeeper.ssl.truststore.location = null
+	zookeeper.ssl.truststore.password = null
+	zookeeper.ssl.truststore.type = null
+ (kafka.server.KafkaConfig)
+[2023-04-08 14:24:52,394] INFO [ThrottledChannelReaper-Request]: Starting (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:24:52,394] INFO [ThrottledChannelReaper-Fetch]: Starting (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:24:52,394] INFO [ThrottledChannelReaper-Produce]: Starting (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:24:52,403] INFO [ThrottledChannelReaper-ControllerMutation]: Starting (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:24:52,493] INFO Loading logs from log dirs ArraySeq(/home/yash/kafka-logs/log2) (kafka.log.LogManager)
+[2023-04-08 14:24:52,500] INFO Skipping recovery for all logs in /home/yash/kafka-logs/log2 since clean shutdown file was found (kafka.log.LogManager)
+[2023-04-08 14:24:52,512] INFO Loaded 0 logs in 18ms. (kafka.log.LogManager)
+[2023-04-08 14:24:52,513] INFO Starting log cleanup with a period of 300000 ms. (kafka.log.LogManager)
+[2023-04-08 14:24:52,515] INFO Starting log flusher with a default period of 9223372036854775807 ms. (kafka.log.LogManager)
+[2023-04-08 14:24:52,644] INFO [feature-zk-node-event-process-thread]: Starting (kafka.server.FinalizedFeatureChangeListener$ChangeNotificationProcessorThread)
+[2023-04-08 14:24:52,697] INFO [MetadataCache brokerId=1] Updated cache from existing <empty> to latest FinalizedFeaturesAndEpoch(features=Map(), epoch=0). (kafka.server.metadata.ZkMetadataCache)
+[2023-04-08 14:24:52,729] INFO [BrokerToControllerChannelManager broker=1 name=forwarding]: Starting (kafka.server.BrokerToControllerRequestThread)
+[2023-04-08 14:24:52,988] INFO Updated connection-accept-rate max connection creation rate to 2147483647 (kafka.network.ConnectionQuotas)
+[2023-04-08 14:24:52,992] INFO Awaiting socket connections on 127.0.0.1:9093. (kafka.network.DataPlaneAcceptor)
+[2023-04-08 14:24:53,009] INFO [SocketServer listenerType=ZK_BROKER, nodeId=1] Created data-plane acceptor and processors for endpoint : ListenerName(PLAINTEXT) (kafka.network.SocketServer)
+[2023-04-08 14:24:53,018] INFO [BrokerToControllerChannelManager broker=1 name=alterPartition]: Starting (kafka.server.BrokerToControllerRequestThread)
+[2023-04-08 14:24:53,051] INFO [ExpirationReaper-1-Produce]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:24:53,052] INFO [ExpirationReaper-1-Fetch]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:24:53,055] INFO [ExpirationReaper-1-DeleteRecords]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:24:53,064] INFO [ExpirationReaper-1-ElectLeader]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:24:53,101] INFO [LogDirFailureHandler]: Starting (kafka.server.ReplicaManager$LogDirFailureHandler)
+[2023-04-08 14:24:53,161] INFO Creating /brokers/ids/1 (is it secure? false) (kafka.zk.KafkaZkClient)
+[2023-04-08 14:24:53,191] INFO Stat of the created znode at /brokers/ids/1 is: 109,109,1680944093176,1680944093176,1,0,0,72067293805412353,202,0,109
+ (kafka.zk.KafkaZkClient)
+[2023-04-08 14:24:53,192] INFO Registered broker 1 at path /brokers/ids/1 with addresses: PLAINTEXT://127.0.0.1:9093, czxid (broker epoch): 109 (kafka.zk.KafkaZkClient)
+[2023-04-08 14:24:53,305] INFO [ExpirationReaper-1-topic]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:24:53,332] INFO [ExpirationReaper-1-Heartbeat]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:24:53,339] INFO [GroupCoordinator 1]: Starting up. (kafka.coordinator.group.GroupCoordinator)
+[2023-04-08 14:24:53,340] INFO [ExpirationReaper-1-Rebalance]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:24:53,347] INFO [GroupCoordinator 1]: Startup complete. (kafka.coordinator.group.GroupCoordinator)
+[2023-04-08 14:24:53,363] INFO [TransactionCoordinator id=1] Starting up. (kafka.coordinator.transaction.TransactionCoordinator)
+[2023-04-08 14:24:53,368] INFO [TransactionCoordinator id=1] Startup complete. (kafka.coordinator.transaction.TransactionCoordinator)
+[2023-04-08 14:24:53,375] INFO [Transaction Marker Channel Manager 1]: Starting (kafka.coordinator.transaction.TransactionMarkerChannelManager)
+[2023-04-08 14:24:53,421] INFO [ExpirationReaper-1-AlterAcls]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:24:53,445] INFO [/config/changes-event-process-thread]: Starting (kafka.common.ZkNodeChangeNotificationListener$ChangeEventProcessThread)
+[2023-04-08 14:24:53,483] INFO [SocketServer listenerType=ZK_BROKER, nodeId=1] Enabling request processing. (kafka.network.SocketServer)
+[2023-04-08 14:24:53,495] INFO Kafka version: 3.4.0 (org.apache.kafka.common.utils.AppInfoParser)
+[2023-04-08 14:24:53,496] INFO Kafka commitId: 2e1947d240607d53 (org.apache.kafka.common.utils.AppInfoParser)
+[2023-04-08 14:24:53,496] INFO Kafka startTimeMs: 1680944093488 (org.apache.kafka.common.utils.AppInfoParser)
+[2023-04-08 14:24:53,521] INFO [KafkaServer id=1] started (kafka.server.KafkaServer)
+[2023-04-08 14:24:53,647] INFO [BrokerToControllerChannelManager broker=1 name=alterPartition]: Recorded new controller, from now on will use node 127.0.0.1:9092 (id: 0 rack: null) (kafka.server.BrokerToControllerRequestThread)
+[2023-04-08 14:24:53,667] INFO [BrokerToControllerChannelManager broker=1 name=forwarding]: Recorded new controller, from now on will use node 127.0.0.1:9092 (id: 0 rack: null) (kafka.server.BrokerToControllerRequestThread)
+[2023-04-08 14:35:15,315] INFO Terminating process due to signal SIGINT (org.apache.kafka.common.utils.LoggingSignalHandler)
+[2023-04-08 14:35:15,320] INFO [KafkaServer id=1] shutting down (kafka.server.KafkaServer)
+[2023-04-08 14:35:15,327] INFO [KafkaServer id=1] Starting controlled shutdown (kafka.server.KafkaServer)
+[2023-04-08 14:35:15,382] INFO [KafkaServer id=1] Controlled shutdown request returned successfully after 7ms (kafka.server.KafkaServer)
+[2023-04-08 14:35:15,388] INFO [/config/changes-event-process-thread]: Shutting down (kafka.common.ZkNodeChangeNotificationListener$ChangeEventProcessThread)
+[2023-04-08 14:35:15,389] INFO [/config/changes-event-process-thread]: Stopped (kafka.common.ZkNodeChangeNotificationListener$ChangeEventProcessThread)
+[2023-04-08 14:35:15,391] INFO [/config/changes-event-process-thread]: Shutdown completed (kafka.common.ZkNodeChangeNotificationListener$ChangeEventProcessThread)
+[2023-04-08 14:35:15,393] INFO [SocketServer listenerType=ZK_BROKER, nodeId=1] Stopping socket server request processors (kafka.network.SocketServer)
+[2023-04-08 14:35:15,421] INFO [SocketServer listenerType=ZK_BROKER, nodeId=1] Stopped socket server request processors (kafka.network.SocketServer)
+[2023-04-08 14:35:15,430] INFO [data-plane Kafka Request Handler on Broker 1], shutting down (kafka.server.KafkaRequestHandlerPool)
+[2023-04-08 14:35:15,436] INFO [data-plane Kafka Request Handler on Broker 1], shut down completely (kafka.server.KafkaRequestHandlerPool)
+[2023-04-08 14:35:15,450] INFO [ExpirationReaper-1-AlterAcls]: Shutting down (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:35:15,455] INFO [ExpirationReaper-1-AlterAcls]: Stopped (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:35:15,455] INFO [ExpirationReaper-1-AlterAcls]: Shutdown completed (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:35:15,457] INFO [KafkaApi-1] Shutdown complete. (kafka.server.KafkaApis)
+[2023-04-08 14:35:15,458] INFO [ExpirationReaper-1-topic]: Shutting down (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:35:15,460] INFO [ExpirationReaper-1-topic]: Stopped (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:35:15,460] INFO [ExpirationReaper-1-topic]: Shutdown completed (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:35:15,462] INFO [TransactionCoordinator id=1] Shutting down. (kafka.coordinator.transaction.TransactionCoordinator)
+[2023-04-08 14:35:15,464] INFO [Transaction State Manager 1]: Shutdown complete (kafka.coordinator.transaction.TransactionStateManager)
+[2023-04-08 14:35:15,464] INFO [Transaction Marker Channel Manager 1]: Shutting down (kafka.coordinator.transaction.TransactionMarkerChannelManager)
+[2023-04-08 14:35:15,466] INFO [Transaction Marker Channel Manager 1]: Stopped (kafka.coordinator.transaction.TransactionMarkerChannelManager)
+[2023-04-08 14:35:15,466] INFO [Transaction Marker Channel Manager 1]: Shutdown completed (kafka.coordinator.transaction.TransactionMarkerChannelManager)
+[2023-04-08 14:35:15,468] INFO [TransactionCoordinator id=1] Shutdown complete. (kafka.coordinator.transaction.TransactionCoordinator)
+[2023-04-08 14:35:15,469] INFO [GroupCoordinator 1]: Shutting down. (kafka.coordinator.group.GroupCoordinator)
+[2023-04-08 14:35:15,471] INFO [ExpirationReaper-1-Heartbeat]: Shutting down (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:35:15,473] INFO [ExpirationReaper-1-Heartbeat]: Stopped (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:35:15,474] INFO [ExpirationReaper-1-Heartbeat]: Shutdown completed (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:35:15,479] INFO [ExpirationReaper-1-Rebalance]: Shutting down (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:35:15,482] INFO [ExpirationReaper-1-Rebalance]: Stopped (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:35:15,482] INFO [ExpirationReaper-1-Rebalance]: Shutdown completed (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:35:15,484] INFO [GroupCoordinator 1]: Shutdown complete. (kafka.coordinator.group.GroupCoordinator)
+[2023-04-08 14:35:15,485] INFO [ReplicaManager broker=1] Shutting down (kafka.server.ReplicaManager)
+[2023-04-08 14:35:15,485] INFO [LogDirFailureHandler]: Shutting down (kafka.server.ReplicaManager$LogDirFailureHandler)
+[2023-04-08 14:35:15,488] INFO [LogDirFailureHandler]: Stopped (kafka.server.ReplicaManager$LogDirFailureHandler)
+[2023-04-08 14:35:15,488] INFO [LogDirFailureHandler]: Shutdown completed (kafka.server.ReplicaManager$LogDirFailureHandler)
+[2023-04-08 14:35:15,489] INFO [ReplicaFetcherManager on broker 1] shutting down (kafka.server.ReplicaFetcherManager)
+[2023-04-08 14:35:15,496] INFO [ReplicaFetcherManager on broker 1] shutdown completed (kafka.server.ReplicaFetcherManager)
+[2023-04-08 14:35:15,497] INFO [ReplicaAlterLogDirsManager on broker 1] shutting down (kafka.server.ReplicaAlterLogDirsManager)
+[2023-04-08 14:35:15,498] INFO [ReplicaAlterLogDirsManager on broker 1] shutdown completed (kafka.server.ReplicaAlterLogDirsManager)
+[2023-04-08 14:35:15,498] INFO [ExpirationReaper-1-Fetch]: Shutting down (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:35:15,501] INFO [ExpirationReaper-1-Fetch]: Stopped (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:35:15,502] INFO [ExpirationReaper-1-Fetch]: Shutdown completed (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:35:15,503] INFO [ExpirationReaper-1-Produce]: Shutting down (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:35:15,505] INFO [ExpirationReaper-1-Produce]: Stopped (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:35:15,505] INFO [ExpirationReaper-1-Produce]: Shutdown completed (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:35:15,511] INFO [ExpirationReaper-1-DeleteRecords]: Shutting down (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:35:15,514] INFO [ExpirationReaper-1-DeleteRecords]: Stopped (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:35:15,514] INFO [ExpirationReaper-1-DeleteRecords]: Shutdown completed (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:35:15,515] INFO [ExpirationReaper-1-ElectLeader]: Shutting down (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:35:15,518] INFO [ExpirationReaper-1-ElectLeader]: Stopped (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:35:15,519] INFO [ExpirationReaper-1-ElectLeader]: Shutdown completed (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:35:15,529] INFO Terminating process due to signal SIGINT (org.apache.kafka.common.utils.LoggingSignalHandler)
+[2023-04-08 14:35:15,530] INFO [ReplicaManager broker=1] Shut down completely (kafka.server.ReplicaManager)
+[2023-04-08 14:35:15,531] INFO [BrokerToControllerChannelManager broker=1 name=alterPartition]: Shutting down (kafka.server.BrokerToControllerRequestThread)
+[2023-04-08 14:35:15,532] INFO [BrokerToControllerChannelManager broker=1 name=alterPartition]: Stopped (kafka.server.BrokerToControllerRequestThread)
+[2023-04-08 14:35:15,532] INFO [BrokerToControllerChannelManager broker=1 name=alterPartition]: Shutdown completed (kafka.server.BrokerToControllerRequestThread)
+[2023-04-08 14:35:15,534] INFO Broker to controller channel manager for alterPartition shutdown (kafka.server.BrokerToControllerChannelManagerImpl)
+[2023-04-08 14:35:15,535] INFO [BrokerToControllerChannelManager broker=1 name=forwarding]: Shutting down (kafka.server.BrokerToControllerRequestThread)
+[2023-04-08 14:35:15,538] INFO [BrokerToControllerChannelManager broker=1 name=forwarding]: Stopped (kafka.server.BrokerToControllerRequestThread)
+[2023-04-08 14:35:15,538] INFO [BrokerToControllerChannelManager broker=1 name=forwarding]: Shutdown completed (kafka.server.BrokerToControllerRequestThread)
+[2023-04-08 14:35:15,540] INFO Broker to controller channel manager for forwarding shutdown (kafka.server.BrokerToControllerChannelManagerImpl)
+[2023-04-08 14:35:15,541] INFO Shutting down. (kafka.log.LogManager)
+[2023-04-08 14:35:15,571] INFO Shutdown complete. (kafka.log.LogManager)
+[2023-04-08 14:35:15,585] INFO [feature-zk-node-event-process-thread]: Shutting down (kafka.server.FinalizedFeatureChangeListener$ChangeNotificationProcessorThread)
+[2023-04-08 14:35:15,586] INFO [feature-zk-node-event-process-thread]: Shutdown completed (kafka.server.FinalizedFeatureChangeListener$ChangeNotificationProcessorThread)
+[2023-04-08 14:35:15,586] INFO [feature-zk-node-event-process-thread]: Stopped (kafka.server.FinalizedFeatureChangeListener$ChangeNotificationProcessorThread)
+[2023-04-08 14:35:15,588] INFO [ZooKeeperClient Kafka server] Closing. (kafka.zookeeper.ZooKeeperClient)
+[2023-04-08 14:35:15,700] INFO Session: 0x10008d267320001 closed (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:35:15,700] INFO EventThread shut down for session: 0x10008d267320001 (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:35:15,703] INFO [ZooKeeperClient Kafka server] Closed. (kafka.zookeeper.ZooKeeperClient)
+[2023-04-08 14:35:15,704] INFO [ThrottledChannelReaper-Fetch]: Shutting down (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:35:15,706] INFO [ThrottledChannelReaper-Fetch]: Stopped (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:35:15,707] INFO [ThrottledChannelReaper-Fetch]: Shutdown completed (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:35:15,707] INFO [ThrottledChannelReaper-Produce]: Shutting down (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:35:15,708] INFO [ThrottledChannelReaper-Produce]: Stopped (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:35:15,708] INFO [ThrottledChannelReaper-Produce]: Shutdown completed (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:35:15,708] INFO [ThrottledChannelReaper-Request]: Shutting down (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:35:15,708] INFO [ThrottledChannelReaper-Request]: Stopped (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:35:15,709] INFO [ThrottledChannelReaper-Request]: Shutdown completed (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:35:15,709] INFO [ThrottledChannelReaper-ControllerMutation]: Shutting down (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:35:15,710] INFO [ThrottledChannelReaper-ControllerMutation]: Stopped (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:35:15,710] INFO [ThrottledChannelReaper-ControllerMutation]: Shutdown completed (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:35:15,711] INFO [SocketServer listenerType=ZK_BROKER, nodeId=1] Shutting down socket server (kafka.network.SocketServer)
+[2023-04-08 14:35:15,729] INFO [SocketServer listenerType=ZK_BROKER, nodeId=1] Shutdown completed (kafka.network.SocketServer)
+[2023-04-08 14:35:15,731] INFO Metrics scheduler closed (org.apache.kafka.common.metrics.Metrics)
+[2023-04-08 14:35:15,731] INFO Closing reporter org.apache.kafka.common.metrics.JmxReporter (org.apache.kafka.common.metrics.Metrics)
+[2023-04-08 14:35:15,732] INFO Metrics reporters closed (org.apache.kafka.common.metrics.Metrics)
+[2023-04-08 14:35:15,735] INFO Broker and topic stats closed (kafka.server.BrokerTopicStats)
+[2023-04-08 14:35:15,736] INFO App info kafka.server for 1 unregistered (org.apache.kafka.common.utils.AppInfoParser)
+[2023-04-08 14:35:15,736] INFO [KafkaServer id=1] shut down completed (kafka.server.KafkaServer)
+[2023-04-08 14:36:55,688] INFO Registered kafka:type=kafka.Log4jController MBean (kafka.utils.Log4jControllerRegistration$)
+[2023-04-08 14:36:55,991] INFO Setting -D jdk.tls.rejectClientInitiatedRenegotiation=true to disable client-initiated TLS renegotiation (org.apache.zookeeper.common.X509Util)
+[2023-04-08 14:36:56,085] INFO Registered signal handlers for TERM, INT, HUP (org.apache.kafka.common.utils.LoggingSignalHandler)
+[2023-04-08 14:36:56,087] INFO starting (kafka.server.KafkaServer)
+[2023-04-08 14:36:56,088] INFO Connecting to zookeeper on 127.0.0.1:2181 (kafka.server.KafkaServer)
+[2023-04-08 14:36:56,124] INFO [ZooKeeperClient Kafka server] Initializing a new session to 127.0.0.1:2181. (kafka.zookeeper.ZooKeeperClient)
+[2023-04-08 14:36:56,130] INFO Client environment:zookeeper.version=3.6.3--6401e4ad2087061bc6b9f80dec2d69f2e3c8660a, built on 04/08/2021 16:35 GMT (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:36:56,130] INFO Client environment:host.name=yashPathak-Ubuntu22.04 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:36:56,130] INFO Client environment:java.version=11.0.18 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:36:56,130] INFO Client environment:java.vendor=Ubuntu (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:36:56,130] INFO Client environment:java.home=/usr/lib/jvm/java-11-openjdk-amd64 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:36:56,130] INFO Client environment:java.class.path=/home/yash/kafka_2.13-3.4.0_1/bin/../libs/activation-1.1.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/aopalliance-repackaged-2.6.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/argparse4j-0.7.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/audience-annotations-0.5.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/commons-cli-1.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/commons-lang3-3.8.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-api-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-basic-auth-extension-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-json-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-mirror-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-mirror-client-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-runtime-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/connect-transforms-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/hk2-api-2.6.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/hk2-locator-2.6.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/hk2-utils-2.6.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-annotations-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-core-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-databind-2.13.4.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-dataformat-csv-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-datatype-jdk8-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-jaxrs-base-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-jaxrs-json-provider-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-module-jaxb-annotations-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jackson-module-scala_2.13-2.13.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.activation-api-1.2.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.annotation-api-1.3.5.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.inject-2.6.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.validation-api-2.0.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.ws.rs-api-2.1.6.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jakarta.xml.bind-api-2.3.3.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/javassist-3.27.0-GA.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/javax.annotation-api-1.3.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/javax.servlet-api-3.1.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/javax.ws.rs-api-2.1.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jaxb-api-2.3.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-client-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-common-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-container-servlet-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-container-servlet-core-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-hk2-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jersey-server-2.34.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-client-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-continuation-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-http-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-io-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-security-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-server-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-servlet-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-servlets-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-util-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jetty-util-ajax-9.4.48.v20220622.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jline-3.21.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jopt-simple-5.0.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/jose4j-0.7.9.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka_2.13-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-clients-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-group-coordinator-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-log4j-appender-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-metadata-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-raft-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-server-common-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-shell-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-storage-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-storage-api-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-streams-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-streams-examples-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-streams-scala_2.13-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-streams-test-utils-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/kafka-tools-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/lz4-java-1.8.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/maven-artifact-3.8.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/metrics-core-2.2.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/metrics-core-4.1.12.1.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-buffer-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-codec-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-common-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-handler-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-resolver-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-transport-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-transport-classes-epoll-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-transport-native-epoll-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/netty-transport-native-unix-common-4.1.78.Final.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/osgi-resource-locator-1.0.3.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/paranamer-2.8.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/plexus-utils-3.3.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/reflections-0.9.12.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/reload4j-1.2.19.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/rocksdbjni-7.1.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/scala-collection-compat_2.13-2.6.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/scala-java8-compat_2.13-1.0.2.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/scala-library-2.13.10.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/scala-logging_2.13-3.9.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/scala-reflect-2.13.10.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/slf4j-api-1.7.36.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/slf4j-reload4j-1.7.36.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/snappy-java-1.1.8.4.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/swagger-annotations-2.2.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/trogdor-3.4.0.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/zookeeper-3.6.3.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/zookeeper-jute-3.6.3.jar:/home/yash/kafka_2.13-3.4.0_1/bin/../libs/zstd-jni-1.5.2-1.jar (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:36:56,131] INFO Client environment:java.library.path=/usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:36:56,132] INFO Client environment:java.io.tmpdir=/tmp (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:36:56,132] INFO Client environment:java.compiler=<NA> (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:36:56,132] INFO Client environment:os.name=Linux (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:36:56,132] INFO Client environment:os.arch=amd64 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:36:56,132] INFO Client environment:os.version=5.19.0-35-generic (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:36:56,132] INFO Client environment:user.name=yash (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:36:56,132] INFO Client environment:user.home=/home/yash (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:36:56,132] INFO Client environment:user.dir=/home/yash/kafka_2.13-3.4.0_1 (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:36:56,133] INFO Client environment:os.memory.free=1015MB (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:36:56,133] INFO Client environment:os.memory.max=1024MB (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:36:56,133] INFO Client environment:os.memory.total=1024MB (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:36:56,135] INFO Initiating client connection, connectString=127.0.0.1:2181 sessionTimeout=18000 watcher=kafka.zookeeper.ZooKeeperClient$ZooKeeperClientWatcher$@329dbdbf (org.apache.zookeeper.ZooKeeper)
+[2023-04-08 14:36:56,141] INFO jute.maxbuffer value is 4194304 Bytes (org.apache.zookeeper.ClientCnxnSocket)
+[2023-04-08 14:36:56,150] INFO zookeeper.request.timeout value is 0. feature enabled=false (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:36:56,154] INFO [ZooKeeperClient Kafka server] Waiting until connected. (kafka.zookeeper.ZooKeeperClient)
+[2023-04-08 14:36:56,162] INFO Opening socket connection to server /127.0.0.1:2181. (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:36:56,174] INFO Socket connection established, initiating session, client: /127.0.0.1:46822, server: /127.0.0.1:2181 (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:36:56,189] INFO Session establishment complete on server /127.0.0.1:2181, session id = 0x10008dc79580001, negotiated timeout = 18000 (org.apache.zookeeper.ClientCnxn)
+[2023-04-08 14:36:56,197] INFO [ZooKeeperClient Kafka server] Connected. (kafka.zookeeper.ZooKeeperClient)
+[2023-04-08 14:36:56,409] INFO Cluster ID = 9yOsP_X2SQGTGN5gEaXRHw (kafka.server.KafkaServer)
+[2023-04-08 14:36:56,471] INFO KafkaConfig values: 
+	advertised.listeners = PLAINTEXT://127.0.0.1:9093
+	alter.config.policy.class.name = null
+	alter.log.dirs.replication.quota.window.num = 11
+	alter.log.dirs.replication.quota.window.size.seconds = 1
+	authorizer.class.name = 
+	auto.create.topics.enable = true
+	auto.include.jmx.reporter = true
+	auto.leader.rebalance.enable = true
+	background.threads = 10
+	broker.heartbeat.interval.ms = 2000
+	broker.id = 1
+	broker.id.generation.enable = true
+	broker.rack = null
+	broker.session.timeout.ms = 9000
+	client.quota.callback.class = null
+	compression.type = producer
+	connection.failed.authentication.delay.ms = 100
+	connections.max.idle.ms = 600000
+	connections.max.reauth.ms = 0
+	control.plane.listener.name = null
+	controlled.shutdown.enable = true
+	controlled.shutdown.max.retries = 3
+	controlled.shutdown.retry.backoff.ms = 5000
+	controller.listener.names = null
+	controller.quorum.append.linger.ms = 25
+	controller.quorum.election.backoff.max.ms = 1000
+	controller.quorum.election.timeout.ms = 1000
+	controller.quorum.fetch.timeout.ms = 2000
+	controller.quorum.request.timeout.ms = 2000
+	controller.quorum.retry.backoff.ms = 20
+	controller.quorum.voters = []
+	controller.quota.window.num = 11
+	controller.quota.window.size.seconds = 1
+	controller.socket.timeout.ms = 30000
+	create.topic.policy.class.name = null
+	default.replication.factor = 1
+	delegation.token.expiry.check.interval.ms = 3600000
+	delegation.token.expiry.time.ms = 86400000
+	delegation.token.master.key = null
+	delegation.token.max.lifetime.ms = 604800000
+	delegation.token.secret.key = null
+	delete.records.purgatory.purge.interval.requests = 1
+	delete.topic.enable = true
+	early.start.listeners = null
+	fetch.max.bytes = 57671680
+	fetch.purgatory.purge.interval.requests = 1000
+	group.initial.rebalance.delay.ms = 0
+	group.max.session.timeout.ms = 1800000
+	group.max.size = 2147483647
+	group.min.session.timeout.ms = 6000
+	initial.broker.registration.timeout.ms = 60000
+	inter.broker.listener.name = null
+	inter.broker.protocol.version = 3.4-IV0
+	kafka.metrics.polling.interval.secs = 10
+	kafka.metrics.reporters = []
+	leader.imbalance.check.interval.seconds = 300
+	leader.imbalance.per.broker.percentage = 10
+	listener.security.protocol.map = PLAINTEXT:PLAINTEXT,SSL:SSL,SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_SSL:SASL_SSL
+	listeners = PLAINTEXT://127.0.0.1:9093
+	log.cleaner.backoff.ms = 15000
+	log.cleaner.dedupe.buffer.size = 134217728
+	log.cleaner.delete.retention.ms = 86400000
+	log.cleaner.enable = true
+	log.cleaner.io.buffer.load.factor = 0.9
+	log.cleaner.io.buffer.size = 524288
+	log.cleaner.io.max.bytes.per.second = 1.7976931348623157E308
+	log.cleaner.max.compaction.lag.ms = 9223372036854775807
+	log.cleaner.min.cleanable.ratio = 0.5
+	log.cleaner.min.compaction.lag.ms = 0
+	log.cleaner.threads = 1
+	log.cleanup.policy = [delete]
+	log.dir = /tmp/kafka-logs
+	log.dirs = /home/yash/kafka-logs/log2
+	log.flush.interval.messages = 9223372036854775807
+	log.flush.interval.ms = null
+	log.flush.offset.checkpoint.interval.ms = 60000
+	log.flush.scheduler.interval.ms = 9223372036854775807
+	log.flush.start.offset.checkpoint.interval.ms = 60000
+	log.index.interval.bytes = 4096
+	log.index.size.max.bytes = 10485760
+	log.message.downconversion.enable = true
+	log.message.format.version = 3.0-IV1
+	log.message.timestamp.difference.max.ms = 9223372036854775807
+	log.message.timestamp.type = CreateTime
+	log.preallocate = false
+	log.retention.bytes = -1
+	log.retention.check.interval.ms = 300000
+	log.retention.hours = 168
+	log.retention.minutes = null
+	log.retention.ms = null
+	log.roll.hours = 168
+	log.roll.jitter.hours = 0
+	log.roll.jitter.ms = null
+	log.roll.ms = null
+	log.segment.bytes = 1073741824
+	log.segment.delete.delay.ms = 60000
+	max.connection.creation.rate = 2147483647
+	max.connections = 2147483647
+	max.connections.per.ip = 2147483647
+	max.connections.per.ip.overrides = 
+	max.incremental.fetch.session.cache.slots = 1000
+	message.max.bytes = 1048588
+	metadata.log.dir = null
+	metadata.log.max.record.bytes.between.snapshots = 20971520
+	metadata.log.max.snapshot.interval.ms = 3600000
+	metadata.log.segment.bytes = 1073741824
+	metadata.log.segment.min.bytes = 8388608
+	metadata.log.segment.ms = 604800000
+	metadata.max.idle.interval.ms = 500
+	metadata.max.retention.bytes = 104857600
+	metadata.max.retention.ms = 604800000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	min.insync.replicas = 1
+	node.id = 1
+	num.io.threads = 8
+	num.network.threads = 3
+	num.partitions = 1
+	num.recovery.threads.per.data.dir = 1
+	num.replica.alter.log.dirs.threads = null
+	num.replica.fetchers = 1
+	offset.metadata.max.bytes = 4096
+	offsets.commit.required.acks = -1
+	offsets.commit.timeout.ms = 5000
+	offsets.load.buffer.size = 5242880
+	offsets.retention.check.interval.ms = 600000
+	offsets.retention.minutes = 10080
+	offsets.topic.compression.codec = 0
+	offsets.topic.num.partitions = 50
+	offsets.topic.replication.factor = 1
+	offsets.topic.segment.bytes = 104857600
+	password.encoder.cipher.algorithm = AES/CBC/PKCS5Padding
+	password.encoder.iterations = 4096
+	password.encoder.key.length = 128
+	password.encoder.keyfactory.algorithm = null
+	password.encoder.old.secret = null
+	password.encoder.secret = null
+	principal.builder.class = class org.apache.kafka.common.security.authenticator.DefaultKafkaPrincipalBuilder
+	process.roles = []
+	producer.id.expiration.check.interval.ms = 600000
+	producer.id.expiration.ms = 86400000
+	producer.purgatory.purge.interval.requests = 1000
+	queued.max.request.bytes = -1
+	queued.max.requests = 500
+	quota.window.num = 11
+	quota.window.size.seconds = 1
+	remote.log.index.file.cache.total.size.bytes = 1073741824
+	remote.log.manager.task.interval.ms = 30000
+	remote.log.manager.task.retry.backoff.max.ms = 30000
+	remote.log.manager.task.retry.backoff.ms = 500
+	remote.log.manager.task.retry.jitter = 0.2
+	remote.log.manager.thread.pool.size = 10
+	remote.log.metadata.manager.class.name = null
+	remote.log.metadata.manager.class.path = null
+	remote.log.metadata.manager.impl.prefix = null
+	remote.log.metadata.manager.listener.name = null
+	remote.log.reader.max.pending.tasks = 100
+	remote.log.reader.threads = 10
+	remote.log.storage.manager.class.name = null
+	remote.log.storage.manager.class.path = null
+	remote.log.storage.manager.impl.prefix = null
+	remote.log.storage.system.enable = false
+	replica.fetch.backoff.ms = 1000
+	replica.fetch.max.bytes = 1048576
+	replica.fetch.min.bytes = 1
+	replica.fetch.response.max.bytes = 10485760
+	replica.fetch.wait.max.ms = 500
+	replica.high.watermark.checkpoint.interval.ms = 5000
+	replica.lag.time.max.ms = 30000
+	replica.selector.class = null
+	replica.socket.receive.buffer.bytes = 65536
+	replica.socket.timeout.ms = 30000
+	replication.quota.window.num = 11
+	replication.quota.window.size.seconds = 1
+	request.timeout.ms = 30000
+	reserved.broker.max.id = 1000
+	sasl.client.callback.handler.class = null
+	sasl.enabled.mechanisms = [GSSAPI]
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.principal.to.local.rules = [DEFAULT]
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism.controller.protocol = GSSAPI
+	sasl.mechanism.inter.broker.protocol = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	sasl.server.callback.handler.class = null
+	sasl.server.max.receive.size = 524288
+	security.inter.broker.protocol = PLAINTEXT
+	security.providers = null
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	socket.listen.backlog.size = 50
+	socket.receive.buffer.bytes = 102400
+	socket.request.max.bytes = 104857600
+	socket.send.buffer.bytes = 102400
+	ssl.cipher.suites = []
+	ssl.client.auth = none
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.principal.mapping.rules = DEFAULT
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.abort.timed.out.transaction.cleanup.interval.ms = 10000
+	transaction.max.timeout.ms = 900000
+	transaction.remove.expired.transaction.cleanup.interval.ms = 3600000
+	transaction.state.log.load.buffer.size = 5242880
+	transaction.state.log.min.isr = 1
+	transaction.state.log.num.partitions = 50
+	transaction.state.log.replication.factor = 1
+	transaction.state.log.segment.bytes = 104857600
+	transactional.id.expiration.ms = 604800000
+	unclean.leader.election.enable = false
+	zookeeper.clientCnxnSocket = null
+	zookeeper.connect = 127.0.0.1:2181
+	zookeeper.connection.timeout.ms = 18000
+	zookeeper.max.in.flight.requests = 10
+	zookeeper.metadata.migration.enable = false
+	zookeeper.session.timeout.ms = 18000
+	zookeeper.set.acl = false
+	zookeeper.ssl.cipher.suites = null
+	zookeeper.ssl.client.enable = false
+	zookeeper.ssl.crl.enable = false
+	zookeeper.ssl.enabled.protocols = null
+	zookeeper.ssl.endpoint.identification.algorithm = HTTPS
+	zookeeper.ssl.keystore.location = null
+	zookeeper.ssl.keystore.password = null
+	zookeeper.ssl.keystore.type = null
+	zookeeper.ssl.ocsp.enable = false
+	zookeeper.ssl.protocol = TLSv1.2
+	zookeeper.ssl.truststore.location = null
+	zookeeper.ssl.truststore.password = null
+	zookeeper.ssl.truststore.type = null
+ (kafka.server.KafkaConfig)
+[2023-04-08 14:36:56,515] INFO [ThrottledChannelReaper-Fetch]: Starting (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:36:56,518] INFO [ThrottledChannelReaper-Produce]: Starting (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:36:56,521] INFO [ThrottledChannelReaper-Request]: Starting (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:36:56,525] INFO [ThrottledChannelReaper-ControllerMutation]: Starting (kafka.server.ClientQuotaManager$ThrottledChannelReaper)
+[2023-04-08 14:36:56,609] INFO Loading logs from log dirs ArraySeq(/home/yash/kafka-logs/log2) (kafka.log.LogManager)
+[2023-04-08 14:36:56,612] INFO Skipping recovery for all logs in /home/yash/kafka-logs/log2 since clean shutdown file was found (kafka.log.LogManager)
+[2023-04-08 14:36:56,628] INFO Loaded 0 logs in 19ms. (kafka.log.LogManager)
+[2023-04-08 14:36:56,629] INFO Starting log cleanup with a period of 300000 ms. (kafka.log.LogManager)
+[2023-04-08 14:36:56,630] INFO Starting log flusher with a default period of 9223372036854775807 ms. (kafka.log.LogManager)
+[2023-04-08 14:36:56,751] INFO [feature-zk-node-event-process-thread]: Starting (kafka.server.FinalizedFeatureChangeListener$ChangeNotificationProcessorThread)
+[2023-04-08 14:36:56,804] INFO [MetadataCache brokerId=1] Updated cache from existing <empty> to latest FinalizedFeaturesAndEpoch(features=Map(), epoch=0). (kafka.server.metadata.ZkMetadataCache)
+[2023-04-08 14:36:56,844] INFO [BrokerToControllerChannelManager broker=1 name=forwarding]: Starting (kafka.server.BrokerToControllerRequestThread)
+[2023-04-08 14:36:57,182] INFO Updated connection-accept-rate max connection creation rate to 2147483647 (kafka.network.ConnectionQuotas)
+[2023-04-08 14:36:57,186] INFO Awaiting socket connections on 127.0.0.1:9093. (kafka.network.DataPlaneAcceptor)
+[2023-04-08 14:36:57,206] INFO [SocketServer listenerType=ZK_BROKER, nodeId=1] Created data-plane acceptor and processors for endpoint : ListenerName(PLAINTEXT) (kafka.network.SocketServer)
+[2023-04-08 14:36:57,211] INFO [BrokerToControllerChannelManager broker=1 name=alterPartition]: Starting (kafka.server.BrokerToControllerRequestThread)
+[2023-04-08 14:36:57,234] INFO [ExpirationReaper-1-Produce]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:36:57,238] INFO [ExpirationReaper-1-Fetch]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:36:57,254] INFO [ExpirationReaper-1-DeleteRecords]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:36:57,270] INFO [ExpirationReaper-1-ElectLeader]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:36:57,291] INFO [LogDirFailureHandler]: Starting (kafka.server.ReplicaManager$LogDirFailureHandler)
+[2023-04-08 14:36:57,356] INFO Creating /brokers/ids/1 (is it secure? false) (kafka.zk.KafkaZkClient)
+[2023-04-08 14:36:57,373] INFO Stat of the created znode at /brokers/ids/1 is: 193,193,1680944817365,1680944817365,1,0,0,72067337059565569,204,0,193
+ (kafka.zk.KafkaZkClient)
+[2023-04-08 14:36:57,374] INFO Registered broker 1 at path /brokers/ids/1 with addresses: PLAINTEXT://127.0.0.1:9093, czxid (broker epoch): 193 (kafka.zk.KafkaZkClient)
+[2023-04-08 14:36:57,471] INFO [ExpirationReaper-1-topic]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:36:57,480] INFO [ExpirationReaper-1-Heartbeat]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:36:57,481] INFO [ExpirationReaper-1-Rebalance]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:36:57,500] INFO [GroupCoordinator 1]: Starting up. (kafka.coordinator.group.GroupCoordinator)
+[2023-04-08 14:36:57,513] INFO [GroupCoordinator 1]: Startup complete. (kafka.coordinator.group.GroupCoordinator)
+[2023-04-08 14:36:57,530] INFO [TransactionCoordinator id=1] Starting up. (kafka.coordinator.transaction.TransactionCoordinator)
+[2023-04-08 14:36:57,536] INFO [TransactionCoordinator id=1] Startup complete. (kafka.coordinator.transaction.TransactionCoordinator)
+[2023-04-08 14:36:57,548] INFO [Transaction Marker Channel Manager 1]: Starting (kafka.coordinator.transaction.TransactionMarkerChannelManager)
+[2023-04-08 14:36:57,588] INFO [ExpirationReaper-1-AlterAcls]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2023-04-08 14:36:57,699] INFO [/config/changes-event-process-thread]: Starting (kafka.common.ZkNodeChangeNotificationListener$ChangeEventProcessThread)
+[2023-04-08 14:36:57,736] INFO [SocketServer listenerType=ZK_BROKER, nodeId=1] Enabling request processing. (kafka.network.SocketServer)
+[2023-04-08 14:36:57,909] INFO Kafka version: 3.4.0 (org.apache.kafka.common.utils.AppInfoParser)
+[2023-04-08 14:36:57,910] INFO Kafka commitId: 2e1947d240607d53 (org.apache.kafka.common.utils.AppInfoParser)
+[2023-04-08 14:36:57,910] INFO Kafka startTimeMs: 1680944817751 (org.apache.kafka.common.utils.AppInfoParser)
+[2023-04-08 14:36:57,912] INFO [KafkaServer id=1] started (kafka.server.KafkaServer)
+[2023-04-08 14:36:58,041] INFO [BrokerToControllerChannelManager broker=1 name=forwarding]: Recorded new controller, from now on will use node 127.0.0.1:9092 (id: 0 rack: null) (kafka.server.BrokerToControllerRequestThread)
+[2023-04-08 14:36:58,041] INFO [BrokerToControllerChannelManager broker=1 name=alterPartition]: Recorded new controller, from now on will use node 127.0.0.1:9092 (id: 0 rack: null) (kafka.server.BrokerToControllerRequestThread)
+[2023-04-08 14:42:51,911] INFO [ReplicaFetcherManager on broker 1] Removed fetcher for partitions HashSet(__consumer_offsets-30, __consumer_offsets-21, __consumer_offsets-33, __consumer_offsets-36, __consumer_offsets-48, __consumer_offsets-6, __consumer_offsets-0, __consumer_offsets-45, __consumer_offsets-27, __consumer_offsets-9, __consumer_offsets-42, __consumer_offsets-3, __consumer_offsets-18, __consumer_offsets-15, __consumer_offsets-24, __consumer_offsets-39, __consumer_offsets-12) (kafka.server.ReplicaFetcherManager)
+[2023-04-08 14:42:52,077] INFO [LogLoader partition=__consumer_offsets-3, dir=/home/yash/kafka-logs/log2] Loading producer state till offset 0 with message format version 2 (kafka.log.UnifiedLog$)
+[2023-04-08 14:42:52,104] INFO Created log for partition __consumer_offsets-3 in /home/yash/kafka-logs/log2/__consumer_offsets-3 with properties {cleanup.policy=compact, compression.type="producer", segment.bytes=104857600} (kafka.log.LogManager)
+[2023-04-08 14:42:52,108] INFO [Partition __consumer_offsets-3 broker=1] No checkpointed highwatermark is found for partition __consumer_offsets-3 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,109] INFO [Partition __consumer_offsets-3 broker=1] Log loaded for partition __consumer_offsets-3 with initial high watermark 0 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,145] INFO [LogLoader partition=__consumer_offsets-18, dir=/home/yash/kafka-logs/log2] Loading producer state till offset 0 with message format version 2 (kafka.log.UnifiedLog$)
+[2023-04-08 14:42:52,149] INFO Created log for partition __consumer_offsets-18 in /home/yash/kafka-logs/log2/__consumer_offsets-18 with properties {cleanup.policy=compact, compression.type="producer", segment.bytes=104857600} (kafka.log.LogManager)
+[2023-04-08 14:42:52,150] INFO [Partition __consumer_offsets-18 broker=1] No checkpointed highwatermark is found for partition __consumer_offsets-18 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,150] INFO [Partition __consumer_offsets-18 broker=1] Log loaded for partition __consumer_offsets-18 with initial high watermark 0 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,172] INFO [LogLoader partition=__consumer_offsets-39, dir=/home/yash/kafka-logs/log2] Loading producer state till offset 0 with message format version 2 (kafka.log.UnifiedLog$)
+[2023-04-08 14:42:52,174] INFO Created log for partition __consumer_offsets-39 in /home/yash/kafka-logs/log2/__consumer_offsets-39 with properties {cleanup.policy=compact, compression.type="producer", segment.bytes=104857600} (kafka.log.LogManager)
+[2023-04-08 14:42:52,174] INFO [Partition __consumer_offsets-39 broker=1] No checkpointed highwatermark is found for partition __consumer_offsets-39 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,174] INFO [Partition __consumer_offsets-39 broker=1] Log loaded for partition __consumer_offsets-39 with initial high watermark 0 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,206] INFO [LogLoader partition=__consumer_offsets-9, dir=/home/yash/kafka-logs/log2] Loading producer state till offset 0 with message format version 2 (kafka.log.UnifiedLog$)
+[2023-04-08 14:42:52,210] INFO Created log for partition __consumer_offsets-9 in /home/yash/kafka-logs/log2/__consumer_offsets-9 with properties {cleanup.policy=compact, compression.type="producer", segment.bytes=104857600} (kafka.log.LogManager)
+[2023-04-08 14:42:52,211] INFO [Partition __consumer_offsets-9 broker=1] No checkpointed highwatermark is found for partition __consumer_offsets-9 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,211] INFO [Partition __consumer_offsets-9 broker=1] Log loaded for partition __consumer_offsets-9 with initial high watermark 0 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,267] INFO [LogLoader partition=__consumer_offsets-24, dir=/home/yash/kafka-logs/log2] Loading producer state till offset 0 with message format version 2 (kafka.log.UnifiedLog$)
+[2023-04-08 14:42:52,280] INFO Created log for partition __consumer_offsets-24 in /home/yash/kafka-logs/log2/__consumer_offsets-24 with properties {cleanup.policy=compact, compression.type="producer", segment.bytes=104857600} (kafka.log.LogManager)
+[2023-04-08 14:42:52,280] INFO [Partition __consumer_offsets-24 broker=1] No checkpointed highwatermark is found for partition __consumer_offsets-24 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,280] INFO [Partition __consumer_offsets-24 broker=1] Log loaded for partition __consumer_offsets-24 with initial high watermark 0 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,347] INFO [LogLoader partition=__consumer_offsets-27, dir=/home/yash/kafka-logs/log2] Loading producer state till offset 0 with message format version 2 (kafka.log.UnifiedLog$)
+[2023-04-08 14:42:52,353] INFO Created log for partition __consumer_offsets-27 in /home/yash/kafka-logs/log2/__consumer_offsets-27 with properties {cleanup.policy=compact, compression.type="producer", segment.bytes=104857600} (kafka.log.LogManager)
+[2023-04-08 14:42:52,353] INFO [Partition __consumer_offsets-27 broker=1] No checkpointed highwatermark is found for partition __consumer_offsets-27 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,354] INFO [Partition __consumer_offsets-27 broker=1] Log loaded for partition __consumer_offsets-27 with initial high watermark 0 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,387] INFO [LogLoader partition=__consumer_offsets-42, dir=/home/yash/kafka-logs/log2] Loading producer state till offset 0 with message format version 2 (kafka.log.UnifiedLog$)
+[2023-04-08 14:42:52,400] INFO Created log for partition __consumer_offsets-42 in /home/yash/kafka-logs/log2/__consumer_offsets-42 with properties {cleanup.policy=compact, compression.type="producer", segment.bytes=104857600} (kafka.log.LogManager)
+[2023-04-08 14:42:52,400] INFO [Partition __consumer_offsets-42 broker=1] No checkpointed highwatermark is found for partition __consumer_offsets-42 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,400] INFO [Partition __consumer_offsets-42 broker=1] Log loaded for partition __consumer_offsets-42 with initial high watermark 0 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,435] INFO [LogLoader partition=__consumer_offsets-12, dir=/home/yash/kafka-logs/log2] Loading producer state till offset 0 with message format version 2 (kafka.log.UnifiedLog$)
+[2023-04-08 14:42:52,486] INFO Created log for partition __consumer_offsets-12 in /home/yash/kafka-logs/log2/__consumer_offsets-12 with properties {cleanup.policy=compact, compression.type="producer", segment.bytes=104857600} (kafka.log.LogManager)
+[2023-04-08 14:42:52,487] INFO [Partition __consumer_offsets-12 broker=1] No checkpointed highwatermark is found for partition __consumer_offsets-12 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,487] INFO [Partition __consumer_offsets-12 broker=1] Log loaded for partition __consumer_offsets-12 with initial high watermark 0 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,521] INFO [LogLoader partition=__consumer_offsets-33, dir=/home/yash/kafka-logs/log2] Loading producer state till offset 0 with message format version 2 (kafka.log.UnifiedLog$)
+[2023-04-08 14:42:52,524] INFO Created log for partition __consumer_offsets-33 in /home/yash/kafka-logs/log2/__consumer_offsets-33 with properties {cleanup.policy=compact, compression.type="producer", segment.bytes=104857600} (kafka.log.LogManager)
+[2023-04-08 14:42:52,528] INFO [Partition __consumer_offsets-33 broker=1] No checkpointed highwatermark is found for partition __consumer_offsets-33 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,528] INFO [Partition __consumer_offsets-33 broker=1] Log loaded for partition __consumer_offsets-33 with initial high watermark 0 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,565] INFO [LogLoader partition=__consumer_offsets-48, dir=/home/yash/kafka-logs/log2] Loading producer state till offset 0 with message format version 2 (kafka.log.UnifiedLog$)
+[2023-04-08 14:42:52,572] INFO Created log for partition __consumer_offsets-48 in /home/yash/kafka-logs/log2/__consumer_offsets-48 with properties {cleanup.policy=compact, compression.type="producer", segment.bytes=104857600} (kafka.log.LogManager)
+[2023-04-08 14:42:52,580] INFO [Partition __consumer_offsets-48 broker=1] No checkpointed highwatermark is found for partition __consumer_offsets-48 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,581] INFO [Partition __consumer_offsets-48 broker=1] Log loaded for partition __consumer_offsets-48 with initial high watermark 0 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,615] INFO [LogLoader partition=__consumer_offsets-21, dir=/home/yash/kafka-logs/log2] Loading producer state till offset 0 with message format version 2 (kafka.log.UnifiedLog$)
+[2023-04-08 14:42:52,621] INFO Created log for partition __consumer_offsets-21 in /home/yash/kafka-logs/log2/__consumer_offsets-21 with properties {cleanup.policy=compact, compression.type="producer", segment.bytes=104857600} (kafka.log.LogManager)
+[2023-04-08 14:42:52,622] INFO [Partition __consumer_offsets-21 broker=1] No checkpointed highwatermark is found for partition __consumer_offsets-21 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,622] INFO [Partition __consumer_offsets-21 broker=1] Log loaded for partition __consumer_offsets-21 with initial high watermark 0 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,672] INFO [LogLoader partition=__consumer_offsets-36, dir=/home/yash/kafka-logs/log2] Loading producer state till offset 0 with message format version 2 (kafka.log.UnifiedLog$)
+[2023-04-08 14:42:52,679] INFO Created log for partition __consumer_offsets-36 in /home/yash/kafka-logs/log2/__consumer_offsets-36 with properties {cleanup.policy=compact, compression.type="producer", segment.bytes=104857600} (kafka.log.LogManager)
+[2023-04-08 14:42:52,685] INFO [Partition __consumer_offsets-36 broker=1] No checkpointed highwatermark is found for partition __consumer_offsets-36 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,686] INFO [Partition __consumer_offsets-36 broker=1] Log loaded for partition __consumer_offsets-36 with initial high watermark 0 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,748] INFO [LogLoader partition=__consumer_offsets-6, dir=/home/yash/kafka-logs/log2] Loading producer state till offset 0 with message format version 2 (kafka.log.UnifiedLog$)
+[2023-04-08 14:42:52,754] INFO Created log for partition __consumer_offsets-6 in /home/yash/kafka-logs/log2/__consumer_offsets-6 with properties {cleanup.policy=compact, compression.type="producer", segment.bytes=104857600} (kafka.log.LogManager)
+[2023-04-08 14:42:52,754] INFO [Partition __consumer_offsets-6 broker=1] No checkpointed highwatermark is found for partition __consumer_offsets-6 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,756] INFO [Partition __consumer_offsets-6 broker=1] Log loaded for partition __consumer_offsets-6 with initial high watermark 0 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,807] INFO [LogLoader partition=__consumer_offsets-45, dir=/home/yash/kafka-logs/log2] Loading producer state till offset 0 with message format version 2 (kafka.log.UnifiedLog$)
+[2023-04-08 14:42:52,810] INFO Created log for partition __consumer_offsets-45 in /home/yash/kafka-logs/log2/__consumer_offsets-45 with properties {cleanup.policy=compact, compression.type="producer", segment.bytes=104857600} (kafka.log.LogManager)
+[2023-04-08 14:42:52,811] INFO [Partition __consumer_offsets-45 broker=1] No checkpointed highwatermark is found for partition __consumer_offsets-45 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,811] INFO [Partition __consumer_offsets-45 broker=1] Log loaded for partition __consumer_offsets-45 with initial high watermark 0 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,875] INFO [LogLoader partition=__consumer_offsets-15, dir=/home/yash/kafka-logs/log2] Loading producer state till offset 0 with message format version 2 (kafka.log.UnifiedLog$)
+[2023-04-08 14:42:52,885] INFO Created log for partition __consumer_offsets-15 in /home/yash/kafka-logs/log2/__consumer_offsets-15 with properties {cleanup.policy=compact, compression.type="producer", segment.bytes=104857600} (kafka.log.LogManager)
+[2023-04-08 14:42:52,899] INFO [Partition __consumer_offsets-15 broker=1] No checkpointed highwatermark is found for partition __consumer_offsets-15 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,909] INFO [Partition __consumer_offsets-15 broker=1] Log loaded for partition __consumer_offsets-15 with initial high watermark 0 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,944] INFO [LogLoader partition=__consumer_offsets-30, dir=/home/yash/kafka-logs/log2] Loading producer state till offset 0 with message format version 2 (kafka.log.UnifiedLog$)
+[2023-04-08 14:42:52,945] INFO Created log for partition __consumer_offsets-30 in /home/yash/kafka-logs/log2/__consumer_offsets-30 with properties {cleanup.policy=compact, compression.type="producer", segment.bytes=104857600} (kafka.log.LogManager)
+[2023-04-08 14:42:52,946] INFO [Partition __consumer_offsets-30 broker=1] No checkpointed highwatermark is found for partition __consumer_offsets-30 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,946] INFO [Partition __consumer_offsets-30 broker=1] Log loaded for partition __consumer_offsets-30 with initial high watermark 0 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,986] INFO [LogLoader partition=__consumer_offsets-0, dir=/home/yash/kafka-logs/log2] Loading producer state till offset 0 with message format version 2 (kafka.log.UnifiedLog$)
+[2023-04-08 14:42:52,988] INFO Created log for partition __consumer_offsets-0 in /home/yash/kafka-logs/log2/__consumer_offsets-0 with properties {cleanup.policy=compact, compression.type="producer", segment.bytes=104857600} (kafka.log.LogManager)
+[2023-04-08 14:42:52,988] INFO [Partition __consumer_offsets-0 broker=1] No checkpointed highwatermark is found for partition __consumer_offsets-0 (kafka.cluster.Partition)
+[2023-04-08 14:42:52,988] INFO [Partition __consumer_offsets-0 broker=1] Log loaded for partition __consumer_offsets-0 with initial high watermark 0 (kafka.cluster.Partition)
+[2023-04-08 14:42:53,048] INFO [GroupCoordinator 1]: Elected as the group coordinator for partition 3 in epoch 0 (kafka.coordinator.group.GroupCoordinator)
+[2023-04-08 14:42:53,096] INFO [GroupMetadataManager brokerId=1] Scheduling loading of offsets and group metadata from __consumer_offsets-3 for epoch 0 (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,112] INFO [GroupCoordinator 1]: Elected as the group coordinator for partition 18 in epoch 0 (kafka.coordinator.group.GroupCoordinator)
+[2023-04-08 14:42:53,112] INFO [GroupMetadataManager brokerId=1] Scheduling loading of offsets and group metadata from __consumer_offsets-18 for epoch 0 (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,112] INFO [GroupCoordinator 1]: Elected as the group coordinator for partition 39 in epoch 0 (kafka.coordinator.group.GroupCoordinator)
+[2023-04-08 14:42:53,112] INFO [GroupMetadataManager brokerId=1] Scheduling loading of offsets and group metadata from __consumer_offsets-39 for epoch 0 (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,112] INFO [GroupCoordinator 1]: Elected as the group coordinator for partition 9 in epoch 0 (kafka.coordinator.group.GroupCoordinator)
+[2023-04-08 14:42:53,112] INFO [GroupMetadataManager brokerId=1] Scheduling loading of offsets and group metadata from __consumer_offsets-9 for epoch 0 (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,112] INFO [GroupCoordinator 1]: Elected as the group coordinator for partition 24 in epoch 0 (kafka.coordinator.group.GroupCoordinator)
+[2023-04-08 14:42:53,112] INFO [GroupMetadataManager brokerId=1] Scheduling loading of offsets and group metadata from __consumer_offsets-24 for epoch 0 (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,113] INFO [GroupCoordinator 1]: Elected as the group coordinator for partition 27 in epoch 0 (kafka.coordinator.group.GroupCoordinator)
+[2023-04-08 14:42:53,113] INFO [GroupMetadataManager brokerId=1] Scheduling loading of offsets and group metadata from __consumer_offsets-27 for epoch 0 (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,124] INFO [GroupCoordinator 1]: Elected as the group coordinator for partition 42 in epoch 0 (kafka.coordinator.group.GroupCoordinator)
+[2023-04-08 14:42:53,124] INFO [GroupMetadataManager brokerId=1] Scheduling loading of offsets and group metadata from __consumer_offsets-42 for epoch 0 (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,126] INFO [GroupCoordinator 1]: Elected as the group coordinator for partition 12 in epoch 0 (kafka.coordinator.group.GroupCoordinator)
+[2023-04-08 14:42:53,130] INFO [GroupMetadataManager brokerId=1] Scheduling loading of offsets and group metadata from __consumer_offsets-12 for epoch 0 (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,132] INFO [GroupCoordinator 1]: Elected as the group coordinator for partition 33 in epoch 0 (kafka.coordinator.group.GroupCoordinator)
+[2023-04-08 14:42:53,134] INFO [GroupMetadataManager brokerId=1] Scheduling loading of offsets and group metadata from __consumer_offsets-33 for epoch 0 (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,135] INFO [GroupCoordinator 1]: Elected as the group coordinator for partition 48 in epoch 0 (kafka.coordinator.group.GroupCoordinator)
+[2023-04-08 14:42:53,135] INFO [GroupMetadataManager brokerId=1] Scheduling loading of offsets and group metadata from __consumer_offsets-48 for epoch 0 (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,136] INFO [GroupCoordinator 1]: Elected as the group coordinator for partition 21 in epoch 0 (kafka.coordinator.group.GroupCoordinator)
+[2023-04-08 14:42:53,136] INFO [GroupMetadataManager brokerId=1] Scheduling loading of offsets and group metadata from __consumer_offsets-21 for epoch 0 (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,136] INFO [GroupCoordinator 1]: Elected as the group coordinator for partition 36 in epoch 0 (kafka.coordinator.group.GroupCoordinator)
+[2023-04-08 14:42:53,136] INFO [GroupMetadataManager brokerId=1] Scheduling loading of offsets and group metadata from __consumer_offsets-36 for epoch 0 (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,137] INFO [GroupCoordinator 1]: Elected as the group coordinator for partition 6 in epoch 0 (kafka.coordinator.group.GroupCoordinator)
+[2023-04-08 14:42:53,137] INFO [GroupMetadataManager brokerId=1] Scheduling loading of offsets and group metadata from __consumer_offsets-6 for epoch 0 (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,138] INFO [GroupCoordinator 1]: Elected as the group coordinator for partition 45 in epoch 0 (kafka.coordinator.group.GroupCoordinator)
+[2023-04-08 14:42:53,138] INFO [GroupMetadataManager brokerId=1] Scheduling loading of offsets and group metadata from __consumer_offsets-45 for epoch 0 (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,138] INFO [GroupCoordinator 1]: Elected as the group coordinator for partition 15 in epoch 0 (kafka.coordinator.group.GroupCoordinator)
+[2023-04-08 14:42:53,138] INFO [GroupMetadataManager brokerId=1] Scheduling loading of offsets and group metadata from __consumer_offsets-15 for epoch 0 (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,138] INFO [GroupCoordinator 1]: Elected as the group coordinator for partition 30 in epoch 0 (kafka.coordinator.group.GroupCoordinator)
+[2023-04-08 14:42:53,138] INFO [GroupMetadataManager brokerId=1] Scheduling loading of offsets and group metadata from __consumer_offsets-30 for epoch 0 (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,138] INFO [GroupCoordinator 1]: Elected as the group coordinator for partition 0 in epoch 0 (kafka.coordinator.group.GroupCoordinator)
+[2023-04-08 14:42:53,138] INFO [GroupMetadataManager brokerId=1] Scheduling loading of offsets and group metadata from __consumer_offsets-0 for epoch 0 (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,192] INFO [GroupMetadataManager brokerId=1] Finished loading offsets and group metadata from __consumer_offsets-3 in 90 milliseconds for epoch 0, of which 14 milliseconds was spent in the scheduler. (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,218] INFO [GroupMetadataManager brokerId=1] Finished loading offsets and group metadata from __consumer_offsets-18 in 106 milliseconds for epoch 0, of which 82 milliseconds was spent in the scheduler. (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,220] INFO [GroupMetadataManager brokerId=1] Finished loading offsets and group metadata from __consumer_offsets-39 in 108 milliseconds for epoch 0, of which 108 milliseconds was spent in the scheduler. (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,221] INFO [GroupMetadataManager brokerId=1] Finished loading offsets and group metadata from __consumer_offsets-9 in 109 milliseconds for epoch 0, of which 108 milliseconds was spent in the scheduler. (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,224] INFO [GroupMetadataManager brokerId=1] Finished loading offsets and group metadata from __consumer_offsets-24 in 112 milliseconds for epoch 0, of which 111 milliseconds was spent in the scheduler. (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,231] INFO [GroupMetadataManager brokerId=1] Finished loading offsets and group metadata from __consumer_offsets-27 in 108 milliseconds for epoch 0, of which 102 milliseconds was spent in the scheduler. (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,232] INFO [GroupMetadataManager brokerId=1] Finished loading offsets and group metadata from __consumer_offsets-42 in 107 milliseconds for epoch 0, of which 106 milliseconds was spent in the scheduler. (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,232] INFO [GroupMetadataManager brokerId=1] Finished loading offsets and group metadata from __consumer_offsets-12 in 102 milliseconds for epoch 0, of which 102 milliseconds was spent in the scheduler. (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,232] INFO [GroupMetadataManager brokerId=1] Finished loading offsets and group metadata from __consumer_offsets-33 in 98 milliseconds for epoch 0, of which 98 milliseconds was spent in the scheduler. (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,232] INFO [GroupMetadataManager brokerId=1] Finished loading offsets and group metadata from __consumer_offsets-48 in 96 milliseconds for epoch 0, of which 96 milliseconds was spent in the scheduler. (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,232] INFO [GroupMetadataManager brokerId=1] Finished loading offsets and group metadata from __consumer_offsets-21 in 96 milliseconds for epoch 0, of which 96 milliseconds was spent in the scheduler. (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,233] INFO [GroupMetadataManager brokerId=1] Finished loading offsets and group metadata from __consumer_offsets-36 in 96 milliseconds for epoch 0, of which 95 milliseconds was spent in the scheduler. (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,238] INFO [GroupMetadataManager brokerId=1] Finished loading offsets and group metadata from __consumer_offsets-6 in 100 milliseconds for epoch 0, of which 96 milliseconds was spent in the scheduler. (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,238] INFO [GroupMetadataManager brokerId=1] Finished loading offsets and group metadata from __consumer_offsets-45 in 100 milliseconds for epoch 0, of which 100 milliseconds was spent in the scheduler. (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,239] INFO [GroupMetadataManager brokerId=1] Finished loading offsets and group metadata from __consumer_offsets-15 in 101 milliseconds for epoch 0, of which 101 milliseconds was spent in the scheduler. (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,240] INFO [GroupMetadataManager brokerId=1] Finished loading offsets and group metadata from __consumer_offsets-30 in 102 milliseconds for epoch 0, of which 102 milliseconds was spent in the scheduler. (kafka.coordinator.group.GroupMetadataManager)
+[2023-04-08 14:42:53,241] INFO [GroupMetadataManager brokerId=1] Finished loading offsets and group metadata from __consumer_offsets-0 in 103 milliseconds for epoch 0, of which 102 milliseconds was spent in the scheduler. (kafka.coordinator.group.GroupMetadataManager)
