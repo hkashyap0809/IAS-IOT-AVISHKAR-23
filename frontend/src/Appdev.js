@@ -15,11 +15,17 @@ function Appdev() {
       <h1 className="userType">Application Developer</h1>
       <div className="mainclass">
         <div>
-          <button className="btns " onClick={() => setTabIndex(1)}>
+          <button
+            className={tabIndex == 1 ? "btns selctedbtn" : "btns"}
+            onClick={() => setTabIndex(1)}
+          >
             Upload App
           </button>
           <br />
-          <button className="btns" onClick={() => setTabIndex(2)}>
+          <button
+            className={tabIndex == 2 ? "btns selctedbtn" : "btns"}
+            onClick={() => setTabIndex(2)}
+          >
             View all deployed apps
           </button>
         </div>
@@ -33,38 +39,17 @@ function Appdev() {
               <br />
               <input type="file" id="myfile" name="myfile" />
               <br />
-              <label className="fileupload"> Rules to upload app file</label>
+              <a className="samplepdf" href="#">
+                {" "}
+                Sample Contract Format
+              </a>
               <br />
-              <div className="download">
-                <a href="timetable.pdf" download>
-                  <b>download pdf </b>
-                </a>
-              </div>
+              <input type="button" className="submitbtn" value="Submit" />
             </div>
           )}
           {tabIndex === 2 && (
             <div className="center1">
               <div className="scrollarea">
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Placeat ea totam, aut tenetur et ratione ut nisi reprehenderit
-                  ducimus consequatur cupiditate recusandae iusto accusamus
-                  voluptas exercitationem commodi, quod amet laborum.
-                </p>
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Placeat ea totam, aut tenetur et ratione ut nisi reprehenderit
-                  ducimus consequatur cupiditate recusandae iusto accusamus
-                  voluptas exercitationem commodi, quod amet laborum.
-                </p>
-
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Placeat ea totam, aut tenetur et ratione ut nisi reprehenderit
-                  ducimus consequatur cupiditate recusandae iusto accusamus
-                  voluptas exercitationem commodi, quod amet laborum.
-                </p>
-
                 <p>
                   Lorem ipsum dolor sit amet consectetur adipisicing elit.
                   Placeat ea totam, aut tenetur et ratione ut nisi reprehenderit

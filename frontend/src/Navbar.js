@@ -13,7 +13,7 @@ function Navbar() {
           <nav>
             <ul>
               <li className="current-user">
-                <a style={{ color: "rgb(218, 193, 193)" }} href="#">
+                <a style={{ color: "black" }} href="#">
                   Hello, Good Morning
                 </a>
               </li>
