@@ -26,11 +26,17 @@ function Platforminit() {
       <h1 className="userType2">Platform Admin</h1>
       <div className="mainclass2">
         <div>
-          <button className="btn " onClick={() => setTabIndex(1)}>
+          <button
+            className={tabIndex == 1 ? "btns selctedbtn" : "btns"}
+            onClick={() => setTabIndex(1)}
+          >
             Status
           </button>
           <br />
-          <button className="btn" onClick={() => setTabIndex(2)}>
+          <button
+            className={tabIndex == 2 ? "btns selctedbtn" : "btns"}
+            onClick={() => setTabIndex(2)}
+          >
             List all deployed apps
           </button>
         </div>
@@ -64,26 +70,6 @@ function Platforminit() {
           {tabIndex === 2 && (
             <div className="center2">
               <div className="scrollarea2   ">
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Placeat ea totam, aut tenetur et ratione ut nisi reprehenderit
-                  ducimus consequatur cupiditate recusandae iusto accusamus
-                  voluptas exercitationem commodi, quod amet laborum.
-                </p>
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Placeat ea totam, aut tenetur et ratione ut nisi reprehenderit
-                  ducimus consequatur cupiditate recusandae iusto accusamus
-                  voluptas exercitationem commodi, quod amet laborum.
-                </p>
-
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Placeat ea totam, aut tenetur et ratione ut nisi reprehenderit
-                  ducimus consequatur cupiditate recusandae iusto accusamus
-                  voluptas exercitationem commodi, quod amet laborum.
-                </p>
-
                 <p>
                   Lorem ipsum dolor sit amet consectetur adipisicing elit.
                   Placeat ea totam, aut tenetur et ratione ut nisi reprehenderit

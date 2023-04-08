@@ -126,7 +126,7 @@ header .logo img {
 .logo a {
   text-decoration: none;
   font-size: 30px;
-  color: rgb(218, 193, 193);
+  color:black;
 }
 .current-user {
   text-decoration: none;
@@ -140,7 +140,7 @@ header .logo img {
   background: #f13c6c;
   border-radius: 15px; 
   font-size: 22px;
-  color: #e9f4fb;
+  color: black ;
   font-weight: 700;
   cursor: pointer;
   outline: none;

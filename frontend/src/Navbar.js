@@ -22,7 +22,7 @@ function Navbar() {
             <ul>
               <li className="current-user">
                 {userName ? (
-                  <a style={{ color: "rgb(218, 193, 193)" }} href="#">
+                  <a style={{ color: "black" }} href="#">
                     Hello {userName}
                   </a>
                 ) : (
