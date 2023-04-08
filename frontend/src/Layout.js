@@ -14,9 +14,9 @@ function Layout() {
         <Router>
           <Routes>
             <Route exact path="/" element={<App />} />
-            <Route exact path="/home" element={<Home />} />
+            {/* <Route exact path="/home" element={<Home />} /> */}
             <Route exact path="/signup" element={<SignUp />} />
-            <Route exact path="/dev" element={<Appdev />} />
+            <Route exact path="/home" element={<Appdev />} />
             <Route exact path="/nav" element={<Navbar />} />
             <Route exact path="/platform" element={<Platforminit />} />
           </Routes>

@@ -50,6 +50,7 @@ function App() {
       </nav>
       <div className="center">
         <h1>Login</h1>
+        <Loader spinning={isLoading}>
         <form method="post">
           <div className="txt_field">
             <input
@@ -78,7 +79,8 @@ function App() {
             Not a member? <Link to="/signup">Signup</Link>
           </div>
           </form>
-    </div>
+        </Loader>
+      </div>
     </div>
   );
   if (loggedIn) {

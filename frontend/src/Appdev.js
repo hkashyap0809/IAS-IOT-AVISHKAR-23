@@ -1,11 +1,40 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
+// import { useNavigate, Link } from "react-router-dom";
 import "./Appdev.css";
 import Navbar from "./Navbar";
 function Appdev() {
   // Set tabIndex to 1 by default to show the first tab on load
   const [tabIndex, setTabIndex] = useState(1);
+  const [inpFile, setFile] = useState();
+  const [validationMsg, setValidationMsg] = useState();
+  const handleChange = (e) => {
+    e.preventDefault();
+    setFile(e.target.files[0]);
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setValidationMsg("");
+    const formData = new FormData();
+    formData.append("inpFile", inpFile);
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    };
+    axios
+      .post("http://localhost:5000/api/upload/file/", formData, config)
+      .then((response) => {
+        console.log(response);
+        const { message } = response.data;
+        setValidationMsg(message);
+      })
+      .catch((err) => {
+        console.log(err);
+        const { data } = err.response.data;
+        setValidationMsg(data);
+      });
+  };
 
   return (
     <div>
@@ -29,9 +58,14 @@ function Appdev() {
               <label className="fileupload" htmlFor="myfile">
                 Upload app
               </label>
-              <sub>&nbsp;&nbsp;&nbsp;.txt, .zip</sub>
+              <sub>&nbsp;&nbsp;&nbsp;.zip</sub>
               <br />
-              <input type="file" id="myfile" name="myfile" />
+              <input
+                type="file"
+                id="inpFile"
+                name="myfile"
+                onChange={handleChange}
+              />
               <br />
               <label className="fileupload"> Rules to upload app file</label>
               <br />
@@ -40,6 +74,9 @@ function Appdev() {
                   <b>download pdf </b>
                 </a>
               </div>
+              <input type="submit" value="Submit" onClick={handleSubmit} />
+              <br />
+              <p>{validationMsg}</p>
             </div>
           )}
           {tabIndex === 2 && (
