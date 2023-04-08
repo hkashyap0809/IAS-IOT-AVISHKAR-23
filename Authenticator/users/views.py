@@ -1,7 +1,7 @@
 from flask import Response
 from flask_restful import Resource
 from flask import request, make_response
-from users.service import create_user, login_user, validate_json
+from users.service import create_user, login_user, validate_zip
 
 
 class SignUpApi(Resource):
@@ -36,5 +36,5 @@ class InputFileApi(Resource):
         :return: JSON object
         """
         inpFile = request.files['inpFile']
-        response, status = validate_json(request, inpFile)
+        response, status = validate_zip(request, inpFile)
         return make_response(response, status)

@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 
 import App from './App';
 import Home from './Home';
+import Loader from './Loader';
 import SignUp from './signup';
 
 function Layout() {
@@ -14,6 +15,7 @@ function Layout() {
                         <Route exact path="/" element={<App />} />
                         <Route exact path="/home" element={<Home />} />
                         <Route exact path="/signup" element={<SignUp />} />
+                        <Route exact path="/loader" element={<Loader />} />
                     </Routes>
                 </Router>
             </>
