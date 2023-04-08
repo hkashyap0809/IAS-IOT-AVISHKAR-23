@@ -1,0 +1,150 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+header {
+  background-color: #ffffff;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  padding: 10px 20px;
+}
+header .wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+
+  margin-right: 30px;
+  margin-left: 30px;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+header .logo img {
+  height: 50px;
+  display: block;
+  margin-left: 20px;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 100%;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  padding: 20px;
+  transition: left 0.3s;
+}
+
+.navbar.show {
+  left: 0 !important;
+}
+
+.hide-scroll {
+  overflow: hidden;
+}
+
+.navbar ul {
+  all: unset;
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+}
+.navbar ul a {
+  all: unset;
+  color: #444444;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 28px;
+}
+.navbar ul a:hover {
+  color: #111111;
+  text-decoration-thickness: 3px;
+}
+
+.close-nav {
+  text-align: right;
+  margin-bottom: 20px;
+}
+.close-nav button {
+  all: unset;
+  background: #f7f7f7;
+  font-size: 42px;
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  border-radius: 3px;
+  color: #444444;
+}
+.close-nav button:hover {
+  color: #222222;
+  background: white;
+}
+
+@media (min-width: 550px) {
+  .navbar {
+    all: unset;
+    display: block;
+  }
+  .navbar ul {
+    flex-direction: row;
+    gap: 20px;
+  }
+  .navbar ul a {
+    font-size: inherit;
+  }
+  .close-nav,
+  .menu-bar {
+    display: none;
+  }
+}
+
+.logo a {
+  text-decoration: none;
+  font-size: 30px;
+}
+.logout-btn {
+  width: 90px;
+  height: 30px;
+  border: 1px solid;
+  background: #f13c6c;
+  border-radius: 25px;
+  font-size: 18px;
+  color: #e9f4fb;
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
+}
+
+.logout-btn:hover {
+  border-color: #2691d9;
+  transition: 0.5s;
+}
+
+.current-user {
+  font-size: 22px;
+}
