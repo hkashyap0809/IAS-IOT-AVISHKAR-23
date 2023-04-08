@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import "./signup.css";
+import Navbar from "./Navbar";
 
 function SignUp() {
   const [username, setUsername] = useState("");
@@ -33,7 +34,9 @@ function SignUp() {
   };
   return (
     <div className="App">
-      <center></center>
+      <nav>
+        <Navbar />
+      </nav>
       <div className="center">
         <h1>SignUp</h1>
         <form method="post">

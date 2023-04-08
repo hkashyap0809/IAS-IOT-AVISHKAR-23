@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import Home from "./Home";
 import "./App.css";
+import Navbar from "./Navbar";
 
 function App() {
   const [email, setEmail] = useState("");
@@ -37,7 +38,9 @@ function App() {
   };
   const body = (
     <div className="App">
-      <center></center>
+      <nav>
+        <Navbar />
+      </nav>
       <div className="center">
         <h1>Login</h1>
         <form method="post">

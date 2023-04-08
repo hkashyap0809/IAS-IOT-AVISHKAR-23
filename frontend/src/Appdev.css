@@ -18,3 +18,53 @@ body{
     text-align: center;
     font-size: 50px;
 }
+.btns
+{
+  margin-left: 50px;
+  margin-top: 60px;
+  width: 300px;
+  height: 50px;
+  padding: 5px;
+  border-radius: 30px;
+  color: #666666;
+  background-color: rgb(180, 189, 219);
+  border-color: black;
+}
+.btns:hover{
+  transition: 0.5s;
+  background-color: rgb(216, 169, 126);
+}
+.center1
+{
+  margin-top: 60px;
+  margin-left: 120px;
+  width: 600px; 
+  height: 500px;
+  background-color: rgb(180, 189, 219);
+  font-size: 25px;
+  padding: 30px;
+  
+}
+.fileupload
+{
+  border-bottom: 2px solid black;
+}
+#myfile
+{
+  padding-top: 15px;
+  padding-bottom: 25px;
+}
+.download
+{
+  padding-top: 15px;
+}
+
+.scrollarea
+{
+  overflow: scroll;
+  height: 420px;
+}
+.mainclass
+{
+ display: flex;
+}
