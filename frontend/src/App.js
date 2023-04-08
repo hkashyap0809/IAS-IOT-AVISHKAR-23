@@ -4,6 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import Home from "./Home";
 import "./App.css";
 import Loader from './Loader';
+import Navbar from "./Navbar";
 
 function App() {
   const [email, setEmail] = useState("");
@@ -44,44 +45,40 @@ function App() {
   };
   const body = (
     <div className="App">
-      <center>
-        {" "}
-        <h1 className="head"> AVISHKAR </h1>{" "}
-      </center>
-          <div className="center">
-            <h1>Login</h1>
-            <Loader spinning={isLoading}>
-              <form method="post">
-                <div className="txt_field">
-                  <input
-                    type="text"
-                    name="email"
-                    value={email}
-                    onChange={handleChange}
-                    required
-                  />
-                  <span></span>
-                  <label>Email</label>
-                </div>
-                <div className="txt_field">
-                  <input
-                    type="password"
-                    name="password"
-                    value={password}
-                    onChange={handleChange}
-                    required
-                  />
-                  <span></span>
-                  <label>Password</label>
-                </div>
-                <div className="pass">Forgot Password?</div>
-                <input type="submit" value="Login" onClick={handleLogin} />
-                <div className="signup_link">
-                  Not a member? <Link to="/signup">Signup</Link>
-                </div>
-              </form>
-            </Loader>
+      <nav>
+        <Navbar />
+      </nav>
+      <div className="center">
+        <h1>Login</h1>
+        <form method="post">
+          <div className="txt_field">
+            <input
+              type="text"
+              name="email"
+              value={email}
+              onChange={handleChange}
+              required
+            />
+            <span></span>
+            <label>Email</label>
           </div>
+          <div className="txt_field">
+            <input
+              type="password"
+              name="password"
+              value={password}
+              onChange={handleChange}
+              required
+            />
+            <span></span>
+            <label>Password</label>
+          </div>
+          <input type="submit" value="Login" onClick={handleLogin} />
+          <div className="signup_link">
+            Not a member? <Link to="/signup">Signup</Link>
+          </div>
+          </form>
+    </div>
     </div>
   );
   if (loggedIn) {
