@@ -33,10 +33,7 @@ function SignUp() {
   };
   return (
     <div className="App">
-      <center>
-        {" "}
-        <h1 className="head"> AVISHKAR </h1>{" "}
-      </center>
+      <center></center>
       <div className="center">
         <h1>SignUp</h1>
         <form method="post">
@@ -73,6 +70,21 @@ function SignUp() {
             <span></span>
             <label>Password</label>
           </div>
+          <div>
+            {/* dropdown */}
+            <select className="opt" name="userType" id="usertype">
+              <option className="opt" value="End User">
+                End User
+              </option>
+              <option className="opt" value="App developer">
+                App developer
+              </option>
+              <option className="opt" value="Plateform init">
+                Platform admin
+              </option>
+            </select>
+          </div>
+          <br />
           <input type="submit" value="Signup" onClick={handleSubmit} />
           <div className="signup_link">
             Already registered? <Link to="/">Login</Link>

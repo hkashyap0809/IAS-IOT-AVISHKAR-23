@@ -18,9 +18,10 @@ body{
   left: 50%;
   transform: translate(-50%, -50%);
   width: 400px;
-  background: white;
+  background: rgb(231, 239, 244);
   border-radius: 10px;
   box-shadow: 10px 10px 15px rgba(0,0,0,0.05);
+
 }
 .head{
   margin-top: 40px;
@@ -34,6 +35,12 @@ body{
 .center form{
   padding: 0 40px;
   box-sizing: border-box;
+}
+.opt
+{
+  text-align: center;
+  font-size: 16px;
+  color: #666666;
 }
 form .txt_field{
   position: relative;

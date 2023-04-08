@@ -37,10 +37,7 @@ function App() {
   };
   const body = (
     <div className="App">
-      <center>
-        {" "}
-        <h1 className="head"> AVISHKAR </h1>{" "}
-      </center>
+      <center></center>
       <div className="center">
         <h1>Login</h1>
         <form method="post">
@@ -65,6 +62,20 @@ function App() {
             />
             <span></span>
             <label>Password</label>
+          </div>
+          <div>
+            {/* dropdown */}
+            <select className="opt" name="userType" id="usertype">
+              <option className="opt" value="End User">
+                End User
+              </option>
+              <option className="opt" value="App developer">
+                App developer
+              </option>
+              <option className="opt" value="Plateform init">
+                Platform admin
+              </option>
+            </select>
           </div>
           <div className="pass">Forgot Password?</div>
           <input type="submit" value="Login" onClick={handleLogin} />
