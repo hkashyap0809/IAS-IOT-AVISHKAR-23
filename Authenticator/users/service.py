@@ -98,31 +98,31 @@ def login_user(request, input_data):
 def id_generator(size=32, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
-def upload_app(filePath, appName):
-    connection_string = environ.get("AZURE_BLOB_CONN_STRING")
-    container_name = environ.get("STORAGE_CONTAINER")
-    blob_name = appName
+# def upload_app(filePath, appName):
+#     connection_string = environ.get("AZURE_BLOB_CONN_STRING")
+#     container_name = environ.get("STORAGE_CONTAINER")
+#     blob_name = appName
 
-    # Create a BlobServiceClient object
-    blob_service_client = BlobServiceClient.from_connection_string(connection_string)
+#     # Create a BlobServiceClient object
+#     blob_service_client = BlobServiceClient.from_connection_string(connection_string)
 
-    # Create a ContainerClient object
-    container_client = blob_service_client.get_container_client(container_name)
+#     # Create a ContainerClient object
+#     container_client = blob_service_client.get_container_client(container_name)
 
-    # Upload the file to Blob Storage
-    with open(filePath, "rb") as data:
-        try:
-            blob_client = container_client.upload_blob(name=blob_name, data=data)
-        except Exception as e:
-            print('Exception=' + str(e))
-            return generate_response(
-                data="Error occurred while uploading file",
-                message="Error occurred while uploading file",
-                status=HTTP_400_BAD_REQUEST
-            )
-        else:
-            # shutil.rmtree(filePath)
-            os.remove(filePath)
+#     # Upload the file to Blob Storage
+#     with open(filePath, "rb") as data:
+#         try:
+#             blob_client = container_client.upload_blob(name=blob_name, data=data)
+#         except Exception as e:
+#             print('Exception=' + str(e))
+#             return generate_response(
+#                 data="Error occurred while uploading file",
+#                 message="Error occurred while uploading file",
+#                 status=HTTP_400_BAD_REQUEST
+#             )
+#         else:
+#             # shutil.rmtree(filePath)
+#             os.remove(filePath)
 
 # def upload_app(folder_path):
 #     connection_string = environ.get("AZURE_BLOB_CONN_STRING")
@@ -142,22 +142,25 @@ def upload_app(filePath, appName):
 #             with open(os.path.join(root, file), "rb") as data:
 #                 blob_client.upload_blob(data)
 
-# def upload_app(target_directory):
-#     connection_string = environ.get("AZURE_BLOB_CONN_STRING")
-#     container_name = environ.get("STORAGE_CONTAINER")
-#     blob_service_client = BlobServiceClient.from_connection_string(connection_string)
-#     for folder in os.walk(target_directory):
-#         for file in folder[-1]:
-#             try:
-#                 blob_path = os.path.join(folder[0].replace(os.getcwd() + '\\', ''), file)
-#                 print(blob_path)
-#                 blob_obj = blob_service_client.get_blob_client(container=container_name, blob=blob_path)
-#                 with open(os.path.join(folder[0], file), mode='rb') as fileData:
-#                     blob_obj.upload_blob(fileData, overwrite=False)
-#             except ResourceExistsError:
-#                 print('Blob "{0}" already exists'.format(blob_path))
-#                 print()
-#                 continue
+def upload_app(target_directory):
+    # Target directory has the actual directory with the appName inside the static/uploads folder
+    connection_string = environ.get("AZURE_BLOB_CONN_STRING")
+    container_name = environ.get("STORAGE_CONTAINER")
+    blob_service_client = BlobServiceClient.from_connection_string(connection_string)
+    blob_service_client.get_container_client(container_name)
+    overwrite = False
+    for folder in os.walk(target_directory):
+        for file in folder[-1]:
+            try:
+                blob_path = os.path.join(folder[0].replace(uploadFolder + '/', ''), file)
+                blob_obj = blob_service_client.get_blob_client(container=container_name, blob=blob_path)
+
+                with open(os.path.join(folder[0], file), mode='rb') as fileData:
+                    blob_obj.upload_blob(fileData, overwrite = overwrite)
+            except ResourceExistsError:
+                print('Blob "{0}" already exists'.format(blob_path))
+                print()
+                continue
 
 def validate_zip(request, inpFile):
     if inpFile:
@@ -188,12 +191,13 @@ def validate_zip(request, inpFile):
                         status=HTTP_400_BAD_REQUEST
                     )
             appName = data["app_name"]
-        # with ZipFile(inpFile, 'r') as zip:
-        #     extractPath = path.join(uploadFolder)
-        #     zip.extractall(extractPath)
-    inpFile.save(uploadFolder + "/" + appName + ".zip")
+        with ZipFile(inpFile, 'r') as zip:
+            extractPath = path.join(uploadFolder)
+            zip.extractall(extractPath)
+    # inpFile.save(uploadFolder + "/" + appName + ".zip")
     uploadDir = os.path.join(uploadFolder, appName + '.zip')
-    upload_app(uploadDir, appName)
+    # upload_app(uploadDir, appName)
+    upload_app(uploadFolder + "/" + appName)
     return generate_response(
         message="JSON validated successfully", status=HTTP_200_OK
     )
