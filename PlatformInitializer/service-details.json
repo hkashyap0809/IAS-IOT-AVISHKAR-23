@@ -7,7 +7,7 @@
         "service_start_shell_file": "application_manager_start.sh",
         "host_port": "8080",
         "container_port": "80",
-        "host_src_path": "/Users/harshitkashyap/Desktop/ias-dev/IAS-IOT-AVISHKAR-23/ApplicationManager"
+        "host_src_path": "./ApplicationManager"
     },
     {
         "folder_name": "Authenticator",
@@ -17,7 +17,7 @@
         "service_start_shell_file": "authenticator_start.sh",
         "host_port": "8081",
         "container_port": "80",
-        "host_src_path": "/Users/harshitkashyap/Desktop/ias-dev/IAS-IOT-AVISHKAR-23/Authenticator"
+        "host_src_path": "./Authenticator"
     },
     {
         "folder_name": "DeploymentManager",
@@ -27,7 +27,7 @@
         "service_start_shell_file": "deployment_manager_start.sh",
         "host_port": "8082",
         "container_port": "80",
-        "host_src_path": "/Users/harshitkashyap/Desktop/ias-dev/IAS-IOT-AVISHKAR-23/DeploymentManager"
+        "host_src_path": "./DeploymentManager"
     },
     {
         "folder_name": "NodeManager",
@@ -37,7 +37,7 @@
         "service_start_shell_file": "node_manager_start.sh",
         "host_port": "8083",
         "container_port": "80",
-        "host_src_path": "/Users/harshitkashyap/Desktop/ias-dev/IAS-IOT-AVISHKAR-23/NodeManager"
+        "host_src_path": "./NodeManager"
     },
     {
         "folder_name": "SensorManager",
@@ -47,6 +47,6 @@
         "service_start_shell_file": "sensor_manager_start.sh",
         "host_port": "8084",
         "container_port": "80",
-        "host_src_path": "/Users/harshitkashyap/Desktop/ias-dev/IAS-IOT-AVISHKAR-23/SensorManager"
+        "host_src_path": "./SensorManager"
     }
 ]

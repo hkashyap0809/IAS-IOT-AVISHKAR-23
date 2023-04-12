@@ -1,5 +1,7 @@
 import os 
 import json
+def log_on_Terminal(message):
+    print(message)
 
 def create_file(path,fileName,docker_code):
     f=open(path+'/'+fileName,'w')
@@ -48,35 +50,43 @@ def get_VM_key_details():
 def schedule_and_upload_to_VM():
     services = get_services()
     vm_keys = get_VM_key_details()
-
     idx = 0
-
     for service in services:
         vm = vm_keys[idx]
         command = f"scp -r -i {vm['vm_key_path']}  {service['host_src_path']} {vm['vm_username']}@{vm['vm_ip']}:{vm['vm_service_path']}"
         
         ssh_connect_command = f"""
 ssh -i {vm['vm_key_path']} {vm['vm_username']}@{vm['vm_ip']} "cd Services ; cd {service['folder_name']}; sudo bash ./{service['service_start_shell_file']}"
-"""
+""" 
         os.system(command)
         os.system(ssh_connect_command)
         idx = (idx+1)%3
 
+def remove_and_create_services():
+    VM_KEYS = get_VM_key_details()
+    for VM in VM_KEYS:
+        ssh_remove_mkdir = f"""
+ssh -i {VM['vm_key_path']} {VM['vm_username']}@{VM['vm_ip']} "rm -r Services; mkdir Services"
+""" 
+        os.system(ssh_remove_mkdir)
 
 if __name__ == "__main__":
     print("Hi, this is PlatformInitializer")
     print("Initializing the platform")
 
-    # managers = ['ApplicationManager','Authenticator','DeploymentManager','NodeManager','SensorManager'] 
+    log_on_Terminal("Removing any old Services on VM and creating a new folder:Services")
+    remove_and_create_services()
+
+    managers = ['ApplicationManager','Authenticator','DeploymentManager','NodeManager','SensorManager'] 
     
     service_details = get_services()
-    # for service in service_details:
-    #     folder_name = service['folder_name']
-    #     service_name = service['service_name']
-    #     host_port = service['host_port']
-    #     container_port = service['container_port']
+    for service in service_details:
+        folder_name = service['folder_name']
+        service_name = service['service_name']
+        host_port = service['host_port']
+        container_port = service['container_port']
 
-    #     generate_docker_file_and_service_start_shell(folder_name,service_name,host_port,container_port)
+        generate_docker_file_and_service_start_shell(folder_name,service_name,host_port,container_port)
 
 
 
