@@ -20,7 +20,8 @@ body  {
         animation-iteration-count: infinite;
 
         -webkit-animation-direction: alternate;
-        animation-direction: alternate;              
+        animation-direction: alternate; 
+                       
 }
 
 @-webkit-keyframes slidein {
