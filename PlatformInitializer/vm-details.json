@@ -1,23 +1,23 @@
 [
     {
         "vm_name": "azure_vm_1",
-        "vm_ip": "13.81.42.121",
-        "vm_username": "vmadmin",
-        "vm_key_path": "/Users/harshitkashyap/Desktop/ias-dev/IAS-IOT-AVISHKAR-23/VM-keys/azure_VM1_key.pem",
-        "vm_service_path": "/home/vmadmin/Services"
+        "vm_ip": "20.21.102.175",
+        "vm_username": "azureuser",
+        "vm_key_path": "../VM-keys/VM1_key.cer",
+        "vm_service_path": "/home/azureuser/Services"
     },
     {
         "vm_name": "azure_vm_2",
-        "vm_ip": "40.115.28.100",
+        "vm_ip": "20.173.88.38",
         "vm_username": "azureuser",
-        "vm_key_path": "/Users/harshitkashyap/Desktop/ias-dev/IAS-IOT-AVISHKAR-23/VM-keys/azure_VM2_key.pem",
+        "vm_key_path": "../VM-keys/VM2_key.cer",
         "vm_service_path": "/home/azureuser/Services"
     },
     {
         "vm_name": "azure_vm_3",
-        "vm_ip": "51.144.255.78",
+        "vm_ip": "20.173.88.141",
         "vm_username": "azureuser",
-        "vm_key_path": "/Users/harshitkashyap/Desktop/ias-dev/IAS-IOT-AVISHKAR-23/VM-keys/azure_VM3_key.pem",
+        "vm_key_path": "../VM-keys/VM3_key.cer",
         "vm_service_path": "/home/azureuser/Services"
     }
 ]
