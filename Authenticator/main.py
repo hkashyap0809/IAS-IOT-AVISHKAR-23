@@ -7,7 +7,7 @@ app = Flask(__name__)
 @app.route("/home", methods=['GET'])
 @cross_origin()
 def home():
-    return "Hi, this is ApplicationManager"
+    return "Hi, this is Authenticator"
 
 
 if __name__ == "__main__":

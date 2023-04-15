@@ -1,19 +1,15 @@
 import random
-
 import flask
 import psycopg2
-from flask import Flask
 from flask_cors import cross_origin
-import json
 from azure.identity import ClientSecretCredential
 from azure.mgmt.compute import ComputeManagementClient
 from azure.mgmt.compute.models import InstanceViewTypes, InstanceViewStatus
 import psutil
 import datetime
-import time
 import pandas as pd
 import threading
-from flask import Flask, request
+from flask import Flask
 from kafka import KafkaProducer, KafkaConsumer
 import json
 
@@ -141,12 +137,12 @@ def get_node_health():
 
     # Convert the first row of the filtered dataframe to a JSON string
     res = json.loads(res.iloc[0].to_json())
-    res["port"] = random.randrange(6000, 7000, 10)
+    res["port"] = random.randrange(7000, 7500, 10)
 
     # Print the JSON string
     print(res)
 
-    return str(res)
+    return res
 
 
 def monitor_nodes():
@@ -193,6 +189,13 @@ def get_log():
 def delete_old_logs():
     delete_logs()
     return "Success"
+
+
+@app.route("/home", methods=['GET'])
+@cross_origin()
+def home():
+    return "Hi, this is NodeManager"
+
 
 # ---------------------------- KAFKA  ------------------------------
 
@@ -246,12 +249,15 @@ def consume_requests():
         request_data = message.value
 
         # M1
-        if request_data['msg'] == "give best node":
+        if "give best node" in request_data['msg']:
+            app_name = request_data['msg'].split("$")[1]
+            res = get_node_health()
+            res["app_name"] = app_name
             msg = {
                 'to_topic': 'DeploymentManager',
                 'from_topic': 'NodeManager',
                 'request_id': request_data['request_id'],
-                'msg': f"ansnode${get_node_health()}"
+                'msg': f"ans-node${str(res)}"
             }
             send(request_data, msg, requests_m1_c, requests_m1_p)
 
@@ -259,5 +265,5 @@ def consume_requests():
 if __name__ == "__main__":
     thread = threading.Thread(target=consume_requests)
     thread.start()
-    app.run(host='0.0.0.0', port=8200, debug=True)
+    app.run(host='0.0.0.0', port=8050, debug=True, use_reloader=False)
     thread.join()

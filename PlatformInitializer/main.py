@@ -8,13 +8,13 @@ def create_file(path, file_name, docker_code):
     f.close()
 
 
-def docker_file_raw_text(path, module_filename, dependencies):
-    dependencies = " ".join(dependencies)
+def docker_file_raw_text():
     docker_code = f"""
         FROM python:3.10
-        ADD {module_filename} .
-        RUN pip install {dependencies}
-        CMD python3 {module_filename}
+        ADD main.py .
+        ADD requirements.txt .
+        RUN pip3 install -r requirements.txt
+        CMD python3 main.py
         """
     return docker_code
 
@@ -32,7 +32,7 @@ def generate_docker_file_and_service_start_shell(path, service, host_port, conta
     image_file_name = service + "_img"
     service_start_file_name = service + "_start.sh"
 
-    docker_code = docker_file_raw_text(path, 'main.py', ['numpy', 'pandas'])
+    docker_code = docker_file_raw_text()
     create_file('./' + path, docker_file_name, docker_code)
     service_start_code = service_start_raw_text(docker_file_name, image_file_name, host_port, container_port)
     create_file('./' + path, service_start_file_name, service_start_code)
@@ -73,6 +73,4 @@ def schedule_and_upload_to_VM():
 
 if __name__ == "__main__":
     print("Initializing the platform.......")
-
-    service_details = get_services()
     schedule_and_upload_to_VM()
