@@ -5,7 +5,6 @@ import "./Navbar.css";
 function Navbar() {
   const userName = localStorage.getItem("userName");
   const navigate = useNavigate();
-  console.log(userName);
   const handleLogout = () => {
     localStorage.clear("userName");
     localStorage.clear("token");

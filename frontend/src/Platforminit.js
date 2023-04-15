@@ -1,13 +1,19 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Platforminit.css";
 import Navbar from "./Navbar";
 function Platforminit() {
   // Set tabIndex to 1 by default to show the first tab on load
   const [tabIndex, setTabIndex] = useState(1);
-
   const [isRunning, setIsRunning] = useState(false);
+  const [isLoggedIn, setLoggedIn] = useState(true);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      setLoggedIn(false);
+      navigate("/");
+    } else if (localStorage.getItem("role") === "dev") navigate("/home");
+  }, [isLoggedIn]);
 
   const handleStart = () => {
     setIsRunning(true);
@@ -27,14 +33,14 @@ function Platforminit() {
       <div className="mainclass2">
         <div>
           <button
-            className={tabIndex == 1 ? "btns selctedbtn" : "btns"}
+            className={tabIndex === 1 ? "btns selctedbtn" : "btns"}
             onClick={() => setTabIndex(1)}
           >
             Status
           </button>
           <br />
           <button
-            className={tabIndex == 2 ? "btns selctedbtn" : "btns"}
+            className={tabIndex === 2 ? "btns selctedbtn" : "btns"}
             onClick={() => setTabIndex(2)}
           >
             List all deployed apps

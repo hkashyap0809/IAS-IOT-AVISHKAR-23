@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import axios from "axios";
-// import { useNavigate, Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { axiosDevInstance } from "./axiosInstance";
 import "./Appdev.css";
 import Navbar from "./Navbar";
 function Appdev() {
@@ -8,6 +8,14 @@ function Appdev() {
   const [tabIndex, setTabIndex] = useState(1);
   const [inpFile, setFile] = useState();
   const [validationMsg, setValidationMsg] = useState();
+  const [isLoggedIn, setLoggedIn] = useState(true);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      setLoggedIn(false);
+      navigate("/");
+    } else if (localStorage.getItem("role") === "admin") navigate("/platform");
+  }, [isLoggedIn]);
   const handleChange = (e) => {
     e.preventDefault();
     setFile(e.target.files[0]);
@@ -16,14 +24,16 @@ function Appdev() {
     e.preventDefault();
     setValidationMsg("");
     const formData = new FormData();
+    const userName = localStorage.getItem("userName");
     formData.append("inpFile", inpFile);
+    formData.append("username", userName);
     const config = {
       headers: {
         "content-type": "multipart/form-data",
       },
     };
-    axios
-      .post("http://localhost:5000/api/upload/file/", formData, config)
+    axiosDevInstance
+      .post("/api/app/upload/", formData, config)
       .then((response) => {
         console.log(response);
         const { message } = response.data;
@@ -84,6 +94,7 @@ function Appdev() {
                 value="Submit"
                 onClick={handleSubmit}
               />
+              <p>{validationMsg}</p>
             </div>
           )}
           {tabIndex === 2 && (
