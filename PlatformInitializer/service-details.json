@@ -1,0 +1,52 @@
+[
+    {
+        "folder_name": "ApplicationManager",
+        "service_name": "application_manager",
+        "docker_file_name": "application_manager_docker_file",
+        "image_file_name": "application_manager_img",
+        "service_start_shell_file": "application_manager_start.sh",
+        "host_port": "8080",
+        "container_port": "80",
+        "host_src_path": "../ApplicationManager"
+    },
+    {
+        "folder_name": "Authenticator",
+        "service_name": "authenticator",
+        "docker_file_name": "authenticator_docker_file",
+        "image_file_name": "authenticator_img",
+        "service_start_shell_file": "authenticator_start.sh",
+        "host_port": "8081",
+        "container_port": "80",
+        "host_src_path": "../Authenticator"
+    },
+    {
+        "folder_name": "DeploymentManager",
+        "service_name": "deployment_manager",
+        "docker_file_name": "deployment_manager_docker_file",
+        "image_file_name": "deployment_manager_img",
+        "service_start_shell_file": "deployment_manager_start.sh",
+        "host_port": "8082",
+        "container_port": "80",
+        "host_src_path": "../DeploymentManager"
+    },
+    {
+        "folder_name": "NodeManager",
+        "service_name": "node_manager",
+        "docker_file_name": "node_manager_docker_file",
+        "image_file_name": "node_manager_img",
+        "service_start_shell_file": "node_manager_start.sh",
+        "host_port": "8083",
+        "container_port": "80",
+        "host_src_path": "../NodeManager"
+    },
+    {
+        "folder_name": "SensorManager",
+        "service_name": "sensor_manager",
+        "docker_file_name": "sensor_manager_docker_file",
+        "image_file_name": "sensor_manager_img",
+        "service_start_shell_file": "sensor_manager_start.sh",
+        "host_port": "8084",
+        "container_port": "80",
+        "host_src_path": "../SensorManager"
+    }
+]

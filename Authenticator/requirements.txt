@@ -1,3 +1,4 @@
+Flask==2.2.3
 python-dotenv
 Flask-RESTful
 PyJWT
@@ -5,3 +6,4 @@ Flask-Bcrypt
 marshmallow
 Flask-SQLAlchemy
 flask-cors
+azure-storage-blob
