@@ -18,6 +18,19 @@ from uuid import uuid1
 
 basedir = path.abspath(path.dirname(__file__))
 uploadFolder = path.join(basedir, "..", "static", "uploads")
+response = None
+
+def wait_for_message(from_topic, appName, uid):
+    global response
+    consumer = KafkaConsumer(from_topic, bootstrap_servers=[environ.get("KAFKA_SERVER")])
+    for msg in consumer:
+        received_message = json.loads(msg.value.decode('utf-8'))
+        print(received_message)
+        if f'done {appName} deploy' in received_message['msg'] and received_message['request_id'] == uid:
+            # Do something with received message
+            response = received_message
+            print("App deployed")
+            break
 
 def save_app(appName, userName):
     """
@@ -102,14 +115,10 @@ def validate_zip(request, inpFile, userName):
         shutil.rmtree(uploadFolder + "/" + appName)
         save_app(appName, userName)
 
-
-        # Add code to send msg to a kafka topic "DM"
-        # And wait to receive a msg using threading
         to_topic, from_topic = 'DeploymentManager', 'first_topic'
-        # Send message to Kafka topic "DM"
         producer = KafkaProducer(bootstrap_servers=[environ.get("KAFKA_SERVER")])
-        # message = {'appName': appName, 'userName': userName}
         uid = str(uuid1())
+        print("UID is: ", uid)
         message = {
             'to_topic': to_topic,
             'from_topic': from_topic,
@@ -118,20 +127,25 @@ def validate_zip(request, inpFile, userName):
         }
         producer.send(to_topic, json.dumps(message).encode('utf-8'))
 
-        # Wait to receive message using threading
-        def wait_for_message():
-            consumer = KafkaConsumer(to_topic, bootstrap_servers=[environ.get("KAFKA_SERVER")])
-            for msg in consumer:
-                received_message = json.loads(msg.value.decode('utf-8'))
-                if f'done ${appName}' in received_message['msg'] and received_message['request_id'] == uid:
-                    # Do something with received message
-                    print("App deployed")
-                    break
-        t = threading.Thread(target=wait_for_message)
+        # def wait_for_message():
+        #     global response
+        #     consumer = KafkaConsumer(from_topic, bootstrap_servers=[environ.get("KAFKA_SERVER")])
+        #     for msg in consumer:
+        #         received_message = json.loads(msg.value.decode('utf-8'))
+        #         print(received_message)
+        #         if f'done {appName} deploy' in received_message['msg'] and received_message['request_id'] == uid:
+        #             # Do something with received message
+        #             response = received_message
+        #             print("App deployed")
+        #             break
+        t = threading.Thread(target=wait_for_message, args=(from_topic, appName, uid))
         t.start()
+        t.join()
 
     return generate_response(
-        message="JSON validated successfully", status=HTTP_200_OK
+        data=response,
+        message="JSON validated successfully and app deployed",
+        status=HTTP_200_OK
     )
 
 def get_apps(request, username):
