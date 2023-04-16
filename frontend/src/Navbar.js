@@ -3,6 +3,13 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import "./Navbar.css";
 function Navbar() {
+  const userName = localStorage.getItem("userName");
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.clear("userName");
+    localStorage.clear("token");
+    navigate("/");
+  };
   return (
     <header>
       <div className="wrapper">
@@ -13,14 +20,26 @@ function Navbar() {
           <nav>
             <ul>
               <li className="current-user">
-                <a style={{ color: "black" }} href="#">
-                  Hello, Good Morning
-                </a>
+                {userName ? (
+                  <a style={{ color: "black" }} href="#">
+                    Hello {userName}
+                  </a>
+                ) : (
+                  ""
+                )}
               </li>
               <li>
-                <button type="submit" className="logout-btn">
-                  Logout
-                </button>
+                {userName ? (
+                  <button
+                    type="submit"
+                    className="logout-btn"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
+                ) : (
+                  ""
+                )}
               </li>
             </ul>
           </nav>

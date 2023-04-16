@@ -6,5 +6,9 @@ Authenticator/users/__pycache__
 Authenticator/static/uploads/*
 Authenticator/utils/__pycache__
 
+ApplicationManager/__pycache____
+ApplicationManager/apps/__pycache____
+ApplicationManager/utils/__pycache____
+
 frontend/node_modules
 frontend/package-lock.json

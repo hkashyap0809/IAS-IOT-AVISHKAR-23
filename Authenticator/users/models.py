@@ -15,6 +15,7 @@ class User(db.Model):
     email = db.Column(db.String(80), index=True, unique=True, nullable=False)
     password = db.Column(db.String(500), nullable=False)
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=True)
+    role = db.Column(db.String(10), nullable=False)
 
     def __init__(self, **kwargs):
         """
@@ -24,6 +25,7 @@ class User(db.Model):
         self.username = kwargs.get("username")
         self.email = kwargs.get("email")
         self.password = kwargs.get("password")
+        self.role = kwargs.get("role")
 
     def __repr__(self):
         """

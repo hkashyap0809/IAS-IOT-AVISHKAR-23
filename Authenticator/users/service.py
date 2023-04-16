@@ -14,6 +14,12 @@ from utils.http_code import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from werkzeug.utils import secure_filename
 import json, random, string
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
+from zipfile import ZipFile, ZIP_DEFLATED
+import shutil, os
+from azure.core.exceptions import ResourceExistsError
+
+basedir = path.abspath(path.dirname(__file__))
+uploadFolder = path.join(basedir, "..", "static", "uploads")
 
 def create_user(request, input_data):
     """
@@ -65,7 +71,6 @@ def login_user(request, input_data):
         return generate_response(message=errors)
 
     get_user = User.query.filter_by(email=input_data.get("email")).first()
-    print(get_user.username)
     if get_user is None:
         return generate_response(message="User not found", status=HTTP_400_BAD_REQUEST)
     if get_user.check_password(input_data.get("password")):
@@ -80,6 +85,7 @@ def login_user(request, input_data):
         )
         input_data["token"] = token
         input_data["username"] = get_user.username
+        input_data["role"] = get_user.role
         del input_data["password"]
         return generate_response(
             data=input_data, message="User login successfully", status=HTTP_201_CREATED
@@ -92,75 +98,62 @@ def login_user(request, input_data):
 def id_generator(size=32, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
-def upload_file(inpFile, fileName, filePath):
-    connect_str = environ.get('AZURE_CONN_STRING')
-    fileStorageContainer = environ.get('STORAGE_CONTAINER')
+# def upload_app(target_directory):
+#     # Target directory has the actual directory with the appName inside the static/uploads folder
+#     connection_string = environ.get("AZURE_BLOB_CONN_STRING")
+#     container_name = environ.get("STORAGE_CONTAINER")
+#     blob_service_client = BlobServiceClient.from_connection_string(connection_string)
+#     blob_service_client.get_container_client(container_name)
+#     overwrite = False
+#     for folder in os.walk(target_directory):
+#         for file in folder[-1]:
+#             try:
+#                 blob_path = os.path.join(folder[0].replace(uploadFolder + '/', ''), file)
+#                 blob_obj = blob_service_client.get_blob_client(container=container_name, blob=blob_path)
 
-    # Create a BlobServiceClient object using the connection string
-    blob_service_client = BlobServiceClient.from_connection_string(connect_str)
-    fileextension = fileName.rsplit('.',1)[1]
-    Randomfilename = id_generator()
-    fileName = Randomfilename + '.' + fileextension
-    blob_name = fileName
-    print(blob_name)
-    print(filePath)
-    # Create a ContainerClient object for the container
-    container_client = blob_service_client.get_container_client(fileStorageContainer)
+#                 with open(os.path.join(folder[0], file), mode='rb') as fileData:
+#                     blob_obj.upload_blob(fileData, overwrite = overwrite)
+#             except ResourceExistsError:
+#                 print('Blob "{0}" already exists'.format(blob_path))
+#                 print()
+#                 continue
 
-    # Upload the file to the container
-    with open(filePath, "rb") as data:
-        try:
-            container_client.upload_blob(blob_name, data)
-        except Exception as e:
-            print(e)
-
-
-
-    # fileStorageAcc = environ.get('STORAGE_ACC')
-    # fileStorageKey = environ.get('STORAGE_KEY')
-    # fileextension = fileName.rsplit('.',1)[1]
-    # Randomfilename = id_generator()
-    # fileName = Randomfilename + '.' + fileextension
-    # blob_service = BlobServiceClient(account_name=fileStorageAcc, account_key=fileStorageKey)
-    # try:
-    #     blob_service.create_blob_from_stream(fileStorageContainer, fileName, inpFile)
-    # except Exception:
-    #     print('Exception=' + Exception)
-    #     pass
-
-
-def validate_json(request, inpFile):
-    if inpFile:
-        fileName = secure_filename(inpFile.filename)
-        basedir = path.abspath(path.dirname(__file__))
-        filePath = path.join(basedir, "..", "static", "uploads", fileName)
-        inpFile.save(filePath)
-        with open(filePath) as file:
-            try:
-                data = json.load(file)
-            except Exception as e:
-                return generate_response(
-                    data=str(e),
-                    message=str(e),
-                    status=HTTP_400_BAD_REQUEST
-                )
-            else:
-                expected_keys = ["app_name", "controller_instance_count", "controller_instance_info"]
-                keys = data.keys()
-                if len(keys) != len(expected_keys):
-                    return generate_response(
-                        data="Expected %d keys but got %d" % (len(expected_keys), len(keys)),
-                        message="Expected %d keys but got %d" % (len(expected_keys), len(keys)),
-                        status=HTTP_400_BAD_REQUEST
-                    )
-                for k in expected_keys:
-                    if k not in keys:
-                        return generate_response(
-                            data="Missing key: %s" % (k),
-                            message="Missing key: %s" % (k),
-                            status=HTTP_400_BAD_REQUEST
-                        )
-    # upload_file(inpFile, fileName, filePath)
-    return generate_response(
-        message="Validation successful", status=HTTP_200_OK
-    )
+# def validate_zip(request, inpFile):
+#     if inpFile:
+#         splittedFileName = (inpFile.filename).split('.')
+#         fileName, extension = splittedFileName[0], splittedFileName[1]
+#         if extension != 'zip':
+#             return generate_response(
+#                 data="Only zip files allowed to be uploaded",
+#                 message="Only zip files allowed to be uploaded",
+#                 status=HTTP_400_BAD_REQUEST
+#             )
+#         with ZipFile(inpFile, 'r') as zip:
+#             data = zip.read(fileName + '/app.json')
+#             data = json.loads(data.decode())
+#             expected_keys = ["app_name", "controller_instance_count", "controller_instance_info"]
+#             keys = data.keys()
+#             if len(keys) != len(expected_keys):
+#                 return generate_response(
+#                     data="Expected %d keys but got %d" % (len(expected_keys), len(keys)),
+#                     message="Expected %d keys but got %d" % (len(expected_keys), len(keys)),
+#                     status=HTTP_400_BAD_REQUEST
+#                 )
+#             for k in expected_keys:
+#                 if k not in keys:
+#                     return generate_response(
+#                         data="Missing key: %s" % (k),
+#                         message="Missing key: %s" % (k),
+#                         status=HTTP_400_BAD_REQUEST
+#                     )
+#             appName = data["app_name"]
+#         with ZipFile(inpFile, 'r') as zip:
+#             extractPath = path.join(uploadFolder)
+#             zip.extractall(extractPath)
+#     # inpFile.save(uploadFolder + "/" + appName + ".zip")
+#     uploadDir = os.path.join(uploadFolder, appName + '.zip')
+#     # upload_app(uploadDir, appName)
+#     upload_app(uploadFolder + "/" + appName)
+#     return generate_response(
+#         message="JSON validated successfully", status=HTTP_200_OK
+#     )
