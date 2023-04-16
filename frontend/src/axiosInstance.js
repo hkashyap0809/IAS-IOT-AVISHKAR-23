@@ -4,6 +4,6 @@ export const axiosAuthInstance = axios.create({
   baseURL: "http://localhost:5000",
 });
 
-export const axiosDevInstance = axios.create({
+export const axiosAppInstance = axios.create({
   baseURL: "http://localhost:5001",
 });
