@@ -21,6 +21,7 @@ python3 PlatformInitializer/main.py
 
 ### Install the important dependencies
 pip install pymongo
+pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
 pip install requests
 pip install flask
 pip install kafka-python
@@ -36,6 +37,20 @@ python3 ONEM2M/data_generator.py
 python3 SensorManager/dataSend.py
 ###### start the flask application
 python3 SensorManager/main.py 
+
+
+#### Kafka commands
+
+list kafka topics
+kafka-topics.sh --bootstrap-server 20.196.205.46:9092 --list
+
+create a topic
+kafka-topics.sh --bootstrap-server 20.196.205.46:9092 --topic first_topic --create --partitions 3 --replication-factor 1
+
+delete a topic
+bin/kafka-topics.sh --bootstrap-server 20.196.205.46:9092 --delete --topic topic_name
+
+bin/kafka-topics.sh --bootstrap-server 20.196.205.46:9092 --delete --topic topic_name
 
 
 #### Sensor APIs
