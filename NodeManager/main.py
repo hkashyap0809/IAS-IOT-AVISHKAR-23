@@ -13,6 +13,8 @@ from flask import Flask
 from kafka import KafkaProducer, KafkaConsumer
 import json
 
+from nodemanager_logger import logger
+
 
 def sql_query_runner(sql_query):
     conn_json = {
@@ -55,11 +57,14 @@ class Node:
         self.client_secret = client_secret
         self.tenant_id = tenant_id
 
-        credential = ClientSecretCredential(self.tenant_id, self.client_id, self.client_secret)
-        self.compute_client = ComputeManagementClient(credential, self.subscription_id)
+        credential = ClientSecretCredential(
+            self.tenant_id, self.client_id, self.client_secret)
+        self.compute_client = ComputeManagementClient(
+            credential, self.subscription_id)
 
     def get_health(self):
-        vm = self.compute_client.virtual_machines.get(self.resource_group_name, self.vm_name)
+        vm = self.compute_client.virtual_machines.get(
+            self.resource_group_name, self.vm_name)
 
         # Get the CPU usage of the VM using psutil
         cpu_usage_percent = psutil.cpu_percent()
@@ -72,13 +77,15 @@ class Node:
         for disk in vm.storage_profile.data_disks:
             disk_instance_view = self.compute_client.disks.get(self.resource_group_name, disk.name,
                                                                expand=InstanceViewTypes.instance_view).instance_view
-            disk_status = [status for status in disk_instance_view.statuses if status.code.startswith('PowerState/')][0]
+            disk_status = [status for status in disk_instance_view.statuses if status.code.startswith(
+                'PowerState/')][0]
             if disk_status.display_status == 'Attached':
                 for volume in disk_instance_view.volumes:
                     if volume.status == InstanceViewStatus('Attached'):
                         disk_usage_percent += volume.disk_usage_percent
 
-        health = ((100 - cpu_usage_percent) + (100 - memory_usage_percent) + (100 - disk_usage_percent)) / 3
+        health = ((100 - cpu_usage_percent) +
+                  (100 - memory_usage_percent) + (100 - disk_usage_percent)) / 3
 
         return cpu_usage_percent, memory_usage_percent, disk_usage_percent, health
 
@@ -94,10 +101,13 @@ class Node:
         threshold = 90
         if cpu_usage > threshold:
             print("Alert: CPU Usage above threshold")
+            logger.warning("CPU Usage above threshold.")
         elif memory_usage > threshold:
             print("Alert: Memory Usage above threshold")
+            logger.warning("Memory Usage above threshold.")
         elif disk_usage > threshold:
             print("Alert: Disk Usage above threshold")
+            logger.warning("Disk Usage above threshold.")
 
 
 def get_all_nodes():
@@ -129,10 +139,14 @@ def get_node_health():
         print(f"Memory usage: {memory_usage}%")
         print(f"Disk usage: {disk_usage}%\n")
         print(f"Node {vm_names[i]} Health: {health}%\n")
+        logger.info(
+            f"Resource Utilization for Node {vm_names[i]} :\n    CPU usage: {cpu_usage}%\n    Memory usage: {memory_usage}%\n    Disk usage: {disk_usage}%\n    Node {vm_names[i]} Health: {health}%")
 
     max_health_node = max(nodes_health, key=lambda x: nodes_health[x])
-    print(f"Node {max_health_node} has maximum health of {nodes_health[max_health_node]}%")
-
+    print(
+        f"Node {max_health_node} has maximum health of {nodes_health[max_health_node]}%")
+    logger.info(
+        f"Node {max_health_node} has maximum health of {nodes_health[max_health_node]}%")
     res = vm_info[vm_info['node_name'] == max_health_node]
 
     # Convert the first row of the filtered dataframe to a JSON string
@@ -205,7 +219,8 @@ producer = KafkaProducer(
     bootstrap_servers=['20.196.205.46:9092'],
     value_serializer=lambda v: json.dumps(v).encode('utf-8'),
     retries=5,  # Number of times to retry a message in case of failure
-    max_in_flight_requests_per_connection=1,  # Ensure only one request is in-flight
+    # Ensure only one request is in-flight
+    max_in_flight_requests_per_connection=1,
     acks='all',  # Wait for all replicas to acknowledge the message
 )
 
@@ -222,17 +237,19 @@ def send(request_data, msg, c_list, p_list):
     lock.acquire()
     if request_id in c_list:
         print("Duplicate message!")
+        logger.warning(f"${request_id} has already completed.")
         lock.release()
         return
     c_list.append(request_id)
     lock.release()
 
     print(f"Request : {request_data}")
-
+    logger.info(f"Request for : {request_data}")
     # Check if request ID has already been processed before sending message
     lock.acquire()
     if request_id in p_list:
         print("Duplicate message!")
+        logger.warning(f"${request_id} is already present in pending list.")
         lock.release()
         return
     p_list.append(request_id)
@@ -260,9 +277,11 @@ def consume_requests():
                 'msg': f"ans-node${str(res)}"
             }
             send(request_data, msg, requests_m1_c, requests_m1_p)
+            logger.info(f"message - ${msg['msg']} sent to deployment manager")
 
 
 if __name__ == "__main__":
+    logger.info("Starting node manager...")
     thread = threading.Thread(target=consume_requests)
     thread.start()
     app.run(host='0.0.0.0', port=8050, debug=True, use_reloader=False)

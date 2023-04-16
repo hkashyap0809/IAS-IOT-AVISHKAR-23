@@ -5,7 +5,7 @@ from kafka import KafkaProducer, KafkaConsumer
 import json
 from azure.storage.blob import BlobServiceClient
 import os
-
+from deployment_logger import logger
 app = Flask(__name__)
 
 # Configure Kafka producer and consumer
@@ -13,7 +13,8 @@ producer = KafkaProducer(
     bootstrap_servers=['20.196.205.46:9092'],
     value_serializer=lambda v: json.dumps(v).encode('utf-8'),
     retries=5,  # Number of times to retry a message in case of failure
-    max_in_flight_requests_per_connection=1,  # Ensure only one request is in-flight
+    # Ensure only one request is in-flight
+    max_in_flight_requests_per_connection=1,
     acks='all',  # Wait for all replicas to acknowledge the message
 )
 
@@ -34,11 +35,14 @@ def delete_local_file(app_name):
             if os.path.isfile(file_path):
                 os.remove(file_path)
                 print(f"{file_path} deleted successfully.")
+                logger.info(f"{file_path} deleted successfully.")
         except Exception as e:
             print(f"Error: {e}")
+            logger.error(f"Error: {e}")
 
     os.rmdir(app_name)
     print("####### Directory deleted #######")
+    logger.info(f"${app_name} directory deleted successfully.")
 
 
 def download_from_blob(app_name, folder_name):
@@ -46,10 +50,12 @@ def download_from_blob(app_name, folder_name):
     AZURE_BLOB_CONN_STRING = 'DefaultEndpointsProtocol=https;AccountName=iot3storage;AccountKey=u3yqnLbhzlY+AQLJspkYm679Ivav12oAtt0f7allcFReHvcZVbAdCL9nD6Xkb0Ls3MaxNfXIQ2p2+ASt23CK7w==;EndpointSuffix=core.windows.net'
 
     # Create the blob service client
-    blob_service_client = BlobServiceClient.from_connection_string(AZURE_BLOB_CONN_STRING)
+    blob_service_client = BlobServiceClient.from_connection_string(
+        AZURE_BLOB_CONN_STRING)
 
     # Get a reference to the container
-    container_client = blob_service_client.get_container_client(STORAGE_CONTAINER)
+    container_client = blob_service_client.get_container_client(
+        STORAGE_CONTAINER)
 
     # List all the blobs in the folder
     blob_list = container_client.list_blobs(name_starts_with=folder_name)
@@ -57,6 +63,7 @@ def download_from_blob(app_name, folder_name):
     # Loop through the blob list and print out the name of each blob
     os.mkdir(app_name)
     print("####### Directory made #######")
+    logger.info(f"${app_name} directory made.")
 
     for blob in blob_list:
         # Download the blob to a file
@@ -76,6 +83,7 @@ def download_from_blob(app_name, folder_name):
     # Copying the hard-coded shell file in our local app name folder
 
     print("########## Deployment code also copied ##########")
+    logger.info("Deployment code copied...")
 
 
 def deployInVM(service_start_shell_file, app_name, vm_ip, vm_username, vm_key_path, vm_service_path):
@@ -92,6 +100,7 @@ def deployInVM(service_start_shell_file, app_name, vm_ip, vm_username, vm_key_pa
 
     os.system(execute_command)
     print("Executed on VM")
+    logger.info("Successfully deployed on VM.")
 
 
 def create_file(path, file_name, docker_code):
@@ -127,7 +136,8 @@ def generate_docker_file_and_service_start_shell(path, service, host_port, conta
 
     docker_code = docker_file_raw_text('main.py')
     create_file('./' + path, docker_file_name, docker_code)
-    service_start_code = service_start_raw_text(docker_file_name, image_file_name, host_port, container_port)
+    service_start_code = service_start_raw_text(
+        docker_file_name, image_file_name, host_port, container_port)
     create_file('./' + path, service_start_file_name, service_start_code)
 
     return service_start_file_name
@@ -146,9 +156,11 @@ def deploy_app(vm_ip, vm_port, app_name):
 
     download_from_blob(app_name, folder_name)
 
-    service_start_file_name = generate_docker_file_and_service_start_shell(app_name, app_name, vm_port, 7700)
+    service_start_file_name = generate_docker_file_and_service_start_shell(
+        app_name, app_name, vm_port, 7700)
 
-    deployInVM(service_start_file_name, app_name, vm_ip, vm_username, vm_key_path, vm_service_path)
+    deployInVM(service_start_file_name, app_name, vm_ip,
+               vm_username, vm_key_path, vm_service_path)
 
     return "Deployment Manager has completed its job"
 
@@ -161,22 +173,24 @@ def send(request_data, msg, c_list, p_list):
     lock.acquire()
     if request_id in c_list:
         print("Duplicate message!")
+        logger.warning(f"${request_id} has already completed.")
         lock.release()
         return
     c_list.append(request_id)
     lock.release()
 
     print(f"Request : {request_data}")
+    logger.info(f"Request for : ${request_data}")
 
     # Check if request ID has already been processed before sending message
     lock.acquire()
     if request_id in p_list:
         print("Duplicate message!")
+        logger.warning(f"${request_id} is already present in pending list.")
         lock.release()
         return
     p_list.append(request_id)
     lock.release()
-
     producer.send(msg['to_topic'], msg)
 
 
@@ -197,17 +211,21 @@ def consume_requests():
                 'msg': f'give best node${app_name}'
             }
             send(request_data, msg, requests_m1_c, requests_m1_p)
+            logger.info(f"Message- ${msg['msg']}  sent to node manager")
 
         # M2 - message from node manager with ip and port
         if "ans-node" in request_data['msg']:
-            res = json.loads(request_data['msg'].split("$")[1].replace('\'', '"'))
+            res = json.loads(request_data['msg'].split("$")[
+                             1].replace('\'', '"'))
             ip_deploy = "20.21.102.175"
             port_deploy = res["port"]
             app_name = res["app_name"]
             print(ip_deploy, port_deploy, app_name)
-
+            logger.info(
+                f"Received Ip and Port from node manager is ${ip_deploy}, ${port_deploy} and app name is ${app_name}")
             # deploy the app
             deploy_app(ip_deploy, port_deploy, app_name)
+            logger.info("Deployment Manager has completed its job")
 
             msg = {
                 'to_topic': 'first_topic',
@@ -216,6 +234,7 @@ def consume_requests():
                 'msg': f'done {app_name} deploy - {ip_deploy}:{port_deploy}'
             }
             send(request_data, msg, requests_m2_c, requests_m2_p)
+            logger.info(f"Message- ${msg['msg']}  sent to application manager")
 
 
 @app.route("/home", methods=['GET'])
@@ -225,6 +244,7 @@ def home():
 
 
 if __name__ == "__main__":
+    logger.info("Starting deployment manager...")
     thread = threading.Thread(target=consume_requests)
     thread.start()
     app.run(host='0.0.0.0', port=8050, debug=True, use_reloader=False)
