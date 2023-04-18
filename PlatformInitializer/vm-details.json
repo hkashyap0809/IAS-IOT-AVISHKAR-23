@@ -1,7 +1,7 @@
 [
     {
         "vm_name": "azure_vm_1",
-        "vm_ip": "13.81.42.121",
+        "vm_ip": "20.21.102.175",
         "vm_username": "vmadmin",
         "vm_key_path": "/Users/harshitkashyap/Desktop/ias-dev/IAS-IOT-AVISHKAR-23/VM-keys/azure_VM1_key.pem",
         "vm_service_path": "/home/vmadmin/Services"
