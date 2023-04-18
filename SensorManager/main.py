@@ -1,6 +1,13 @@
+import sys
+import os
 from flask import Flask
 import json
-from kafka_consumer_utilities import *
+# Get the absolute path of the directory containing this script
+script_dir = os.path.dirname(os.path.abspath(__file__))
+# Set the current working directory to the parent directory of the script directory
+os.chdir(os.path.join(script_dir, '..'))
+print(os.getcwd())
+from kafka_consumer_utilities import get_latest_value, get_latest_n_values
 
 app = Flask(__name__)
 

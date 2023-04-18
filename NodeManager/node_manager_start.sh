@@ -1,3 +1,6 @@
 
-docker build -f node_manager_docker_file -t node_manager_img .
-docker container run -d -p 8080:8050 node_manager_img
+        docker stop node_manager_container
+        docker rm node_manager_container
+        docker build -f node_manager_docker_file -t node_manager_img .
+        docker container run -d --name node_manager_container -p 8040:8050 node_manager_img
+    

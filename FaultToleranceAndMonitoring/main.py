@@ -7,7 +7,7 @@ app = Flask(__name__)
 @app.route("/home", methods=['GET'])
 @cross_origin()
 def home():
-    return "Hi, this is Server Lifecycle manager"
+    return "Hi, this is Fault Tolerance and Monitoring Manager"
 
 
 if __name__ == "__main__":

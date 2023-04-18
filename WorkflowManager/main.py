@@ -1,6 +1,15 @@
-import os
-import sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from ServerlifecycleManager.update_vm import update_vm
+from flask import Flask
+from flask_cors import cross_origin
 
-print(update_vm("VM1"))
+app = Flask(__name__)
+
+
+@app.route("/home", methods=['GET'])
+@cross_origin()
+def home():
+    return "Hi, this is Workflow Manager"
+
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=8050, debug=True, use_reloader=False)
+

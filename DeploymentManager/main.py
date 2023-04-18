@@ -5,6 +5,7 @@ from kafka import KafkaProducer, KafkaConsumer
 import json
 from azure.storage.blob import BlobServiceClient
 import os
+from DeploymentManager.service_registry import *
 
 app = Flask(__name__)
 
@@ -20,7 +21,8 @@ producer = KafkaProducer(
 consumer = KafkaConsumer("DeploymentManager", bootstrap_servers=['20.196.205.46:9092'],
                          value_deserializer=lambda m: json.loads(m.decode('utf-8')))
 
-requests_m1_c, requests_m1_p, requests_m2_c, requests_m2_p = [], [], [], []
+requests_m1_c, requests_m1_p = [], []  # For message 1
+requests_m2_c, requests_m2_p = [], []  # For message 2
 lock = threading.Lock()
 
 
@@ -100,21 +102,23 @@ def create_file(path, file_name, docker_code):
     f.close()
 
 
-def docker_file_raw_text(module_filename):
+def docker_file_raw_text():
     docker_code = f"""
         FROM python:3.10
-        ADD {module_filename} .
-        ADD requirements.txt .
+        ADD . .
         RUN pip3 install -r requirements.txt
-        CMD python3 {module_filename}
+        CMD python3 ./main.py
         """
     return docker_code
 
 
-def service_start_raw_text(path, image_name, ip, port):
+def service_start_raw_text(docker_file_name, image_name, container_name, host_port, container_port):
     service_start_shell_script = f'''
-        docker build -f {path} -t {image_name} .
-        docker container run -d -p {ip}:{port} {image_name}'''
+        docker stop {container_name}
+        docker rm {container_name}
+        docker build -f {docker_file_name} -t {image_name} .
+        docker container run -d --name {container_name} -p {host_port}:{container_port} {image_name}
+    '''
 
     return service_start_shell_script
 
@@ -123,11 +127,12 @@ def generate_docker_file_and_service_start_shell(path, service, host_port, conta
     service = service.lower()
     docker_file_name = service + "_docker_file"
     image_file_name = service + "_img"
+    container_file_name = service + "_container"
     service_start_file_name = service + "_start.sh"
 
-    docker_code = docker_file_raw_text('main.py')
+    docker_code = docker_file_raw_text()
     create_file('./' + path, docker_file_name, docker_code)
-    service_start_code = service_start_raw_text(docker_file_name, image_file_name, host_port, container_port)
+    service_start_code = service_start_raw_text(docker_file_name, image_file_name, container_file_name, host_port, container_port)
     create_file('./' + path, service_start_file_name, service_start_code)
 
     return service_start_file_name
@@ -138,8 +143,8 @@ def deploy_app(vm_ip, vm_port, app_name):
     folder_name = f'{app_name}/'
     # Kafka code to get VM details from  Node Manager
     vm_username = "azureuser"
-    vm_key_path = "../VM-keys/VM1_key.cer"
-    vm_service_path = f"/home/azureuser/{app_name}"
+    vm_key_path = "./VM-keys/VM1_key.cer"
+    vm_service_path = f"../{app_name}"
     # ...............................................................
 
     # Getting app to be deployed in above VM details
@@ -207,14 +212,26 @@ def consume_requests():
             print(ip_deploy, port_deploy, app_name)
 
             # deploy the app
-            deploy_app(ip_deploy, port_deploy, app_name)
+            try:
+                deploy_app(ip_deploy, port_deploy, app_name)
 
-            msg = {
-                'to_topic': 'first_topic',
-                'from_topic': 'DeploymentManager',
-                'request_id': request_data['request_id'],
-                'msg': f'done {app_name} deploy - {ip_deploy}:{port_deploy}'
-            }
+                msg = {
+                    'to_topic': 'first_topic',
+                    'from_topic': 'DeploymentManager',
+                    'request_id': request_data['request_id'],
+                    'msg': f'done {app_name} deploy - {ip_deploy}:{port_deploy}'
+                }
+
+                register_app(app_name, ip_deploy, port_deploy)
+
+            except Exception as e:
+                msg = {
+                    'to_topic': 'first_topic',
+                    'from_topic': 'DeploymentManager',
+                    'request_id': request_data['request_id'],
+                    'msg': f'App {app_name} not deployed. Error - {str(e)}'
+                }
+
             send(request_data, msg, requests_m2_c, requests_m2_p)
 
 
