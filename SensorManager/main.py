@@ -1,39 +1,65 @@
-from flask import Flask
+from flask import Flask,request
 import json
-from kafka_consumer_utilities import *
-
+from kafka_consumer_sensor import *
+from json_utilities import *
 app = Flask(__name__)
+ 
+
+nodes = read_JSON(FOLDER_PATH,'nodes.json')
+sensors = read_JSON(FOLDER_PATH,'unique_sensors.json')
+verticals = read_JSON(FOLDER_PATH,'verticals.json')
+vertical_partition = read_JSON(FOLDER_PATH,'verticals.json')
 
 
-def read_sensor_node_JSON():
-    with open('./SensorManager/sensor-topic-config.json', 'r') as f:
-        data = json.load(f)
-    return data
+# SENSOR REGISTRY APIs
+@app.route('/api/sensor/register/vertical',methods=['POST'])
+def vertical_registration():
+    req_body = request.get_json()
+    vertical = req_body['vertical']
+    node_name = req_body['node_name']
+    descriptor = req_body['descriptor']
+    print(descriptor)
+    return "vertical registration"
 
+@app.route('/api/sensor/register/node',methods=['POST'])
+def node_registration():
+    return "node registration"
 
-# printing readable JSON
-def print_JSON(json_dict):
-    print(json.dumps(json_dict, indent=4))
+@app.route('/api/sensor/register/sensor',methods=['POST'])
+def sensor_registration():
+    return "sensor registration"
 
+# SENSOR DATA APIs
 
-# latest value
-@app.route('/api/sensordata/latest/<sensor_type>/<node_name>', methods=['GET'])
-def get_latest_sensor_data(sensor_type, node_name):
-    # consume from the producer
-    sensor_node = read_sensor_node_JSON()
-    partition_number = int(sensor_node['nodes-partition'][node_name])
-    kafka_topic_name = sensor_node['kafka_topics'][sensor_type]
-    return get_latest_value(kafka_topic_name, partition_number)
+@app.route('/api/sensor/data/latest/<nodename>',methods=['GET'])
+def node_data(nodename):
+    try :
+        if nodename in nodes:
+            n_last = request.args.get('last')
+            if n_last:
+                latest_data = get_latest_n_node_data()
+                return json.dumps({'statusCode':'200','message':'last n data'})
+            else:
+                latest_data = get_latest_node_data()
+                return json.dumps({'statusCode':'200','message':'last data'})
+        else:
+            return json.dumps({'statusCode':'400','message':'error'})
+    except:
+        return json.dumps({'statusCode':'400','message':'error'})
 
-
-# last n values
-@app.route('/api/sensordata/latest/<sensor_type>/<node_name>/<n_messages>', methods=['GET'])
-# api/sensordata/latest/temperature/h105
-def get_last_n_values(sensor_type, node_name, n_messages):
-    sensor_node = read_sensor_node_JSON()
-    partition_number = int(sensor_node['nodes-partition'][node_name])
-    kafka_topic_name = sensor_node['kafka_topics'][sensor_type]
-    return get_latest_n_values(kafka_topic_name, partition_number, int(n_messages))
+@app.route('/api/sensor/data/latest/<nodename>/<sensor>',methods=['GET'])
+def sensor_node_data(nodename,sensor):
+    try :
+        if nodename in nodes and sensor in sensors:
+            n_last = request.args.get('last')
+            if n_last:
+                return json.dumps({'statusCode':'200','message':'last n data'})
+            else:
+                return json.dumps({'statusCode':'200','message':'last data'})
+        else:
+            return json.dumps({'statusCode':'400','message':'error'})
+    except:
+        return json.dumps({'statusCode':'400','message':'error'})
 
 
 if __name__ == "__main__":
