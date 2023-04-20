@@ -5,11 +5,11 @@ from apps.service import save_app, get_apps, get_app, validate_zip, checkFileNam
 
 class GetAppsApi(Resource):
     @staticmethod
-    def get(username) -> Response:
+    def get() -> Response:
         """
         GET response method for getting all the apps for a user
         """
-        response, status = get_apps(request, username)
+        response, status = get_apps(request)
         return make_response(response, status)
 
 class GetAppApi(Resource):
@@ -29,8 +29,8 @@ class AppUploadApi(Resource):
         :return: JSON object
         """
         inpFile = request.files['inpFile']
-        username = request.form['username']
-        response, status = validate_zip(request, inpFile, username)
+        # username = request.form['username']
+        response, status = validate_zip(request, inpFile)
         return make_response(response, status)
 
 class CheckFileName(Resource):

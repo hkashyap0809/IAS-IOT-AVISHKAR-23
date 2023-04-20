@@ -12,6 +12,7 @@ function Appdev() {
   const [isLoggedIn, setLoggedIn] = useState(true);
   const [submitBtnStatus, setSubmitBtnStatus] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const [deployedApps, setDeployedApps] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
     if (!localStorage.getItem("token")) {
@@ -53,6 +54,30 @@ function Appdev() {
     if (inpFile) handleFileNameCheck();
   }, [inpFile]);
 
+  useEffect(() => {
+    if (tabIndex === 2) {
+      setLoading(true);
+      setDeployedApps([]);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      };
+      axiosAppInstance
+        .get(`/api/app/getapps/`, config)
+        .then((response) => {
+          const { data } = response.data;
+          setDeployedApps([...data]);
+          setLoading(false);
+          console.log(response);
+        })
+        .catch((err) => {
+          setLoading(false);
+          console.log(err);
+        });
+    }
+  }, [tabIndex]);
+
   const handleChange = (e) => {
     e.preventDefault();
     const file = e.target.files;
@@ -64,12 +89,11 @@ function Appdev() {
     setValidationMsg("");
     setLoading(true);
     const formData = new FormData();
-    const userName = localStorage.getItem("userName");
     formData.append("inpFile", inpFile);
-    formData.append("username", userName);
     const config = {
       headers: {
         "content-type": "multipart/form-data",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     };
     axiosAppInstance
@@ -87,6 +111,14 @@ function Appdev() {
         setValidationMsg(data);
       });
   };
+
+  const deployedAppsBody = deployedApps.map((app, idx) => {
+    return (
+      <p key={idx} onClick={(e) => console.log(app.id)}>
+        {app.appname}
+      </p>
+    );
+  });
 
   return (
     <div>
@@ -144,13 +176,14 @@ function Appdev() {
             {tabIndex === 2 && (
               <div className="center1">
                 <div className="scrollarea">
-                  <p>
+                  {/* <p>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                     Placeat ea totam, aut tenetur et ratione ut nisi
                     reprehenderit ducimus consequatur cupiditate recusandae
                     iusto accusamus voluptas exercitationem commodi, quod amet
                     laborum.
-                  </p>
+                  </p> */}
+                  {deployedAppsBody}
                 </div>
               </div>
             )}

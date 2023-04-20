@@ -1,7 +1,7 @@
 from apps.models import App, AppEncoder
 from main import db
 from utils.common import generate_response
-from utils.http_code import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
+from utils.http_code import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED
 from zipfile import ZipFile
 from contextlib import redirect_stdout
 from io import StringIO
@@ -12,15 +12,43 @@ from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 from azure.core.exceptions import ResourceExistsError
 import os
 import shutil
-from flask import jsonify
+from flask import jsonify, request
 from os import environ
 from kafka import KafkaConsumer, KafkaProducer
 import threading
 from uuid import uuid1
+from functools import wraps
+import jwt
 
 basedir = path.abspath(path.dirname(__file__))
 uploadFolder = path.join(basedir, "..", "static", "uploads")
 response = None
+
+def verify_token(f):
+    def inner(*args, **kwargs):
+        token = None
+        req = args[0]
+        print(req)
+        if 'Authorization' in req.headers:
+            auth_header = request.headers['Authorization']
+            token = auth_header.split(' ')[1]
+        if not token:
+            return generate_response(
+                data="Unauthorized access1",
+                message="Unauthorized access1",
+                status=HTTP_401_UNAUTHORIZED
+            )
+        try:
+            data = jwt.decode(token, environ.get("SECRET_KEY"), algorithms=['HS256'])
+            userName = data['username']
+            return f(userName, *args, **kwargs)
+        except Exception as e:
+            return generate_response(
+                data="Unauthorized access2",
+                message="Unauthorized access2",
+                status=HTTP_401_UNAUTHORIZED
+            )
+    return inner
 
 def wait_for_message(from_topic, appName, uid):
     global response
@@ -34,7 +62,7 @@ def wait_for_message(from_topic, appName, uid):
             print("App deployed")
             break
 
-def save_app(appName, userName):
+def save_app(appName, userName, url=None):
     """
     Saves a new app to the database
     """
@@ -42,6 +70,8 @@ def save_app(appName, userName):
         'username': userName,
         'appname': appName
     }
+    if url:
+        obj['url'] = url
     app = App(**obj)
     try:
         db.session.add(app)
@@ -88,7 +118,8 @@ def extractZip(inpFile):
             status=HTTP_400_BAD_REQUEST
         )
 
-def validate_zip(request, inpFile, userName):
+@verify_token
+def validate_zip(userName, request, inpFile):
     if inpFile:
         splittedFileName = (inpFile.filename).split('.')
         if len(splittedFileName) == 1 or splittedFileName[1] != "zip":
@@ -200,24 +231,24 @@ def validate_zip(request, inpFile, userName):
     else:
         # Cleaning up leftovers after zip file uploaded successfully
         shutil.rmtree(uploadFolder + "/" + appName)
+
+        # to_topic, from_topic = 'DeploymentManager', 'first_topic'
+        # producer = KafkaProducer(bootstrap_servers=[environ.get("KAFKA_SERVER")])
+        # uid = str(uuid1())
+        # print("UID is: ", uid)
+        # message = {
+        #     'to_topic': to_topic,
+        #     'from_topic': from_topic,
+        #     'request_id': uid,
+        #     'msg': f'deploy app${appName}'
+        # }
+        # producer.send(to_topic, json.dumps(message).encode('utf-8'))
+
+        # t = threading.Thread(target=wait_for_message, args=(from_topic, appName, uid))
+        # t.start()
+        # t.join()
         # Save appName with the corresponding app developer name in the database
         save_app(appName, userName)
-
-        to_topic, from_topic = 'DeploymentManager', 'first_topic'
-        producer = KafkaProducer(bootstrap_servers=[environ.get("KAFKA_SERVER")])
-        uid = str(uuid1())
-        print("UID is: ", uid)
-        message = {
-            'to_topic': to_topic,
-            'from_topic': from_topic,
-            'request_id': uid,
-            'msg': f'deploy app${appName}'
-        }
-        producer.send(to_topic, json.dumps(message).encode('utf-8'))
-
-        t = threading.Thread(target=wait_for_message, args=(from_topic, appName, uid))
-        t.start()
-        t.join()
 
     return generate_response(
         data=response,
@@ -225,13 +256,12 @@ def validate_zip(request, inpFile, userName):
         status=HTTP_200_OK
     )
 
-def get_apps(request, username):
+@verify_token
+def get_apps(userName, request):
     """
     Get all the apps owned by an application developer
     """
-    apps = App.query.filter_by(username=username).all()
-    print(apps)
-    # apps = jsonify(apps=apps, indent=4, cls=AppEncoder)
+    apps = App.query.filter_by(username=userName).all()
     apps = [{
         "id": app.id,
         "username": app.username,
