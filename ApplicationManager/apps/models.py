@@ -23,6 +23,8 @@ class App(db.Model):
         """
         self.username = kwargs.get("username")
         self.appname = kwargs.get("appname")
+        if(kwargs.get("url")):
+            self.url = kwargs.get("url")
 
     # def __repr__(self):
     #     """

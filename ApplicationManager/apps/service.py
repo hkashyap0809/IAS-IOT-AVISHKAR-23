@@ -41,7 +41,8 @@ def verify_token(f):
         try:
             data = jwt.decode(token, environ.get("SECRET_KEY"), algorithms=['HS256'])
             userName = data['username']
-            return f(userName, *args, **kwargs)
+            role = data['role']
+            return f(userName, role, *args, **kwargs)
         except Exception as e:
             return generate_response(
                 data="Unauthorized access2",
@@ -72,6 +73,7 @@ def save_app(appName, userName, url=None):
     }
     if url:
         obj['url'] = url
+    print(obj)
     app = App(**obj)
     try:
         db.session.add(app)
@@ -119,7 +121,7 @@ def extractZip(inpFile):
         )
 
 @verify_token
-def validate_zip(userName, request, inpFile):
+def validate_zip(userName, role, request, inpFile):
     if inpFile:
         splittedFileName = (inpFile.filename).split('.')
         if len(splittedFileName) == 1 or splittedFileName[1] != "zip":
@@ -130,7 +132,7 @@ def validate_zip(userName, request, inpFile):
             )
         fileName = splittedFileName[0]
         file_list = []
-        expected_file_list = ['app.json', 'app.py', 'requirements.txt', 'index.html']
+        expected_file_list = ['app.json', 'main.py', 'requirements.txt', 'index.html']
 
         with StringIO() as buffer:
             # redirect the stdout to the buffer
@@ -201,7 +203,7 @@ def validate_zip(userName, request, inpFile):
                     message="No files provided",
                     status=HTTP_400_BAD_REQUEST
                 )
-            expected_file_names = ["app.py", "requirements.txt", "index.html"]
+            expected_file_names = ["main.py", "requirements.txt", "index.html"]
             received_file_names = data["files"]
             for file in received_file_names:
                 if file not in expected_file_names:
@@ -232,23 +234,27 @@ def validate_zip(userName, request, inpFile):
         # Cleaning up leftovers after zip file uploaded successfully
         shutil.rmtree(uploadFolder + "/" + appName)
 
-        # to_topic, from_topic = 'DeploymentManager', 'first_topic'
-        # producer = KafkaProducer(bootstrap_servers=[environ.get("KAFKA_SERVER")])
-        # uid = str(uuid1())
-        # print("UID is: ", uid)
-        # message = {
-        #     'to_topic': to_topic,
-        #     'from_topic': from_topic,
-        #     'request_id': uid,
-        #     'msg': f'deploy app${appName}'
-        # }
-        # producer.send(to_topic, json.dumps(message).encode('utf-8'))
+        to_topic, from_topic = 'DeploymentManager', 'first_topic'
+        producer = KafkaProducer(bootstrap_servers=[environ.get("KAFKA_SERVER")])
+        uid = str(uuid1())
+        print("UID is: ", uid)
+        message = {
+            'to_topic': to_topic,
+            'from_topic': from_topic,
+            'request_id': uid,
+            'msg': f'deploy app${appName}'
+        }
+        producer.send(to_topic, json.dumps(message).encode('utf-8'))
 
-        # t = threading.Thread(target=wait_for_message, args=(from_topic, appName, uid))
-        # t.start()
-        # t.join()
+        t = threading.Thread(target=wait_for_message, args=(from_topic, appName, uid))
+        t.start()
+        t.join()
+        print(response)
+        url = response['msg'].split("-")
+        url = url[1].strip()
+        print(url)
         # Save appName with the corresponding app developer name in the database
-        save_app(appName, userName)
+        save_app(appName, userName, url)
 
     return generate_response(
         data=response,
@@ -257,11 +263,15 @@ def validate_zip(userName, request, inpFile):
     )
 
 @verify_token
-def get_apps(userName, request):
+def get_apps(userName, role, request):
     """
     Get all the apps owned by an application developer
     """
-    apps = App.query.filter_by(username=userName).all()
+    apps = None
+    if role != "admin":
+        apps = App.query.filter_by(username=userName).all()
+    else:
+        apps = App.query.filter_by().all()
     apps = [{
         "id": app.id,
         "username": app.username,
@@ -308,3 +318,5 @@ def checkFileName(request, inpFile):
             message=message,
             status=HTTP_200_OK
         )
+
+# // stop app$<appname>$<ip>

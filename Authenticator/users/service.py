@@ -80,6 +80,7 @@ def login_user(request, input_data):
                 "email": get_user.email,
                 "username": get_user.username,
                 "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30),
+                "role": get_user.role
             },
             environ.get("SECRET_KEY"),
         )

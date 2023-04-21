@@ -102,7 +102,8 @@ function Appdev() {
         setLoading(false);
         console.log(response);
         const { message } = response.data;
-        setValidationMsg(message);
+        const { msg } = response.data.data;
+        setValidationMsg(msg);
       })
       .catch((err) => {
         setLoading(false);
@@ -114,7 +115,11 @@ function Appdev() {
 
   const deployedAppsBody = deployedApps.map((app, idx) => {
     return (
-      <p key={idx} onClick={(e) => console.log(app.id)}>
+      <p
+        key={idx}
+        onClick={(e) => window.open(`http://${app.url}`, "_blank")}
+        style={{ cursor: "pointer" }}
+      >
         {app.appname}
       </p>
     );
