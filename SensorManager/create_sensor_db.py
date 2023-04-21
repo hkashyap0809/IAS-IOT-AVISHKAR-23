@@ -2,8 +2,6 @@ import psycopg2
 import json
 import re
 from json_utilities import *
-FOLDER_PATH='./SensorMgr/'
-
 
 def read_columns_name(values):
     # Access the column names for the table and make the string of column names for create query table    
@@ -18,7 +16,6 @@ def read_columns_name(values):
             columns=columns+value+' VARCHAR(50),'
     columns = columns + " PRIMARY KEY (node_name,timestamp)"
     return columns
-
 
 #create table with name =table_name and colums=comums
 def create_table(table_name,columns,cur):
@@ -37,9 +34,6 @@ def create_table(table_name,columns,cur):
     else:
         print(f"{table_name} table already exists.")
     
-    
-
-
 #read JSON file
 verticals = read_JSON(FOLDER_PATH,'verticals.json')
 # print_JSON(verticals)
@@ -63,8 +57,6 @@ for key, values in verticals.items():
     
     
     columns=read_columns_name(values)
-    # print(columns)
-    # print()
     create_table(table_name,columns,cur)
 
 cur.close()
