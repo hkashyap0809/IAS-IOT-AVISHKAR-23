@@ -10,5 +10,11 @@ def home():
     return "Hi, this is Server Lifecycle manager"
 
 
+@app.route("/health", methods=['GET'])
+@cross_origin()
+def health():
+    return "Ok"
+
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8050, debug=True, use_reloader=False)

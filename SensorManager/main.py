@@ -2,6 +2,9 @@ import sys
 import os
 from flask import Flask
 import json
+
+from flask_cors import cross_origin
+
 # Get the absolute path of the directory containing this script
 script_dir = os.path.dirname(os.path.abspath(__file__))
 # Set the current working directory to the parent directory of the script directory
@@ -41,6 +44,18 @@ def get_last_n_values(sensor_type, node_name, n_messages):
     partition_number = int(sensor_node['nodes-partition'][node_name])
     kafka_topic_name = sensor_node['kafka_topics'][sensor_type]
     return get_latest_n_values(kafka_topic_name, partition_number, int(n_messages))
+
+
+@app.route("/home", methods=['GET'])
+@cross_origin()
+def home():
+    return "Hi, this is Sensor Manager"
+
+
+@app.route("/health", methods=['GET'])
+@cross_origin()
+def health():
+    return "Ok"
 
 
 if __name__ == "__main__":

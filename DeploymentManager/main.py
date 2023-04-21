@@ -5,7 +5,7 @@ from kafka import KafkaProducer, KafkaConsumer
 import json
 from azure.storage.blob import BlobServiceClient
 import os
-from DeploymentManager.service_registry import *
+from service_registry import *
 
 app = Flask(__name__)
 
@@ -23,6 +23,7 @@ consumer = KafkaConsumer("DeploymentManager", bootstrap_servers=['20.196.205.46:
 
 requests_m1_c, requests_m1_p = [], []  # For message 1
 requests_m2_c, requests_m2_p = [], []  # For message 2
+requests_m3_c, requests_m3_p = [], []  # For message 3
 lock = threading.Lock()
 
 
@@ -96,6 +97,15 @@ def deployInVM(service_start_shell_file, app_name, vm_ip, vm_username, vm_key_pa
     print("Executed on VM")
 
 
+def unDeployInVM(service_stop_shell_file, app_name, vm_ip, vm_username, vm_key_path):
+    execute_command = f"""
+        ssh -i {vm_key_path} {vm_username}@{vm_ip} "cd {app_name}; sudo bash ./{service_stop_shell_file}; rm -r ../{app_name}; cd .."
+        """
+
+    os.system(execute_command)
+    print("App stopped")
+
+
 def create_file(path, file_name, docker_code):
     f = open(path + '/' + file_name, 'w')
     f.write(docker_code)
@@ -107,20 +117,28 @@ def docker_file_raw_text():
         FROM python:3.10
         ADD . .
         RUN pip3 install -r requirements.txt
-        CMD python3 ./main.py
+        CMD python3 -u main.py
         """
     return docker_code
 
 
 def service_start_raw_text(docker_file_name, image_name, container_name, host_port, container_port):
+    print("Host port - ", host_port)
     service_start_shell_script = f'''
-        docker stop {container_name}
-        docker rm {container_name}
         docker build -f {docker_file_name} -t {image_name} .
         docker container run -d --name {container_name} -p {host_port}:{container_port} {image_name}
     '''
 
     return service_start_shell_script
+
+
+def service_stop_raw_text(container_name):
+    service_stop_shell_script = f'''
+        docker stop {container_name}
+        docker rm {container_name}
+    '''
+
+    return service_stop_shell_script
 
 
 def generate_docker_file_and_service_start_shell(path, service, host_port, container_port):
@@ -129,11 +147,17 @@ def generate_docker_file_and_service_start_shell(path, service, host_port, conta
     image_file_name = service + "_img"
     container_file_name = service + "_container"
     service_start_file_name = service + "_start.sh"
+    service_stop_file_name = service + "_stop.sh"
 
     docker_code = docker_file_raw_text()
     create_file('./' + path, docker_file_name, docker_code)
-    service_start_code = service_start_raw_text(docker_file_name, image_file_name, container_file_name, host_port, container_port)
+
+    service_start_code = service_start_raw_text(docker_file_name, image_file_name, container_file_name, host_port,
+                                                container_port)
     create_file('./' + path, service_start_file_name, service_start_code)
+
+    service_end_code = service_stop_raw_text(container_file_name)
+    create_file('./' + path, service_stop_file_name, service_end_code)
 
     return service_start_file_name
 
@@ -144,7 +168,7 @@ def deploy_app(vm_ip, vm_port, app_name):
     # Kafka code to get VM details from  Node Manager
     vm_username = "azureuser"
     vm_key_path = "./VM-keys/VM1_key.cer"
-    vm_service_path = f"../{app_name}"
+    vm_service_path = f"/home/azureuser/{app_name}"
     # ...............................................................
 
     # Getting app to be deployed in above VM details
@@ -154,6 +178,18 @@ def deploy_app(vm_ip, vm_port, app_name):
     service_start_file_name = generate_docker_file_and_service_start_shell(app_name, app_name, vm_port, 7700)
 
     deployInVM(service_start_file_name, app_name, vm_ip, vm_username, vm_key_path, vm_service_path)
+
+    return "Deployment Manager has completed its job"
+
+
+def un_deploy_app(app_name, vm_ip):
+    service = app_name.lower()
+    service_stop_file_name = service + "_stop.sh"
+    vm_username = "azureuser"
+    vm_key_path = "./VM-keys/VM1_key.cer"
+
+    # ...............................................................
+    unDeployInVM(service_stop_file_name, app_name, vm_ip, vm_username, vm_key_path)
 
     return "Deployment Manager has completed its job"
 
@@ -203,6 +239,34 @@ def consume_requests():
             }
             send(request_data, msg, requests_m1_c, requests_m1_p)
 
+        # M3 - message from app manager to stop app
+        if "stop app" in request_data['msg']:
+            app_name = request_data['msg'].split("$")[1]
+            vm_ip = request_data['msg'].split("$")[2]
+
+            # deploy the app
+            try:
+                un_deploy_app(app_name, vm_ip)
+
+                msg = {
+                    'to_topic': 'first_topic',
+                    'from_topic': 'DeploymentManager',
+                    'request_id': request_data['request_id'],
+                    'msg': f'done {app_name} stopped - {vm_ip}'
+                }
+
+                unregister_app(app_name)
+
+            except Exception as e:
+                msg = {
+                    'to_topic': 'first_topic',
+                    'from_topic': 'DeploymentManager',
+                    'request_id': request_data['request_id'],
+                    'msg': f'App {app_name} not stopped. Error - {str(e)}'
+                }
+
+            send(request_data, msg, requests_m3_c, requests_m3_p)
+
         # M2 - message from node manager with ip and port
         if "ans-node" in request_data['msg']:
             res = json.loads(request_data['msg'].split("$")[1].replace('\'', '"'))
@@ -239,6 +303,12 @@ def consume_requests():
 @cross_origin()
 def home():
     return "Hi, this is DeploymentManager"
+
+
+@app.route("/health", methods=['GET'])
+@cross_origin()
+def health():
+    return "Ok"
 
 
 if __name__ == "__main__":

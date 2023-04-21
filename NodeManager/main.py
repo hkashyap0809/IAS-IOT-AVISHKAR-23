@@ -197,6 +197,12 @@ def home():
     return "Hi, this is NodeManager"
 
 
+@app.route("/health", methods=['GET'])
+@cross_origin()
+def health():
+    return "Ok"
+
+
 # ---------------------------- KAFKA  ------------------------------
 
 
@@ -265,5 +271,5 @@ def consume_requests():
 if __name__ == "__main__":
     thread = threading.Thread(target=consume_requests)
     thread.start()
-    app.run(host='0.0.0.0', port=8050, debug=True, use_reloader=False)
+    app.run(host='0.0.0.0', port=8060, debug=True, use_reloader=False)
     thread.join()

@@ -1,7 +1,11 @@
 import os
 import json
 from datetime import datetime
+from flask import Flask
+from flask_cors import cross_origin
 from service_registry import *
+
+app = Flask(__name__)
 
 
 def create_file(path, file_name, docker_code):
@@ -15,7 +19,7 @@ def docker_file_raw_text():
         FROM python:3.10
         ADD . .
         RUN pip3 install -r requirements.txt
-        CMD python3 ./main.py
+        CMD python3 -u ./main.py
         """
     return docker_code
 
@@ -140,8 +144,47 @@ def stop_service_in_VM():
         return str(e)
 
 
-if __name__ == "__main__":
+@app.route("/home", methods=['GET'])
+@cross_origin()
+def home():
+    return "Hi, this is Platform Initializer"
+
+
+@app.route("/health", methods=['GET'])
+@cross_origin()
+def health():
+    return "Ok"
+
+
+@app.route("/start", methods=["GET"])
+@cross_origin()
+def start():
     print("Initializing the platform.......")
-    schedule_and_upload_to_VM()
-    # stop_service_in_VM()
-    print(get_all_service_registry())
+    return schedule_and_upload_to_VM()
+
+
+@app.route("/stop", methods=["GET"])
+@cross_origin()
+def stop():
+    print("Stopping the platform.......")
+    return stop_service_in_VM()
+
+
+@app.route("/status", methods=["GET"])
+@cross_origin()
+def status():
+    with open('platform_status.json', 'r') as f:
+        conn_json = json.load(f)
+    return conn_json
+
+
+@app.route("/all_services", methods=["GET"])
+@cross_origin()
+def all_services():
+    res = get_all_service_registry()
+    print(res)
+    return res
+
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=9050, debug=True, use_reloader=False)
