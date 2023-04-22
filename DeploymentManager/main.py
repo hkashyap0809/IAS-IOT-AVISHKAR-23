@@ -294,7 +294,7 @@ def consume_requests():
                           'hostPort': port_deploy, 'containerPort': 8050, 'containerId': container_id}
 
                 logger.info(str(params))
-                res = requests.get("http://http://20.21.102.175:8110/registerApp", params=params)
+                res = requests.get("http://20.21.102.175:8110/registerApp", params=params)
                 print(type(res))
                 ip_deploy = str(res).split(":")[0]
                 port_deploy = str(res).split(":")[1]
