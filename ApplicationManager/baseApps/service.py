@@ -1,97 +1,53 @@
-from apps.models import App, AppEncoder
+from baseApps.models import BaseApp
 from main import db
-from utils.common import generate_response
+from utils.common import generate_response, verify_token
 from utils.http_code import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED
 from zipfile import ZipFile
 from contextlib import redirect_stdout
 from io import StringIO
 from os import path, environ
 from werkzeug.utils import secure_filename
-import json, random, string
-from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
+import json
+from azure.storage.blob import BlobServiceClient
 from azure.core.exceptions import ResourceExistsError
 import os
 import shutil
 from flask import jsonify, request
 from os import environ
-from kafka import KafkaConsumer, KafkaProducer
-import threading
 from uuid import uuid1
 from functools import wraps
 import jwt
 
 basedir = path.abspath(path.dirname(__file__))
 uploadFolder = path.join(basedir, "..", "static", "uploads")
-response = None
 
-def verify_token(f):
-    def inner(*args, **kwargs):
-        token = None
-        req = args[0]
-        print(req)
-        if 'Authorization' in req.headers:
-            auth_header = request.headers['Authorization']
-            token = auth_header.split(' ')[1]
-        if not token:
-            return generate_response(
-                data="Unauthorized access1",
-                message="Unauthorized access1",
-                status=HTTP_401_UNAUTHORIZED
-            )
-        try:
-            data = jwt.decode(token, environ.get("SECRET_KEY"), algorithms=['HS256'])
-            userName = data['username']
-            role = data['role']
-            return f(userName, role, *args, **kwargs)
-        except Exception as e:
-            return generate_response(
-                data="Unauthorized access2",
-                message="Unauthorized access2",
-                status=HTTP_401_UNAUTHORIZED
-            )
-    return inner
-
-def wait_for_message(from_topic, appName, uid):
-    global response
-    consumer = KafkaConsumer(from_topic, bootstrap_servers=[environ.get("KAFKA_SERVER")])
-    for msg in consumer:
-        received_message = json.loads(msg.value.decode('utf-8'))
-        print(received_message)
-        if f'done {appName} deploy' in received_message['msg'] and received_message['request_id'] == uid:
-            # Do something with received message
-            response = received_message
-            print("App deployed")
-            break
-
-def save_app(appName, userName, url=None):
+def saveBaseApp(appName, userName):
     """
-    Saves a new app to the database
+    Saves a new baseApp to the database
     """
     obj = {
-        'username': userName,
-        'appname': appName
+        'appName': appName,
+        'developer': userName
     }
-    if url:
-        obj['url'] = url
-    print(obj)
-    app = App(**obj)
+    baseApp = BaseApp(**obj)
     try:
-        db.session.add(app)
+        db.session.add(baseApp)
         db.session.commit()
     except Exception as e:
+        print(e)
         return generate_response(
-            data="Error occurred while saving app name to db",
-            message="Error occurred while saving app name to db",
+            data="Error occurred while saving the app to db",
+            message="Error occurred while saving the app to database",
             status=HTTP_400_BAD_REQUEST
         )
     return generate_response(
-        data=obj, message="App created", status=HTTP_201_CREATED
+        data=obj, message="App uploaded successfully", status=HTTP_201_CREATED
     )
 
 def upload_app(target_directory):
     # Target directory has the actual directory with the appName inside the static/uploads folder
     connection_string = environ.get("AZURE_BLOB_CONN_STRING")
-    container_name = environ.get("DEPLOYED_APPS_CONTAINER")
+    container_name = environ.get("BASE_APPS_CONTAINER")
     blob_service_client = BlobServiceClient.from_connection_string(connection_string)
     blob_service_client.get_container_client(container_name)
     overwrite = False
@@ -105,7 +61,6 @@ def upload_app(target_directory):
                     blob_obj.upload_blob(fileData, overwrite = overwrite)
             except ResourceExistsError:
                 print('Blob "{0}" already exists'.format(blob_path))
-                print()
                 continue
 
 def extractZip(inpFile):
@@ -122,6 +77,7 @@ def extractZip(inpFile):
 
 @verify_token
 def validate_zip(userName, role, request, inpFile):
+    userName="Ujjwal"
     if inpFile:
         splittedFileName = (inpFile.filename).split('.')
         if len(splittedFileName) == 1 or splittedFileName[1] != "zip":
@@ -133,7 +89,6 @@ def validate_zip(userName, role, request, inpFile):
         fileName = splittedFileName[0]
         file_list = []
         expected_file_list = ['app.json', 'main.py', 'requirements.txt', 'index.html']
-
         with StringIO() as buffer:
             # redirect the stdout to the buffer
             with redirect_stdout(buffer):
@@ -153,8 +108,7 @@ def validate_zip(userName, role, request, inpFile):
         with ZipFile(inpFile, 'r') as zip:
             data = zip.read(fileName + '/app.json')
             data = json.loads(data.decode())
-            # expected_keys = ["app_name", "controller_instance_count", "controller_instance_info"]
-            expected_keys = ["app_name", "sensors", "files", "workflow_used", "entry_point"]
+            expected_keys = ["applicationType", "sensorTypes", "location", "applicationName", "applicationDescription"]
             keys = data.keys()
             # Check if json file has same number of keys as expected_keys
             if len(keys) != len(expected_keys):
@@ -171,7 +125,8 @@ def validate_zip(userName, role, request, inpFile):
                         message="Missing key: %s" % (k),
                         status=HTTP_400_BAD_REQUEST
                     )
-            appName = data["app_name"]
+            # appName = data["app_name"]
+            appName = data["applicationName"]
             # Check if app_name property inside JSON file and name of zipFile is same or not
             if appName != fileName:
                 return generate_response(
@@ -179,43 +134,16 @@ def validate_zip(userName, role, request, inpFile):
                     message="app_name is not same as filename",
                     status=HTTP_400_BAD_REQUEST
                 )
-            if not isinstance(data["sensors"], list):
+            if not isinstance(data["sensorTypes"], list):
                 return generate_response(
-                    data="sensors property should be a list containing sensor keywords",
-                    message="sensors property should be a list containing sensor keywords",
+                    data="sensorTypes property should be a list containing sensors",
+                    message="sensorTypes property should be a list containing sensors",
                     status=HTTP_400_BAD_REQUEST
                 )
-            if len(data["sensors"]) == 0:
+            if len(data["sensorTypes"]) == 0:
                 return generate_response(
                     data="No sensors provided",
                     message="No sensors provided",
-                    status=HTTP_400_BAD_REQUEST
-                )
-            if not isinstance(data["files"], list):
-                return generate_response(
-                    data="files property should be a list containing all relevant files",
-                    message="files property should be a list containing all relevant files",
-                    status=HTTP_400_BAD_REQUEST
-                )
-            if len(data["files"]) == 0:
-                return generate_response(
-                    data="No files provided",
-                    message="No files provided",
-                    status=HTTP_400_BAD_REQUEST
-                )
-            expected_file_names = ["main.py", "requirements.txt", "index.html"]
-            received_file_names = data["files"]
-            for file in received_file_names:
-                if file not in expected_file_names:
-                    return generate_response(
-                        data=f'Expected file with name {file}',
-                        message=f'Expected file with name {file}',
-                        status=HTTP_400_BAD_REQUEST
-                    )
-            if not isinstance(data["workflow_used"], list):
-                return generate_response(
-                    data="workflow_used should be a list",
-                    message="workflow_used should be a list",
                     status=HTTP_400_BAD_REQUEST
                 )
             print("Validation done successfully!!")
@@ -233,32 +161,11 @@ def validate_zip(userName, role, request, inpFile):
     else:
         # Cleaning up leftovers after zip file uploaded successfully
         shutil.rmtree(uploadFolder + "/" + appName)
-
-        to_topic, from_topic = 'DeploymentManager', 'first_topic'
-        producer = KafkaProducer(bootstrap_servers=[environ.get("KAFKA_SERVER")])
-        uid = str(uuid1())
-        print("UID is: ", uid)
-        message = {
-            'to_topic': to_topic,
-            'from_topic': from_topic,
-            'request_id': uid,
-            'msg': f'deploy app${appName}'
-        }
-        producer.send(to_topic, json.dumps(message).encode('utf-8'))
-
-        t = threading.Thread(target=wait_for_message, args=(from_topic, appName, uid))
-        t.start()
-        t.join()
-        print(response)
-        url = response['msg'].split("-")
-        url = url[1].strip()
-        print(url)
-        # Save appName with the corresponding app developer name in the database
-        save_app(appName, userName, url)
+        saveBaseApp(appName, userName)
 
     return generate_response(
-        data=response,
-        message="JSON validated successfully and app deployed",
+        data="App validated and uploaded successfully",
+        message="App validated and uploaded successfully",
         status=HTTP_200_OK
     )
 
@@ -269,15 +176,15 @@ def get_apps(userName, role, request):
     """
     apps = None
     if role != "admin":
-        apps = App.query.filter_by(username=userName).all()
+        apps = BaseApp.query.filter_by(developer=userName).all()
     else:
-        apps = App.query.filter_by().all()
+        apps = BaseApp.query.filter_by().all()
     apps = [{
         "id": app.id,
-        "username": app.username,
+        "developer": app.developer,
         "created": app.created,
-        "appname": app.appname,
-        "url": app.url
+        "appName": app.appName,
+        "status": app.status
     } for app in apps]
     return generate_response(
         data=apps,
@@ -285,19 +192,8 @@ def get_apps(userName, role, request):
         status=HTTP_200_OK
     )
 
-def get_app(request, appId):
-    """
-    Get information about a specific app
-    """
-    details = App.query.filter_by(id=appId)
-    print(details)
-    return generate_response(
-        message="App details fetched successfully",
-        status=HTTP_200_OK
-    )
-
 def checkFileNameHandler(fileName):
-    details = App.query.filter_by(appname=fileName).all()
+    details = BaseApp.query.filter_by(appName=fileName).all()
     return len(details) == 0
 
 def checkFileName(request, inpFile):

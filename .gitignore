@@ -11,5 +11,10 @@ ApplicationManager/apps/__pycache____/
 ApplicationManager/utils/__pycache____/
 ApplicationManager/static/uploads/*
 
+ApplicationManager/__pycache__/
+ApplicationManager/baseApps/__pycache__/
+ApplicationManager/deployedApps/__pycache__/
+ApplicationManager/utils/__pycache__/
+
 frontend/node_modules
 frontend/package-lock.json

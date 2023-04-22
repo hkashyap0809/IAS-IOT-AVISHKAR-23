@@ -19,9 +19,13 @@ def create_app():
 
     api = Api(app=app)
 
-    from apps.routes import create_app_routes
+    from baseApps.routes import create_baseapp_routes
+    from deployedApps.routes import create_deployedapp_routes
+    # from apps.routes import create_app_routes
 
-    create_app_routes(api=api)
+    create_baseapp_routes(api=api)
+    create_deployedapp_routes(api=api)
+    # create_app_routes(api=api)
 
     db.init_app(app)
 
