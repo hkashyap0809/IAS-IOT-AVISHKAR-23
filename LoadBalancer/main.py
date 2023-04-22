@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 from flask_cors import cross_origin
 from flask import request
@@ -9,6 +11,10 @@ app = Flask(__name__)
 
 loadBalancerIp = "20.21.102.175"
 nginxPath = "/etc/nginx"
+
+os.system("chmod 600 ./VM-keys/VM1_key.cer")
+os.system("chmod 600 ./VM-keys/VM2_key.cer")
+os.system("chmod 600 ./VM-keys/VM3_key.cer")
 
 
 @app.route("/home", methods=['GET'])
