@@ -1,3 +1,4 @@
+import subprocess
 import threading
 
 import requests
@@ -87,8 +88,12 @@ def download_from_blob(app_name, folder_name):
 def deployInVM(service_start_shell_file, app_name, vm_ip, vm_username, vm_key_path, vm_service_path):
     file_copy_command = f"scp -o StrictHostKeyChecking=no -r -i {vm_key_path}  {app_name} {vm_username}@{vm_ip}:{vm_service_path}"
 
-    execute_command = f"""
-    ssh -o StrictHostKeyChecking=no -i {vm_key_path} {vm_username}@{vm_ip} "cd {app_name}; sudo bash ./{service_start_shell_file}"
+    # execute_command = f"""
+    # ssh -o StrictHostKeyChecking=no -i {vm_key_path} {vm_username}@{vm_ip} "cd {app_name}; sudo bash ./{service_start_shell_file}"
+    # """
+
+    execute_command2 = f"""
+        ssh -o StrictHostKeyChecking=no -i {vm_key_path} {vm_username}@{vm_ip} cd {app_name} && sudo bash ./{service_start_shell_file}
     """
 
     os.system(file_copy_command)
@@ -96,8 +101,12 @@ def deployInVM(service_start_shell_file, app_name, vm_ip, vm_username, vm_key_pa
 
     delete_local_file(app_name)
 
-    os.system(execute_command)
+    # os.system(execute_command)
+
+    output = subprocess.check_output(execute_command2.split())
+    container_id = output.strip().decode('utf-8')
     print("Executed on VM")
+    return container_id
 
 
 def unDeployInVM(service_stop_shell_file, app_name, vm_ip, vm_username, vm_key_path):
@@ -180,9 +189,9 @@ def deploy_app(vm_ip, vm_port, app_name):
 
     service_start_file_name = generate_docker_file_and_service_start_shell(app_name, app_name, vm_port, 7700)
 
-    deployInVM(service_start_file_name, app_name, vm_ip, vm_username, vm_key_path, vm_service_path)
+    container_id = deployInVM(service_start_file_name, app_name, vm_ip, vm_username, vm_key_path, vm_service_path)
 
-    return "Deployment Manager has completed its job"
+    return container_id
 
 
 def un_deploy_app(app_name, vm_ip):
@@ -280,10 +289,15 @@ def consume_requests():
 
             # deploy the app
             try:
-                deploy_app(ip_deploy, port_deploy, app_name)
+                container_id = deploy_app(ip_deploy, port_deploy, app_name)
                 params = {'appName': app_name, 'imageName': str(app_name).lower() + "_image", 'vmIp': ip_deploy,
-                          'hostPort': port_deploy, 'container_port': 8050, }
+                          'hostPort': port_deploy, 'containerPort': 8050, 'containerId': container_id}
+
+                logger.info(str(params))
                 res = requests.get("http://http://20.21.102.175:8110/registerApp", params=params)
+                print(type(res))
+                ip_deploy = str(res).split(":")[0]
+                port_deploy = str(res).split(":")[1]
 
                 msg = {
                     'to_topic': 'first_topic',
