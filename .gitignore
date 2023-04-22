@@ -12,3 +12,5 @@ ApplicationManager/utils/__pycache____
 
 frontend/node_modules
 frontend/package-lock.json
+finalfrontend/node_modules
+finalfrontend/package-lock.json
