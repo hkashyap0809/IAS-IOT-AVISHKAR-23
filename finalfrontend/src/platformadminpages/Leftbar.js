@@ -167,9 +167,31 @@ function Leftbar() {
                         Degraded
                       </span>
                     </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <li className="list-group-item d-flex justify-content-between align-items-center">
                       Application Manager
+                      <span className="badge bg-success rounded-pill">OK</span>
+                    </li>
+                    <li className="list-group-item d-flex justify-content-between align-items-center">
+                      Authenticator
+                      <span className="badge bg-success rounded-pill">OK</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                      Fault Tolrence And Monitoring
                       <span className="badge bg-danger rounded-pill">Down</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                      Scheduler
+                      <span className="badge bg-danger rounded-pill">Down</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                      Workflow Manager
+                      <span className="badge bg-danger rounded-pill">Down</span>
+                    </li>
+                    <li className="list-group-item d-flex justify-content-between align-items-center">
+                      Servicelife cycle manager
+                      <span className="badge bg-warning rounded-pill">
+                        Degraded
+                      </span>
                     </li>
                   </ul>
                 </div>
