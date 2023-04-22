@@ -29,7 +29,7 @@ def service_start_raw_text(docker_file_name, image_name, container_name, host_po
         docker stop {container_name}
         docker rm {container_name}
         docker build -f {docker_file_name} -t {image_name} .
-        docker container run -d --name {container_name} -p {host_port}:{container_port} {image_name}
+        docker container run -v /home/azureuser/logs:/logs -d --name {container_name} -p {host_port}:{container_port} {image_name}
     '''
 
     return service_start_shell_script
@@ -83,9 +83,9 @@ def schedule_and_upload_to_VM():
             generate_docker_file_and_service_start_shell(service['host_src_path'], service['service_name'],
                                                          service['host_port'], service['container_port'])
             req_file = "pip freeze > requirements.txt"
-            command = f"scp -r -i {vm['vm_key_path']}  {service['host_src_path']} {vm['vm_username']}@{vm['vm_ip']}:{vm['vm_service_path']}"
+            command = f"scp -o StrictHostKeyChecking=no -r -i {vm['vm_key_path']}  {service['host_src_path']} {vm['vm_username']}@{vm['vm_ip']}:{vm['vm_service_path']}"
             ssh_connect_command = f"""
-                ssh -i {vm['vm_key_path']} {vm['vm_username']}@{vm['vm_ip']} "cd Services ; cd {service['folder_name']}; 
+                ssh -o StrictHostKeyChecking=no -i {vm['vm_key_path']} {vm['vm_username']}@{vm['vm_ip']} "cd Services ; cd {service['folder_name']}; 
                 sudo bash ./{service['service_start_shell_file']}"
                 """
 
@@ -121,7 +121,7 @@ def stop_service_in_VM():
         for service in services:
             vm = vm_keys[idx]
             ssh_connect_command = f"""
-                ssh -i {vm['vm_key_path']} {vm['vm_username']}@{vm['vm_ip']} "cd Services ; cd {service['folder_name']}; 
+                ssh -o StrictHostKeyChecking=no -i {vm['vm_key_path']} {vm['vm_username']}@{vm['vm_ip']} "cd Services ; cd {service['folder_name']}; 
                 sudo bash ./{service['service_end_shell_file']}"
                 """
 

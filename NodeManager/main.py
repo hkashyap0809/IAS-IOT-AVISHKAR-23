@@ -12,6 +12,7 @@ import threading
 from flask import Flask
 from kafka import KafkaProducer, KafkaConsumer
 import json
+from logger import logger
 
 
 def sql_query_runner(sql_query):
@@ -200,6 +201,7 @@ def home():
 @app.route("/health", methods=['GET'])
 @cross_origin()
 def health():
+    logger.info("Health Checked")
     return "Ok"
 
 
@@ -268,8 +270,20 @@ def consume_requests():
             send(request_data, msg, requests_m1_c, requests_m1_p)
 
 
+@app.route("/get_logs", methods=['GET'])
+@cross_origin()
+def get_logs():
+    logs = ""
+    with open("/logs/nodemgr_logs.log", "r") as log_file:
+        for line in (log_file.readlines()[-10:]):
+            logs += line
+
+    print(logs)
+    return {"logs": logs}
+
+
 if __name__ == "__main__":
     thread = threading.Thread(target=consume_requests)
     thread.start()
-    app.run(host='0.0.0.0', port=8060, debug=True, use_reloader=False)
+    app.run(host='0.0.0.0', port=8050, debug=True, use_reloader=False)
     thread.join()

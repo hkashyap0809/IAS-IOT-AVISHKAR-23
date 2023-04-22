@@ -7,6 +7,7 @@ from flask_cors import cross_origin
 
 from kafka_consumer_sensor import get_latest_node_data, get_latest_n_node_data
 from json_utilities import read_JSON, FOLDER_PATH
+from logger import logger
 
 # Get the absolute path of the directory containing this script
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -97,7 +98,20 @@ def home():
 @app.route("/health", methods=['GET'])
 @cross_origin()
 def health():
+    logger.info("Health Checked")
     return "Ok"
+
+
+@app.route("/get_logs", methods=['GET'])
+@cross_origin()
+def get_logs():
+    logs = ""
+    with open("/logs/sensormgr_logs.log", "r") as log_file:
+        for line in (log_file.readlines()[-10:]):
+            logs += line
+
+    print(logs)
+    return {"logs": logs}
 
 
 if __name__ == "__main__":

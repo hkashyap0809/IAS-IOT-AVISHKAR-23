@@ -1,5 +1,5 @@
 import json
-FOLDER_PATH="./SensorManager/sensor_json/"
+FOLDER_PATH="./sensor_json/"
 
 def print_JSON(json_dict):
     print(json.dumps(json_dict,indent=4))

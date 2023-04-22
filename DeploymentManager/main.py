@@ -1,4 +1,6 @@
 import threading
+
+import requests
 from flask import Flask
 from flask_cors import cross_origin
 from kafka import KafkaProducer, KafkaConsumer
@@ -6,6 +8,7 @@ import json
 from azure.storage.blob import BlobServiceClient
 import os
 from service_registry import *
+from logger import logger
 
 app = Flask(__name__)
 
@@ -82,10 +85,10 @@ def download_from_blob(app_name, folder_name):
 
 
 def deployInVM(service_start_shell_file, app_name, vm_ip, vm_username, vm_key_path, vm_service_path):
-    file_copy_command = f"scp -r -i {vm_key_path}  {app_name} {vm_username}@{vm_ip}:{vm_service_path}"
+    file_copy_command = f"scp -o StrictHostKeyChecking=no -r -i {vm_key_path}  {app_name} {vm_username}@{vm_ip}:{vm_service_path}"
 
     execute_command = f"""
-    ssh -i {vm_key_path} {vm_username}@{vm_ip} "cd {app_name}; sudo bash ./{service_start_shell_file}"
+    ssh -o StrictHostKeyChecking=no -i {vm_key_path} {vm_username}@{vm_ip} "cd {app_name}; sudo bash ./{service_start_shell_file}"
     """
 
     os.system(file_copy_command)
@@ -99,7 +102,7 @@ def deployInVM(service_start_shell_file, app_name, vm_ip, vm_username, vm_key_pa
 
 def unDeployInVM(service_stop_shell_file, app_name, vm_ip, vm_username, vm_key_path):
     execute_command = f"""
-        ssh -i {vm_key_path} {vm_username}@{vm_ip} "cd {app_name}; sudo bash ./{service_stop_shell_file}; rm -r ../{app_name}; cd .."
+        ssh -o StrictHostKeyChecking=no -i {vm_key_path} {vm_username}@{vm_ip} "cd {app_name}; sudo bash ./{service_stop_shell_file}; rm -r ../{app_name}; cd .."
         """
 
     os.system(execute_command)
@@ -278,6 +281,9 @@ def consume_requests():
             # deploy the app
             try:
                 deploy_app(ip_deploy, port_deploy, app_name)
+                params = {'appName': app_name, 'imageName': str(app_name).lower() + "_image", 'vmIp': ip_deploy,
+                          'hostPort': port_deploy, 'container_port': 8050, }
+                res = requests.get("http://http://20.21.102.175:8110/registerApp", params=params)
 
                 msg = {
                     'to_topic': 'first_topic',
@@ -309,6 +315,18 @@ def home():
 @cross_origin()
 def health():
     return "Ok"
+
+
+@app.route("/get_logs", methods=['GET'])
+@cross_origin()
+def get_logs():
+    logs = ""
+    with open("/logs/depmgr_logs.log", "r") as log_file:
+        for line in (log_file.readlines()[-10:]):
+            logs += line
+
+    print(logs)
+    return {"logs": logs}
 
 
 if __name__ == "__main__":
