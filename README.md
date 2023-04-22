@@ -21,9 +21,9 @@ python3 PlatformInitializer/main.py
 
 ### Install the important dependencies
 pip install pymongo
-pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
 pip install requests
 pip install flask
+pip install -U flask-cors
 pip install kafka-python
 pip install psycopg2
 if above commnad give error pip install psycopg2-binary
