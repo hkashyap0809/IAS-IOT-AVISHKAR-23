@@ -14,9 +14,8 @@
         "vm_username": "azureuser",
         "vm_key_path": "./VM-keys/VM2_key.cer",
         "vm_service_path": "/home/azureuser/LoadBalancerTesting",
-        "latestAvailablePort": 49153,
+        "latestAvailablePort": 49152,
         "hosted_apps": [
-            "testApp2"
         ]
     },
     {

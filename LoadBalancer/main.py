@@ -29,7 +29,7 @@ def health():
 def get_logs():
     logs = ""
     with open("/logs/lb_logs.log", "r") as log_file:
-        for line in (log_file.readlines()[-10:]):
+        for line in (log_file.readlines()[-100:]):
             logs += line
 
     print(logs)
@@ -49,10 +49,9 @@ def registerApp():
     containerPort = request.args.get("containerPort")
     hostPort = request.args.get("hostPort")
     containerId = request.args.get("containerId")
-    lbVmName = request.args.get("lbVmName")
 
     lbb = LoadBalancer()
-    return lbb.registerApp(appName, imageName, vmIp, int(containerPort), int(hostPort), containerId, lbVmName)
+    return lbb.registerApp(appName, imageName, vmIp, int(containerPort), int(hostPort), containerId, "VM1")
 
 
 if __name__ == "__main__":

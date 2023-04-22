@@ -4,6 +4,7 @@ import subprocess
 import re
 import time
 import requests
+from logger import logger
 
 
 class LoadBalancer:
@@ -75,7 +76,7 @@ class LoadBalancer:
         app, appHostVm = LoadBalancer.__getAppAndVmDetails__(appName)
 
         commandDocker = f"""sudo docker run --name {appName}_instance_{app["instances"] + 1} -d -p {appHostVm["latestAvailablePort"]}:{app["containerPort"]} {app["imageName"]} && sudo docker ps -l -q """
-        commandConnect = f"""ssh -i {appHostVm["vm_key_path"]} {appHostVm["vm_username"]}@{appHostVm["vm_ip"]} """
+        commandConnect = f"""ssh -o StrictHostKeyChecking=no -i {appHostVm["vm_key_path"]} {appHostVm["vm_username"]}@{appHostVm["vm_ip"]} """
 
         result = subprocess.run(
             f"""{commandConnect} {commandDocker} """.split(),
@@ -93,7 +94,7 @@ class LoadBalancer:
                                     "append")
         LoadBalancer.__updateJson__('VmDetails.json', "vm_name", appHostVm["vm_name"], "latestAvailablePort",
                                     appHostVm["latestAvailablePort"] + 1)
-        print(f"Replica of {appName} created!")
+        logger.info(f"Replica of {appName} created!")
 
     @staticmethod
     def __updateNginxConfig__(appName: str, lbVmName: str, hostPort: int):
@@ -112,7 +113,7 @@ class LoadBalancer:
         app, appHostVm = LoadBalancer.__getAppAndVmDetails__(appName)
         lbVm = LoadBalancer.__getDictFromJson__('VmDetails.json', "vm_name", lbVmName)
 
-        commandConnect = f'''ssh -i {lbVm["vm_key_path"]} {lbVm["vm_username"]}@{lbVm["vm_ip"]}'''
+        commandConnect = f'''ssh -o StrictHostKeyChecking=no -i {lbVm["vm_key_path"]} {lbVm["vm_username"]}@{lbVm["vm_ip"]}'''
         commandReadConfig = f'''cd /etc/nginx/conf.d && cat {appName}.conf'''
 
         result = subprocess.run(f'{commandConnect} {commandReadConfig}'.split(), stdout=subprocess.PIPE)
@@ -131,7 +132,7 @@ sudo nginx -s reload
 
         """
         os.system(f'''{commandConnect} "{commandEmptyConfig}; {commandUpdateConfig}"''')
-        print(f"Added replica to config file of {appName}.config")
+        logger.info(f"Added replica to config file of {appName}.config")
 
     @staticmethod
     def registerApp(appName: str, imageName: str, vmIp: str, containerPort: int, hostPort: int, containerId: str,
@@ -174,13 +175,13 @@ sudo nginx -s reload
         # make a config file in nginx conf.d
         LoadBalancer.__addNginxConfigFile__(appName, lbVmName)
 
-        print(f"Successfully registered {appName}")
+        logger.info(f"Successfully registered {appName}")
         lbVm = LoadBalancer.__getDictFromJson__('VmDetails.json', "vm_name", lbVmName)
         appUpdatedDict = LoadBalancer.__getDictFromJson__("AppDetails.json", "appName", appName)
         LoadBalancer.__updateJson__('AppDetails.json', "appName", appName, "endpoint",
                                     f'http://{lbVm["vm_ip"]}:{appUpdatedDict["nginxPort"]}', 'addKey')
 
-        print(f'Endpoint of {appName} -> http://{lbVm["vm_ip"]}:{appUpdatedDict["nginxPort"]}')
+        logger.info(f'Endpoint of {appName} -> http://{lbVm["vm_ip"]}:{appUpdatedDict["nginxPort"]}')
         return f'{lbVm["vm_ip"]}:{appUpdatedDict["nginxPort"]}'
 
     @staticmethod
@@ -212,7 +213,7 @@ server {{
 
 """
         createConfig = f"""
-ssh -i {lbVm["vm_key_path"]} {lbVm["vm_username"]}@{lbVm["vm_ip"]} "
+ssh -o StrictHostKeyChecking=no -i {lbVm["vm_key_path"]} {lbVm["vm_username"]}@{lbVm["vm_ip"]} "
 cd /etc/nginx/conf.d
 sudo touch {appName}.conf
 sudo tee {appName}.conf > /dev/null << EOF
@@ -227,7 +228,7 @@ sudo nginx -s reload
                                     nginxport[0]["latestAvailablePort"])
         LoadBalancer.__updateJson__("NginxPort.json", "id", "default", "latestAvailablePort",
                                     nginxport[0]["latestAvailablePort"] + 1)
-        print(f"{appName}.conf created")
+        logger.info(f"{appName}.conf created")
 
     @staticmethod
     def __getContainerRamUsage__(vm: dict, containerId: str):
@@ -236,7 +237,7 @@ sudo nginx -s reload
         :param containerId: id of the container whose RAM usage is to be found
         :return: Percentage of RAM currently under use
         """
-        commandConnect = f'''ssh -i {vm["vm_key_path"]} {vm["vm_username"]}@{vm["vm_ip"]}'''
+        commandConnect = f'''ssh -o StrictHostKeyChecking=no -i {vm["vm_key_path"]} {vm["vm_username"]}@{vm["vm_ip"]}'''
         commandDocker = f'''sudo docker container stats --no-stream {containerId} --format {{{{.MemUsage}}}}'''
         output = subprocess.check_output(f'{commandConnect} {commandDocker}'.split())
         # output.decode.strip is like "40.55MiB / 906MiB"
@@ -255,7 +256,7 @@ sudo nginx -s reload
         :return: Percentage of CPU currently under use
         """
 
-        commandConnect = f'''ssh -i {vm["vm_key_path"]} {vm["vm_username"]}@{vm["vm_ip"]}'''
+        commandConnect = f'''ssh -o StrictHostKeyChecking=no -i {vm["vm_key_path"]} {vm["vm_username"]}@{vm["vm_ip"]}'''
         commandDocker = f'''sudo docker container stats --no-stream {containerId} --format "{{{{.CPUPerc}}}}"'''
         output = subprocess.check_output(f'{commandConnect} {commandDocker}'.split())
         cpuPercentage = re.sub("[^0-9.]", "", output.decode())
@@ -266,31 +267,27 @@ sudo nginx -s reload
         with open('AppDetails.json') as json_file:
             allApps = json.load(json_file)
         for app in allApps:
-            print(f"checking load on {app['appName']}")
+            logger.info(f"checking load on {app['appName']}")
             appHostVm = LoadBalancer.__getDictFromJson__('VmDetails.json', 'vm_name', app["hostVm"])
             for container in app["containerIds"]:
                 ramUsage = LoadBalancer.__getContainerRamUsage__(appHostVm, container)
                 cpuUsage = LoadBalancer.__getContainerCpuUsage__(appHostVm, container)
 
                 if ramUsage > 75 or cpuUsage > 80:
-                    print(
+                    logger.info(
                         f'{app["appName"]}, container - {container} is unhealthy; RAM utilization = {ramUsage}% ; CPU utilization = {cpuUsage}%')
                     LoadBalancer.addReplica(app["appName"], lbVmName)
                     break  # don't create a new container for every unhealthy container. Just create one. If needed
                     # create one more in the next round
                 else:
-                    print(
+                    logger.info(
                         f'{app["appName"]}, container - {container} is healthy; RAM utilization = {ramUsage}% ; CPU utilization = {cpuUsage}%')
 
     @staticmethod
     def balance(lbVmName):
-        breakCounter = 0
         while True:
             LoadBalancer.__balanceOnce__(lbVmName)
-            breakCounter += 1
-            time.sleep(10)
-            if breakCounter == 3:
-                break
+            time.sleep(100)
 
     @staticmethod
     def __heartBeatOnce__():
@@ -301,11 +298,11 @@ sudo nginx -s reload
         for app in allApps:
             response = requests.get(f'{app["endpoint"]}/heartbeat')
             if response.status_code == 200:
-                print(f'{app["appName"]} is alive!')
-                print("Success! Response body:", response.text)
+                logger.info(f'{app["appName"]} is alive!')
+                logger.info("Success! Response body:", response.text)
             else:
-                print(f'{app["appName"]} is dead!')
-                print("Failed with status code:", response.status_code)
+                logger.info(f'{app["appName"]} is dead!')
+                logger.info("Failed with status code:", response.status_code)
             time.sleep(5)
 
     @staticmethod
