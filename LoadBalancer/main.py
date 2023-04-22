@@ -19,14 +19,14 @@ def registerApp():
     """
     appName = request.args.get("appName")
     imageName = request.args.get("imageName")
-    hostVm = request.args.get("hostVm")
+    vmIp = request.args.get("vmIp")
     containerPort = request.args.get("containerPort")
     hostPort = request.args.get("hostPort")
     containerId = request.args.get("containerId")
     lbVmName = request.args.get("lbVmName")
 
     lbb = LoadBalancer()
-    return lbb.registerApp(appName, imageName, hostVm, int(containerPort), int(hostPort), containerId, lbVmName)
+    return lbb.registerApp(appName, imageName, vmIp, int(containerPort), int(hostPort), containerId, lbVmName)
 
 
 if __name__ == "__main__":

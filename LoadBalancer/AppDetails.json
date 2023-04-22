@@ -1,57 +1,19 @@
 [
     {
-        "appName": "testApp1",
-        "imageName": "test_app1_image",
-        "hostVm": "VM1",
-        "instances": 3,
-        "containerPort": 7200,
-        "hostPorts": [
-            30000,
-            49152,
-            49153
-        ],
-        "nginxPort": 2000,
-        "containerIds": [
-            "180b5f7b7ca8",
-            "f35d72716dc5",
-            "9fe805c29238"
-        ],
-        "endpoint": "http://20.21.102.175:2000"
-    },
-    {
         "appName": "testApp2",
         "imageName": "test_app2_image",
         "hostVm": "VM2",
-        "instances": 4,
+        "instances": 2,
         "containerPort": 7200,
         "hostPorts": [
             30000,
-            49152,
-            49153,
-            49154
+            49152
         ],
-        "nginxPort": 2001,
+        "nginxPort": 2000,
         "containerIds": [
             "42412462b45a",
-            "2192a4e279ba",
-            "7865a317035a",
-            "88dfa55ff747"
+            "bf1b2b32cf43"
         ],
-        "endpoint": "http://20.21.102.175:2001"
-    },
-    {
-        "appName": "testApp3",
-        "imageName": "test_app3_image",
-        "hostVm": "VM3",
-        "instances": 1,
-        "containerPort": 7200,
-        "hostPorts": [
-            30000
-        ],
-        "nginxPort": 2002,
-        "containerIds": [
-            "87a09e0c621c"
-        ],
-        "endpoint": "http://20.21.102.175:2002"
+        "endpoint": "http://20.21.102.175:2000"
     }
 ]

@@ -134,23 +134,24 @@ sudo nginx -s reload
         print(f"Added replica to config file of {appName}.config")
 
     @staticmethod
-    def registerApp(appName: str, imageName: str, hostVm: str, containerPort: int, hostPort: int, containerId: str,
+    def registerApp(appName: str, imageName: str, vmIp: str, containerPort: int, hostPort: int, containerId: str,
                     lbVmName: str):
         """
         When deployment manager deploys the app, it should send the above information to the load balancer.
         Load balance will then register the original instance of the app by updating its jsons
+        :param vmIp: The ip of the vm on which the app has been deployed
         :param containerId: ID of the container in which original instance of the app is running
         :param appName: Name of the application. This will also be the name of .conf file in /etc/nginx/conf.d
         :param imageName: The name of the image which was used in docker run command to make the container for the app
-        :param hostVm: Name as per VmDetails.json
         :param containerPort: The port on which the app is listening inside the container
         :param hostPort: The port of the host VM
         :param lbVmName: This is the name of VM on which load balancer is running
-        :return: None
+        :return: End point of the application
         """
         with open("./AppDetails.json") as file:
             apps = json.load(file)
-
+        vm = LoadBalancer.__getDictFromJson__("VmDetails.json", 'vm_ip', vmIp)
+        hostVm = vm['vm_name']
         newApp = {
             "appName": appName,
             "imageName": imageName,
@@ -320,13 +321,13 @@ sudo nginx -s reload
 
 if __name__ == "__main__":
     lb = LoadBalancer()
-    lb.registerApp("testApp1", "test_app1_image", "VM1", 7200, 30000, "180b5f7b7ca8", "VM1")
-    lb.registerApp("testApp2", "test_app2_image", "VM2", 7200, 30000, "42412462b45a", "VM1")
-    lb.registerApp("testApp3", "test_app3_image", "VM3", 7200, 30000, "87a09e0c621c", "VM1")
-    lb.addReplica("testApp1", "VM1")  # forcefully create replica
-    lb.addReplica("testApp1", "VM1")  # forcefully create replica
+    # lb.registerApp("testApp1", "test_app1_image", "VM1", 7200, 30000, "180b5f7b7ca8", "VM1")
+    lb.registerApp("testApp2", "test_app2_image", "20.173.88.38", 7200, 30000, "42412462b45a", "VM1")
+    # lb.registerApp("testApp3", "test_app3_image", "VM3", 7200, 30000, "87a09e0c621c", "VM1")
+    # lb.addReplica("testApp1", "VM1")  # forcefully create replica
+    # lb.addReplica("testApp1", "VM1")  # forcefully create replica
     lb.addReplica("testApp2", "VM1")  # forcefully create replica
-    lb.addReplica("testApp2", "VM1")  # forcefully create replica
-    lb.addReplica("testApp2", "VM1")  # forcefully create replica
+    # lb.addReplica("testApp2", "VM1")  # forcefully create replica
+    # lb.addReplica("testApp2", "VM1")  # forcefully create replica
     # lb.listenHeartbeat()  # listen heartbeat for three cycles (for now)
-    lb.balance("VM1")  # balance load for three cycles (for now)
+    # lb.balance("VM1")  # balance load for three cycles (for now)

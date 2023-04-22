@@ -5,10 +5,8 @@
         "vm_username": "azureuser",
         "vm_key_path": "../VM-keys/VM1_key.cer",
         "vm_service_path": "/home/azureuser/LoadBalancerTesting",
-        "latestAvailablePort": 49154,
-        "hosted_apps": [
-            "testApp1"
-        ]
+        "latestAvailablePort": 49152,
+        "hosted_apps": []
     },
     {
         "vm_name": "VM2",
@@ -16,7 +14,7 @@
         "vm_username": "azureuser",
         "vm_key_path": "../VM-keys/VM2_key.cer",
         "vm_service_path": "/home/azureuser/LoadBalancerTesting",
-        "latestAvailablePort": 49155,
+        "latestAvailablePort": 49153,
         "hosted_apps": [
             "testApp2"
         ]
@@ -28,8 +26,6 @@
         "vm_key_path": "../VM-keys/VM3_key.cer",
         "vm_service_path": "/home/azureuser/LoadBalancerTesting",
         "latestAvailablePort": 49152,
-        "hosted_apps": [
-            "testApp3"
-        ]
+        "hosted_apps": []
     }
 ]
