@@ -75,7 +75,7 @@ class LoadBalancer:
         app, appHostVm = LoadBalancer.__getAppAndVmDetails__(appName)
 
         commandDocker = f"""sudo docker run --name {appName}_instance_{app["instances"] + 1} -d -p {appHostVm["latestAvailablePort"]}:{app["containerPort"]} {app["imageName"]} && sudo docker ps -l -q """
-        commandConnect = f"""ssh -i {appHostVm["vm_key_path"]} {appHostVm["vm_username"]}@{appHostVm["vm_ip"]} """
+        commandConnect = f"""ssh -o StrictHostKeyChecking=no -i {appHostVm["vm_key_path"]} {appHostVm["vm_username"]}@{appHostVm["vm_ip"]} """
 
         result = subprocess.run(
             f"""{commandConnect} {commandDocker} """.split(),
@@ -112,7 +112,7 @@ class LoadBalancer:
         app, appHostVm = LoadBalancer.__getAppAndVmDetails__(appName)
         lbVm = LoadBalancer.__getDictFromJson__('VmDetails.json', "vm_name", lbVmName)
 
-        commandConnect = f'''ssh -i {lbVm["vm_key_path"]} {lbVm["vm_username"]}@{lbVm["vm_ip"]}'''
+        commandConnect = f'''ssh -o StrictHostKeyChecking=no -i {lbVm["vm_key_path"]} {lbVm["vm_username"]}@{lbVm["vm_ip"]}'''
         commandReadConfig = f'''cd /etc/nginx/conf.d && cat {appName}.conf'''
 
         result = subprocess.run(f'{commandConnect} {commandReadConfig}'.split(), stdout=subprocess.PIPE)
@@ -212,7 +212,7 @@ server {{
 
 """
         createConfig = f"""
-ssh -i {lbVm["vm_key_path"]} {lbVm["vm_username"]}@{lbVm["vm_ip"]} "
+ssh -o StrictHostKeyChecking=no -i {lbVm["vm_key_path"]} {lbVm["vm_username"]}@{lbVm["vm_ip"]} "
 cd /etc/nginx/conf.d
 sudo touch {appName}.conf
 sudo tee {appName}.conf > /dev/null << EOF
@@ -236,7 +236,7 @@ sudo nginx -s reload
         :param containerId: id of the container whose RAM usage is to be found
         :return: Percentage of RAM currently under use
         """
-        commandConnect = f'''ssh -i {vm["vm_key_path"]} {vm["vm_username"]}@{vm["vm_ip"]}'''
+        commandConnect = f'''ssh -o StrictHostKeyChecking=no -i {vm["vm_key_path"]} {vm["vm_username"]}@{vm["vm_ip"]}'''
         commandDocker = f'''sudo docker container stats --no-stream {containerId} --format {{{{.MemUsage}}}}'''
         output = subprocess.check_output(f'{commandConnect} {commandDocker}'.split())
         # output.decode.strip is like "40.55MiB / 906MiB"
@@ -255,7 +255,7 @@ sudo nginx -s reload
         :return: Percentage of CPU currently under use
         """
 
-        commandConnect = f'''ssh -i {vm["vm_key_path"]} {vm["vm_username"]}@{vm["vm_ip"]}'''
+        commandConnect = f'''ssh -o StrictHostKeyChecking=no -i {vm["vm_key_path"]} {vm["vm_username"]}@{vm["vm_ip"]}'''
         commandDocker = f'''sudo docker container stats --no-stream {containerId} --format "{{{{.CPUPerc}}}}"'''
         output = subprocess.check_output(f'{commandConnect} {commandDocker}'.split())
         cpuPercentage = re.sub("[^0-9.]", "", output.decode())
