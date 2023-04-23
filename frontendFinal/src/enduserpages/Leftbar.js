@@ -2,17 +2,23 @@ import React, { useState, useEffect } from "react";
 import "../css/style.css";
 import Cardview from "../enduserpages/Cardview";
 import Loader from "../utils/Loader";
-import { axiosAppInstance } from "../utils/axiosInstance";
+import {
+  axiosAppInstance,
+  axiosLocationInstance,
+} from "../utils/axiosInstance";
 import AboutUs from "../AboutUs";
+import axios from "axios";
 function Leftbar() {
   const [tabIndex, setTabIndex] = useState(1);
   const [uploadedApps, setUploadedApps] = useState([]);
   const [deployedApps, setDeployedApps] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [isDateTimeEnabled, setIsDateTimeEnabled] = useState(false);
-  const [sensorLocation, setSensorLocation] = useState("OBH");
+  const [sensorLocation, setSensorLocation] = useState([]);
   const [validationMsg, setValidationMsg] = useState("");
   const [appToDeploy, setAppToDeploy] = useState("");
+  const [applicationType, setApplicationType] = useState("");
+  const [location, setLocation] = useState("");
   const handleTabIndex = (e) => {
     e.preventDefault();
     setAppToDeploy("");
@@ -58,6 +64,23 @@ function Leftbar() {
           console.log(err);
           setLoading(false);
         });
+    } else if (tabIndex === 0) {
+      setLoading(true);
+      // const url = `http://20.21.102.175:2041/api/sensor/location/${applicationType}`;
+      // const url = `http://192.168.202.134:8050/api/sensor/location/${applicationType}`;
+      axiosLocationInstance
+        .get(`/api/sensor/location/${applicationType}`)
+        .then((response) => {
+          console.log(response);
+          const { data } = response;
+          setSensorLocation([...data]);
+          setLocation(data[0]);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
     }
     setLoading(false);
   }, [tabIndex]);
@@ -70,9 +93,11 @@ function Leftbar() {
     appId,
     appName,
     developer,
-    url
+    url,
+    appType
   ) => {
     if (isUploadCard) {
+      setApplicationType(appType);
       setTabIndex(0);
       setAppToDeploy({
         baseAppId: appId,
@@ -90,7 +115,15 @@ function Leftbar() {
         key={idx}
         appName={app.appName}
         switchToLocationInput={(e) =>
-          switchToLocationInput(e, true, app.id, app.appName, app.developer, "")
+          switchToLocationInput(
+            e,
+            true,
+            app.id,
+            app.appName,
+            app.developer,
+            "",
+            app.appType
+          )
         }
       />
     ))
@@ -109,7 +142,8 @@ function Leftbar() {
             app.baseAppId,
             app.deployedAppName,
             app.developer,
-            app.url
+            app.url,
+            app.appType
           )
         }
       />
@@ -136,7 +170,7 @@ function Leftbar() {
           {
             baseAppId,
             baseAppName,
-            location: sensorLocation,
+            location,
             developer,
           },
           config
@@ -154,6 +188,18 @@ function Leftbar() {
     }
   };
 
+  const handleOptionSelect = (e) => {
+    e.preventDefault();
+    setLocation(e.target.value);
+  };
+
+  const optionsData = sensorLocation.map((l, idx) => (
+    <option key={idx} value={l}>
+      {l}
+    </option>
+  ));
+  console.log("Location is: ", location);
+  console.log("Location array is: ", sensorLocation);
   return (
     <div>
       <div
@@ -305,10 +351,9 @@ function Leftbar() {
                       <select
                         className="form-select form-select-lg mb-3"
                         aria-label=".form-select-lg example location-selected"
+                        onChange={handleOptionSelect}
                       >
-                        <option value="1">OBH</option>
-                        <option value="2">Vindhya</option>
-                        <option value="3">KRB</option>
+                        {optionsData}
                       </select>
                       <br />
                     </div>

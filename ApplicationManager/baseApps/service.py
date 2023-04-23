@@ -91,7 +91,7 @@ def validate_zip(userName, role, request, inpFile):
             )
         fileName = splittedFileName[0]
         file_list = []
-        expected_file_list = ['app.json', 'main.py', 'requirements.txt', 'index.html']
+        expected_file_list = ['app.json', 'main.py', 'requirements.txt', 'index.html', 'static']
         with StringIO() as buffer:
             # redirect the stdout to the buffer
             with redirect_stdout(buffer):

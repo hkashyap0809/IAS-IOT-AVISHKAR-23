@@ -38,6 +38,47 @@ def wait_for_message(from_topic, appName, uid):
             print("App deployed")
             break
 
+def upload_app(target_directory):
+    # Target directory has the actual directory with the appName inside the static/uploads folder
+    connection_string = environ.get("AZURE_BLOB_CONN_STRING")
+    container_name = environ.get("DEPLOYED_APPS_CONTAINER")
+    blob_service_client = BlobServiceClient.from_connection_string(connection_string)
+    blob_service_client.get_container_client(container_name)
+    overwrite = False
+    for folder in os.walk(target_directory):
+        for file in folder[-1]:
+            try:
+                blob_path = os.path.join(folder[0].replace(uploadFolder + '/', ''), file)
+                blob_obj = blob_service_client.get_blob_client(container=container_name, blob=blob_path)
+
+                with open(os.path.join(folder[0], file), mode='rb') as fileData:
+                    blob_obj.upload_blob(fileData, overwrite = overwrite)
+            except ResourceExistsError:
+                print('Blob "{0}" already exists'.format(blob_path))
+                continue
+
+def download_blob(appFolder, baseAppName):
+    MY_CONNECTION_STRING = environ.get("AZURE_BLOB_CONN_STRING")
+    # Replace with blob container
+    MY_BLOB_CONTAINER = environ.get("BASE_APPS_CONTAINER")
+
+    # Replace with the local folder where you want files to be downloaded
+    LOCAL_BLOB_PATH = appFolder
+    blobServiceClient = BlobServiceClient.from_connection_string(MY_CONNECTION_STRING)
+    myContainer = blobServiceClient.get_container_client(MY_BLOB_CONTAINER)
+
+    my_blobs = myContainer.list_blobs()
+
+    for blob in my_blobs:
+        if baseAppName + "/" in blob.name:
+            print(blob.name)
+            bytes = myContainer.get_blob_client(blob).download_blob().readall()
+            removeAppNameFromPath = (blob.name).split("/")
+            removeAppNameFromPath = "/".join(removeAppNameFromPath[1:])
+            download_file_path = os.path.join(LOCAL_BLOB_PATH, removeAppNameFromPath)
+            os.makedirs(os.path.dirname(download_file_path), exist_ok=True)
+            with open(download_file_path, "wb") as file:
+                file.write(bytes)
 
 @verify_token
 def getDeployedApps(userName, role, request):
@@ -89,22 +130,7 @@ def deployApp(userName, role, request, inputData):
     appFolder = os.path.join(uploadFolder, replicatedAppName)
     os.mkdir(appFolder)
     # **************************** Download baseApp folder from azure ****************************
-    connectionString = environ.get("AZURE_BLOB_CONN_STRING")
-    directoryPrefix = baseAppName
-    blobServiceClient = BlobServiceClient.from_connection_string(connectionString)
-    baseContainerName = environ.get("BASE_APPS_CONTAINER")
-    containerClient = blobServiceClient.get_container_client(container=baseContainerName)
-    # blobList = blobServiceClient.list_blobs(container=baseContainerName, prefix=directoryPrefix)
-    blobList = containerClient.list_blobs(name_starts_with=directoryPrefix)
-    # Download each blob individually
-    for blob in blobList:
-        print(blob.name)
-        blobName = (blob.name).split('/')[1]
-        blobClient = blobServiceClient.get_blob_client(container=baseContainerName, blob=blob.name)
-        blob_data = blobClient.download_blob().content_as_bytes()
-        # with open("{}/{}".format(appFolder, blob.name), "wb") as f:
-        with open("{}/{}".format(appFolder, blobName), "wb") as f:
-            f.write(blob_data)
+    download_blob(appFolder, baseAppName)
     # **************************** Add Location to json file ****************************
     jsonFileName = 'app.json'
     jsonFilePath = os.path.join(uploadFolder, replicatedAppName, jsonFileName)
@@ -116,25 +142,7 @@ def deployApp(userName, role, request, inputData):
     with open(jsonFilePath, 'w') as f:
         f.write(serializeDataObj)
     # **************************** Upload folder back to azure ****************************
-    deployedContainerName = environ.get("DEPLOYED_APPS_CONTAINER")
-    blobServiceClient = BlobServiceClient.from_connection_string(connectionString)
-    blobServiceClient.get_container_client(deployedContainerName)
-    overwrite=False
-    for folder in os.walk(appFolder):
-        for file in folder[-1]:
-            try:
-                blob_path = os.path.join(folder[0].replace(uploadFolder + '/', ''), file)
-                blob_obj = blobServiceClient.get_blob_client(container=deployedContainerName, blob=blob_path)
-
-                with open(os.path.join(folder[0], file), mode='rb') as fileData:
-                    blob_obj.upload_blob(fileData, overwrite = overwrite)
-            except ResourceExistsError as e:
-                print(e)
-                return generate_response(
-                    data="Error occurred while uploading replica zip",
-                    message="Error occurred while uploading replica zip",
-                    status=HTTP_400_BAD_REQUEST
-                )
+    upload_app(appFolder)
     # **************************** Delete the folder from static folder ****************************
     shutil.rmtree(appFolder)
     # **************************** Now ask the deployment manager to deploy the app ****************************
@@ -163,7 +171,7 @@ def deployApp(userName, role, request, inputData):
             message="Some error occurred... App not deployed",
             status=HTTP_400_BAD_REQUEST
         )
-    # url = "http://localhost:4000"
+    # url = "localhost:4000"
     # **************************** Save the url into deployedApps table  ****************************
     obj = {
         'baseAppId': baseAppId,
