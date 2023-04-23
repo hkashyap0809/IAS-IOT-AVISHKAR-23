@@ -77,6 +77,7 @@ function Leftbar() {
       // Handle View All Scheduled Apps
     } else if (tabIndex === 7) {
       // Handle VM Health
+      setLoading(true);
       getLatestHealthVm();
     } else if (tabIndex === 8) {
       // Handle Live Sensor Data
@@ -284,13 +285,13 @@ function Leftbar() {
     return <VmHealth key={idx} data={v} />;
   });
 
-  const loadBalancerServicesData = loadBalancerServices.map((service, idx) => {
-    return <LoadBalancerCard key={idx} services={service} isServices={true} />;
-  });
+  // const loadBalancerServicesData = loadBalancerServices.map((service, idx) => {
+  //   return <LoadBalancerCard key={idx} services={service} isServices={true} />;
+  // });
 
-  const loadBalancerStatsData = loadBalancerStats.map((stat, idx) => {
-    return <LoadBalancerCard key={idx} services={stat} isServices={false} />;
-  });
+  // const loadBalancerStatsData = loadBalancerStats.map((stat, idx) => {
+  //   return <LoadBalancerCard key={idx} services={stat} isServices={false} />;
+  // });
 
   return (
     <div>
@@ -593,28 +594,25 @@ function Leftbar() {
               <main className="mt-5 pt-1">
                 <div className="container-fluid">
                   <div className="row">
-                    <Loader spinning={isLoading}>
-                      <div className="card-container mt-5">
-                        {!isLoading ? (
-                          vmHealthData
-                        ) : (
-                          <>
-                            <h4>Fetching VM's health</h4>
-                            <br />
-                            <div className="spinner-border m-2" role="status">
-                              <span className="visullay-hidden"></span>
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    </Loader>
+                    <div className="card-container mt-5">
+                      {!isLoading ? (
+                        vmHealthData
+                      ) : (
+                        <>
+                          <h4>Fetching VM's health</h4>
+                          <br />
+                          <div className="spinner-border m-2" role="status">
+                            <span className="visullay-hidden"></span>
+                          </div>
+                        </>
+                      )}
+                    </div>
                   </div>
                 </div>
               </main>
               <style jsx>{`
                 .card-container {
                   display: flex;
-                  justify-content: space-between;
                   margin: 10 -10px;
                 }
                 .card-container > * {
@@ -635,8 +633,20 @@ function Leftbar() {
                 ) : (
                   <>
                     {" "}
-                    <div>{loadBalancerServicesData}</div>
-                    <div>{loadBalancerStatsData}</div>
+                    {/* <div>{loadBalancerServicesData}</div> */}
+                    <div>
+                      <LoadBalancerCard
+                        services={loadBalancerServices}
+                        isServices={true}
+                        name="All Services"
+                      />
+                      <LoadBalancerCard
+                        services={loadBalancerStats}
+                        isServices={false}
+                        name="All Modules Stats"
+                      />
+                    </div>
+                    {/* <div>{loadBalancerStatsData}</div> */}
                   </>
                 )}
               </div>

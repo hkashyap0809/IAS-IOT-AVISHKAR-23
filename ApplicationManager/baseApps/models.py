@@ -15,6 +15,9 @@ class BaseApp(db.Model):
     developer = db.Column(db.String(64), index=True, unique=False, nullable=False)
     status = db.Column(db.String(64), index=True, unique=False, default="uploaded", nullable=False)
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=True)
+    appDesc = db.Column(db.String(256), index=True, unique=False, nullable=False)
+    appType = db.Column(db.String(15), index=True, unique=False, nullable=False)
+    sensorTypes = db.Column(db.String(256), index=True, unique=False, nullable=False)
 
     def __init__(self, **kwargs):
         """
@@ -23,6 +26,9 @@ class BaseApp(db.Model):
         """
         self.appName = kwargs.get("appName")
         self.developer = kwargs.get("developer")
+        self.appDesc = kwargs.get("appDesc")
+        self.appType = kwargs.get("appType")
+        self.sensorTypes = kwargs.get("sensorTypes")
         
 
     # def __repr__(self):

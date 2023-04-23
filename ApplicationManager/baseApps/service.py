@@ -21,13 +21,16 @@ import jwt
 basedir = path.abspath(path.dirname(__file__))
 uploadFolder = path.join(basedir, "..", "static", "uploads")
 
-def saveBaseApp(appName, userName):
+def saveBaseApp(appName, userName, appDescription, applicationType, sensorTypes):
     """
     Saves a new baseApp to the database
     """
     obj = {
         'appName': appName,
-        'developer': userName
+        'developer': userName,
+        'appDesc': appDescription,
+        'appType': applicationType,
+        'sensorTypes': json.dumps(sensorTypes)
     }
     baseApp = BaseApp(**obj)
     try:
@@ -146,6 +149,18 @@ def validate_zip(userName, role, request, inpFile):
                     message="No sensors provided",
                     status=HTTP_400_BAD_REQUEST
                 )
+            if len(data["applicationType"]) == 0:
+                return generate_response(
+                    data="Application Type cannot be empty",
+                    status="Application Type cannot be empty",
+                    message=HTTP_400_BAD_REQUEST
+                )
+            if len(data["applicationDescription"]) == 0:
+                return generate_response(
+                    data="Application Description cannot be empty",
+                    message="Application Description cannot be empty",
+                    status=HTTP_400_BAD_REQUEST
+                )
             print("Validation done successfully!!")
         # Extract the zip file and store it
         extractZip(inpFile)
@@ -161,7 +176,11 @@ def validate_zip(userName, role, request, inpFile):
     else:
         # Cleaning up leftovers after zip file uploaded successfully
         shutil.rmtree(uploadFolder + "/" + appName)
-        saveBaseApp(appName, userName)
+        # Save the baseApp to the db
+        appDescription = data["applicationDescription"]
+        applicationType = data["applicationType"]
+        sensorTypes = data["sensorTypes"]
+        saveBaseApp(appName, userName, appDescription, applicationType, sensorTypes)
 
     return generate_response(
         data=f"App {appName} validated and uploaded successfully",
@@ -186,7 +205,10 @@ def get_apps(userName, role, request):
         "developer": app.developer,
         "created": app.created,
         "appName": app.appName,
-        "status": app.status
+        "status": app.status,
+        "appDesc": app.appDesc,
+        "appType": app.appType,
+        "sensorTypes": app.sensorTypes
     } for app in apps]
     return generate_response(
         data=apps,

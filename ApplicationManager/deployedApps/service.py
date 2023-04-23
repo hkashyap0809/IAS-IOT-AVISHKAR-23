@@ -138,33 +138,39 @@ def deployApp(userName, role, request, inputData):
     # **************************** Delete the folder from static folder ****************************
     shutil.rmtree(appFolder)
     # **************************** Now ask the deployment manager to deploy the app ****************************
-    # to_topic, from_topic = 'DeploymentManager', 'first_topic'
-    # producer = KafkaProducer(bootstrap_servers=[environ.get("KAFKA_SERVER")])
-    # uid = str(uuid1())
-    # print("UID is: ", uid)
-    # message = {
-    #     'to_topic': to_topic,
-    #     'from_topic': from_topic,
-    #     'request_id': uid,
-    #     'msg': f'deploy app${replicatedAppName}'
-    # }
-    # producer.send(to_topic, json.dumps(message).encode('utf-8'))
+    to_topic, from_topic = 'DeploymentManager', 'first_topic'
+    producer = KafkaProducer(bootstrap_servers=[environ.get("KAFKA_SERVER")])
+    uid = str(uuid1())
+    print("UID is: ", uid)
+    message = {
+        'to_topic': to_topic,
+        'from_topic': from_topic,
+        'request_id': uid,
+        'msg': f'deploy app${replicatedAppName}'
+    }
+    producer.send(to_topic, json.dumps(message).encode('utf-8'))
 
-    # t = threading.Thread(target=wait_for_message, args=(from_topic, replicatedAppName, uid))
-    # t.start()
-    # t.join()
-    # print(response)
-    # url = response['msg'].split("-")
-    # url = url[1].strip()
-    # print(url)
-    url = "http://localhost:4000"
+    t = threading.Thread(target=wait_for_message, args=(from_topic, replicatedAppName, uid))
+    t.start()
+    t.join()
+    print(response)
+    if "done" in response["msg"]:
+        url = response['msg'].split("deploy - ")
+        url = url[1].strip()
+        print(url)
+    else:
+        return generate_response(
+            message="Some error occurred... App not deployed",
+            status=HTTP_400_BAD_REQUEST
+        )
+    # url = "http://localhost:4000"
     # **************************** Save the url into deployedApps table  ****************************
     obj = {
         'baseAppId': baseAppId,
         'developer': developer,
         'deployedAppName': replicatedAppName,
         'userName': userName,
-        'url': url
+        'url': 'http://' + url
     }
     deployedApp = DeployedApp(**obj)
     try:
@@ -180,16 +186,16 @@ def deployApp(userName, role, request, inputData):
     # **************************** Change the status of baseApp to deployed in baseApps table ****************************
     with db.session() as session:
         baseApp = BaseApp.query.filter_by(appName=inputData.get('baseAppName')).first()
-    try:
-        baseApp.status = 'deployed'
-        db.session.commit()
-        db.session.close()
-    except Exception as e:
-        print(e)
-        return generate_response(
-            message="Error occurred while updating status of baseApp",
-            status=HTTP_400_BAD_REQUEST
-        )
+        try:
+            baseApp.status = 'deployed'
+            session.commit()
+        except Exception as e:
+            print(e)
+            session.close()
+            return generate_response(
+                message="Error occurred while updating status of baseApp",
+                status=HTTP_400_BAD_REQUEST
+            )
     # **************************** Send response to user ****************************
     return generate_response(
         message=f'{baseAppName} deployed succesfully on {url}',

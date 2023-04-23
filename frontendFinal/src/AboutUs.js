@@ -53,8 +53,7 @@ function AboutUs() {
     },
     {
       name: "Rishabh Gupta",
-      imgUrl:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4BiN7nTQEK4W6oJkxig1wRUX1ZY3m250IIFKVxQS3XQ&s",
+      imgUrl: "https://img.freepik.com/free-icon/user_318-159711.jpg",
       rollNo: "2022201011",
       branch: "Mtech-CSIS",
     },

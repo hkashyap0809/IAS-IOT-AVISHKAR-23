@@ -1,9 +1,10 @@
 import React from "react";
 
-const LoadBalancerCard = ({ services, isServices }) => {
+const LoadBalancerCard = ({ services, isServices, name }) => {
+  console.log(services);
   return (
     <div>
-      <h2>All Modules And Apps Info:</h2>
+      <h2>{name}</h2>
       <hr />
       <ul className="ml-1">
         {services.map((service) => (

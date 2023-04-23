@@ -4,6 +4,7 @@ import "../css/style.css";
 import { axiosAppInstance } from "../utils/axiosInstance";
 import Cardview from "../enduserpages/Cardview";
 import Loader from "../utils/Loader";
+import AboutUs from "../AboutUs";
 
 // LeftBar of App Developer
 
@@ -27,6 +28,7 @@ function Leftbar() {
     if (e.target.id === "viewDeployedApps") setTabIndex(4);
     if (e.target.id === "viewWorkflows") setTabIndex(5);
     if (e.target.id === "docs") setTabIndex(6);
+    if (e.target.id === "we") setTabIndex(7);
   };
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -217,7 +219,11 @@ function Leftbar() {
               <li className="my-2">
                 <hr className="dropdown-divider bg-light" />
               </li>
-              <li>
+              <li
+                style={{
+                  backgroundColor: tabIndex === 1 ? "black" : "#212529",
+                }}
+              >
                 <a className="nav-link px-1">
                   <span className="me-1">
                     <i className="bi bi-upload"></i>
@@ -232,7 +238,11 @@ function Leftbar() {
                   </span>
                 </a>
               </li>
-              <li>
+              <li
+                style={{
+                  backgroundColor: tabIndex === 2 ? "black" : "#212529",
+                }}
+              >
                 <a className="nav-link px-1">
                   <span className="me-1">
                     <i className="bi bi-upload"></i>
@@ -248,7 +258,11 @@ function Leftbar() {
                 </a>
               </li>
 
-              <li>
+              <li
+                style={{
+                  backgroundColor: tabIndex === 3 ? "black" : "#212529",
+                }}
+              >
                 <a className="nav-link px-1">
                   <span className="me-1">
                     <i className="bi bi-eye"></i>
@@ -264,7 +278,11 @@ function Leftbar() {
                 </a>
               </li>
 
-              <li>
+              <li
+                style={{
+                  backgroundColor: tabIndex === 4 ? "black" : "#212529",
+                }}
+              >
                 <a className="nav-link px-1">
                   <span className="me-1">
                     <i className="bi bi-eye"></i>
@@ -280,7 +298,11 @@ function Leftbar() {
                 </a>
               </li>
 
-              <li>
+              <li
+                style={{
+                  backgroundColor: tabIndex === 5 ? "black" : "#212529",
+                }}
+              >
                 <a className="nav-link px-1">
                   <span className="me-1">
                     <i className="bi bi-eye"></i>
@@ -296,7 +318,11 @@ function Leftbar() {
                 </a>
               </li>
 
-              <li>
+              <li
+                style={{
+                  backgroundColor: tabIndex === 6 ? "black" : "#212529",
+                }}
+              >
                 <a className="nav-link px-1">
                   <span className="me-1">
                     <i className="bi bi-book"></i>
@@ -308,6 +334,25 @@ function Leftbar() {
                     style={{ cursor: "pointer" }}
                   >
                     Documentation
+                  </span>
+                </a>
+              </li>
+              <li
+                style={{
+                  backgroundColor: tabIndex === 7 ? "black" : "#212529",
+                }}
+              >
+                <a className="nav-link px-1">
+                  <span className="me-1">
+                    <i className="bi bi-info-circle"></i>
+                  </span>
+                  <span
+                    className={tabIndex === 7 ? "btns selctedbtn" : "btns"}
+                    onClick={handleTabIndex}
+                    id="we"
+                    style={{ cursor: "pointer" }}
+                  >
+                    We@Avishkar
                   </span>
                 </a>
               </li>
@@ -380,8 +425,45 @@ function Leftbar() {
             </main>
           </div>
         )}
-        {tabIndex === 3 && <div>{uploadedAppsData}</div>}
-        {tabIndex === 4 && <div>{deployedAppsData}</div>}
+        {tabIndex === 3 && (
+          <main className="mt-5 pt-1">
+            <div className="container-fluid">
+              <div className="row mt-5">
+                <Loader spinning={isLoading}>
+                  <div className="card-container">
+                    {uploadedAppsData.length ? (
+                      uploadedAppsData
+                    ) : (
+                      <div className="spinner-border m-2" role="status">
+                        <span className="visullay-hidden"></span>
+                      </div>
+                    )}
+                  </div>
+                </Loader>
+              </div>
+            </div>
+          </main>
+        )}
+        {tabIndex === 4 && (
+          <main className="mt-5 pt-1">
+            <div className="container-fluid">
+              <div className="row mt-5">
+                <Loader spinning={isLoading}>
+                  <div className="card-container">
+                    {deployedAppsData.length ? (
+                      deployedAppsData
+                    ) : (
+                      <div className="spinner-border m-2" role="status">
+                        <span className="visullay-hidden"></span>
+                      </div>
+                    )}
+                  </div>
+                </Loader>
+              </div>
+            </div>
+          </main>
+        )}
+        {tabIndex === 7 && <AboutUs />}
       </div>
     </div>
   );

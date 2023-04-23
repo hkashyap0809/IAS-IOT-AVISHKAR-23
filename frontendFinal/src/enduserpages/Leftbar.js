@@ -3,6 +3,7 @@ import "../css/style.css";
 import Cardview from "../enduserpages/Cardview";
 import Loader from "../utils/Loader";
 import { axiosAppInstance } from "../utils/axiosInstance";
+import AboutUs from "../AboutUs";
 function Leftbar() {
   const [tabIndex, setTabIndex] = useState(1);
   const [uploadedApps, setUploadedApps] = useState([]);
@@ -18,6 +19,7 @@ function Leftbar() {
     if (e.target.id === "upload") setTabIndex(1);
     if (e.target.id === "view") setTabIndex(2);
     if (e.target.id === "schedule") setTabIndex(3);
+    if (e.target.id === "we") setTabIndex(4);
   };
 
   useEffect(() => {
@@ -60,7 +62,7 @@ function Leftbar() {
     setLoading(false);
   }, [tabIndex]);
 
-  const toggleDateTime = (e) => e.preventDefault();
+  const toggleDateTime = (e) => setIsDateTimeEnabled(!isDateTimeEnabled);
 
   const switchToLocationInput = (
     e,
@@ -141,6 +143,7 @@ function Leftbar() {
         )
         .then((response) => {
           setLoading(false);
+          console.log(response);
           const { message } = response.data;
           setValidationMsg(message);
         })
@@ -169,7 +172,11 @@ function Leftbar() {
               <li className="my-2">
                 <hr className="dropdown-divider bg-light" />
               </li>
-              <li>
+              <li
+                style={{
+                  backgroundColor: tabIndex === 1 ? "black" : "#212529",
+                }}
+              >
                 <a className="nav-link px-1">
                   <span className="me-1">
                     <i className="bi bi-eye"></i>
@@ -184,7 +191,11 @@ function Leftbar() {
                   </span>
                 </a>
               </li>
-              <li>
+              <li
+                style={{
+                  backgroundColor: tabIndex === 2 ? "black" : "#212529",
+                }}
+              >
                 <a className="nav-link px-1">
                   <span className="me-1">
                     <i className="bi bi-eye"></i>
@@ -200,7 +211,11 @@ function Leftbar() {
                 </a>
               </li>
 
-              <li>
+              <li
+                style={{
+                  backgroundColor: tabIndex === 3 ? "black" : "#212529",
+                }}
+              >
                 <a className="nav-link px-1">
                   <span className="me-1">
                     <i className="bi bi-calendar-event"></i>
@@ -215,14 +230,69 @@ function Leftbar() {
                   </span>
                 </a>
               </li>
+              <li
+                style={{
+                  backgroundColor: tabIndex === 4 ? "black" : "#212529",
+                }}
+              >
+                <a className="nav-link px-1">
+                  <span className="me-1">
+                    <i className="bi bi-info-circle"></i>
+                  </span>
+                  <span
+                    className={tabIndex === 4 ? "btns selctedbtn" : "btns"}
+                    onClick={handleTabIndex}
+                    id="we"
+                    style={{ cursor: "pointer" }}
+                  >
+                    We@Avishkar
+                  </span>
+                </a>
+              </li>
             </ul>
           </nav>
         </div>
       </div>
 
       <div>
-        {tabIndex === 1 && <div> {uploadedAppsData}</div>}
-        {tabIndex === 2 && <div>{deployedAppsData}</div>}
+        {tabIndex === 1 && (
+          <main className="mt-5 pt-1">
+            <div className="container-fluid">
+              <div className="row mt-5">
+                <Loader spinning={isLoading}>
+                  <div className="card-container">
+                    {uploadedAppsData.length ? (
+                      uploadedAppsData
+                    ) : (
+                      <div className="spinner-border m-2" role="status">
+                        <span className="visullay-hidden"></span>
+                      </div>
+                    )}
+                  </div>
+                </Loader>
+              </div>
+            </div>
+          </main>
+        )}
+        {tabIndex === 2 && (
+          <main className="mt-5 pt-1">
+            <div className="container-fluid">
+              <div className="row mt-5">
+                <Loader spinning={isLoading}>
+                  <div className="card-container">
+                    {deployedAppsData.length ? (
+                      deployedAppsData
+                    ) : (
+                      <div className="spinner-border m-2" role="status">
+                        <span className="visullay-hidden"></span>
+                      </div>
+                    )}
+                  </div>
+                </Loader>
+              </div>
+            </div>
+          </main>
+        )}
         {tabIndex === 3 && <div></div>}
         {tabIndex === 0 && (
           <div>
@@ -288,6 +358,7 @@ function Leftbar() {
             </main>
           </div>
         )}
+        {tabIndex === 4 && <AboutUs />}
       </div>
     </div>
   );
