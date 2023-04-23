@@ -65,8 +65,12 @@ def registerApp():
 def deregisterApp():
     appName = request.args.get("appName")
     lbb = LoadBalancer()
-    lbb.deregisterApp(appName)
-    return f'{appName} has been deregistered'
+    try:
+        lbb.deregisterApp(appName)
+    except Exception as e:
+        logger.error(str(e))
+        return f'{appName} deregistration failed, it has probably been deregistered already!'
+    return f'{appName} has been deregistered successfully!'
 
 
 @app.route("/getVmDetails", methods=['GET'])
