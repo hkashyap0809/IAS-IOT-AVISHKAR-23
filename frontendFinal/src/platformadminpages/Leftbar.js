@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "../css/style.css";
 import Cardview from "../enduserpages/Cardview";
+import axios from "axios";
 
 import {
   axiosAppInstance,
   axiosModuleHealthInstance,
 } from "../utils/axiosInstance";
 import Loader from "../utils/Loader";
+import VmHealth from "./vmHealth";
 
 function Leftbar() {
   const [tabIndex, setTabIndex] = useState(1);
@@ -16,6 +18,9 @@ function Leftbar() {
   const [appToDeploy, setAppToDeploy] = useState("");
   const [modules, setModules] = useState([]);
   const [isLoading, setLoading] = useState(false);
+  const [currentModule, setCurrentModule] = useState("");
+  const [currentModuleLog, setCurrentModuleLog] = useState("");
+  const [vmHealth, setVmHealth] = useState([]);
   useEffect(() => {
     setLoading(true);
     const config = {
@@ -37,9 +42,11 @@ function Leftbar() {
           console.log(response);
           const { data } = response.data;
           setUploadedApps([...data]);
+          setLoading(false);
         })
         .catch((err) => {
           console.log(err);
+          setLoading(false);
         });
     } else if (tabIndex === 4) {
       setDeployedApps([]);
@@ -49,18 +56,50 @@ function Leftbar() {
           console.log(response);
           const { data } = response.data;
           setDeployedApps([...data]);
+          setLoading(false);
         })
         .catch((err) => {
           console.log(err);
+          setLoading(false);
         });
     } else if (tabIndex === 5) {
       // Handle view workflows
     } else if (tabIndex === 6) {
       // Handle View All Scheduled Apps
     } else if (tabIndex === 7) {
-      // Handle Logs
+      // Handle VM Health
+      setLoading(true);
+      const url = "http://20.21.102.175:8050/getAppsDetails";
+      axios
+        .get(url)
+        .then((response) => {
+          console.log(response);
+          const nodeManager = response.data.filter(
+            (r, idx) => r.appName === "NodeManager"
+          );
+          console.log(nodeManager);
+          const endPoint = nodeManager[0].endpoint;
+
+          axios
+            .get(`${endPoint}/nodemgr/get-all-nodes-health`)
+            .then((resp) => {
+              setLoading(false);
+              setVmHealth([...resp.data]);
+              console.log(resp);
+            })
+            .catch((err) => {
+              setLoading(false);
+              console.log(err);
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
     } else if (tabIndex === 8) {
       // Handle Live Sensor Data
+    } else if (tabIndex === 9) {
+      // Handle
     }
     setLoading(false);
   }, [tabIndex]);
@@ -87,7 +126,6 @@ function Leftbar() {
 
   const getLatestModuleStatus = () => {
     // e.preventDefault();
-    console.log("Function called");
     setLoading(true);
     axiosModuleHealthInstance
       .get("/check_health")
@@ -95,6 +133,26 @@ function Leftbar() {
         setLoading(false);
         const { data } = response;
         setModules([...data]);
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log(err);
+      });
+  };
+
+  const fetchLogs = (e, moduleName, ip, port) => {
+    e.preventDefault();
+    setCurrentModule(moduleName);
+    console.log("Function Called");
+    setLoading(true);
+    const url = `http://${ip}:${port}/get_logs`;
+    axios
+      .get(url)
+      .then((response) => {
+        console.log(response);
+        const { logs } = response.data;
+        setCurrentModuleLog(logs);
+        setLoading(false);
       })
       .catch((err) => {
         setLoading(false);
@@ -151,23 +209,33 @@ function Leftbar() {
         status = m.status,
         timestamp = m.timestamp;
       return (
-        <li
-          key={idx}
-          className="list-group-item d-flex justify-content-between align-items-center"
-          style={{ cursor: "pointer", fontWeight: "bold" }}
-        >
-          {moduleName} - {ip}:{port} - Last Updated At: {timestamp}
-          {status === "Ok" ? (
-            <span className="badge bg-success rounded-pill">OK</span>
-          ) : (
-            <span className="badge bg-danger rounded-pill">Down</span>
-          )}
-        </li>
+        <div key={idx} onClick={(e) => fetchLogs(e, moduleName, ip, port)}>
+          <li
+            className="list-group-item d-flex justify-content-between align-items-center"
+            style={{ cursor: "pointer", fontWeight: "bold" }}
+          >
+            <tr className={moduleName === currentModule ? "active" : ""}>
+              <td>
+                {moduleName} - {ip}:{port} - Last Updated At: {timestamp}
+              </td>
+            </tr>
+            {status === "Ok" ? (
+              <span className="badge bg-success rounded-pill">OK</span>
+            ) : (
+              <span className="badge bg-danger rounded-pill">Down</span>
+            )}
+            {currentModule === moduleName && <p>{currentModuleLog}</p>}
+          </li>
+        </div>
       );
     })
   ) : (
     <div>...Fetching status</div>
   );
+
+  const vmHealthData = vmHealth.map((v, idx) => {
+    return <VmHealth data={v} />;
+  });
 
   return (
     <div>
@@ -211,7 +279,7 @@ function Leftbar() {
                     onClick={() => setTabIndex(2)}
                     style={{ cursor: "pointer" }}
                   >
-                    Module Status/Health
+                    Module Status/Logs
                   </span>
                 </a>
               </li>
@@ -279,14 +347,14 @@ function Leftbar() {
               <li>
                 <a className="nav-link px-1">
                   <span className="me-1">
-                    <i className="bi bi-pencil-square"></i>
+                    <i className="bi bi-heart-fill"></i>
                   </span>
                   <span
                     className={tabIndex === 7 ? "btns selctedbtn" : "btns"}
                     onClick={() => setTabIndex(7)}
                     style={{ cursor: "pointer" }}
                   >
-                    Logger/Logs
+                    VM's Health Info
                   </span>
                 </a>
               </li>
@@ -302,6 +370,20 @@ function Leftbar() {
                     style={{ cursor: "pointer" }}
                   >
                     Sensor Live Data
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a className="nav-link px-1">
+                  <span className="me-1">
+                    <i className="bi bi-info-circle"></i>
+                  </span>
+                  <span
+                    className={tabIndex === 9 ? "btns selctedbtn" : "btns"}
+                    onClick={() => setTabIndex(9)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    We@Avishkar
                   </span>
                 </a>
               </li>
@@ -338,7 +420,7 @@ function Leftbar() {
                     >
                       Refresh
                     </button>
-                    <div className="card-header">Module Health</div>
+                    <div className="card-header">Module Status/Logs</div>
                     <ul className="list-group list-group-flush">
                       {modulesData}
                     </ul>
@@ -348,8 +430,80 @@ function Leftbar() {
             </main>
           </div>
         )}
-        {tabIndex === 3 && <div>{uploadedAppsData}</div>}
-        {tabIndex === 4 && <div>{deployedAppsData}</div>}
+        {tabIndex === 3 && (
+          <main className="mt-5 pt-1">
+            <div className="container-fluid">
+              <div className="row mt-5">
+                <Loader spinning={isLoading}>
+                  <div className="card-container">
+                    {uploadedApps.length ? (
+                      uploadedAppsData
+                    ) : (
+                      <h2>Fetching uploaded apps</h2>
+                    )}
+                  </div>
+                </Loader>
+              </div>
+            </div>
+          </main>
+        )}
+        {tabIndex === 4 && (
+          <main className="mt-5 pt-1">
+            <div className="container-fluid">
+              <div className="row mt-5">
+                <Loader spinning={isLoading}>
+                  <div className="card-container">
+                    {deployedApps.length ? (
+                      deployedAppsData
+                    ) : (
+                      <h2>Fetching deployed apps</h2>
+                    )}
+                  </div>
+                </Loader>
+              </div>
+            </div>
+          </main>
+        )}
+        {tabIndex === 7 && (
+          <div>
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm "
+              style={{ position: "absolute", top: "10%", right: "1%" }}
+            >
+              Refresh
+            </button>
+            <br />
+            <br />
+            <div>
+              <main className="mt-5 pt-1">
+                <div className="container-fluid">
+                  <div className="row">
+                    <Loader spinning={isLoading}>
+                      <div className="card-container">
+                        {vmHealth.length ? (
+                          vmHealthData
+                        ) : (
+                          <h2>Fetching VM's health</h2>
+                        )}
+                      </div>
+                    </Loader>
+                  </div>
+                </div>
+              </main>
+              <style jsx>{`
+                .card-container {
+                  display: flex;
+                  justify-content: space-between;
+                  margin: 10 -10px;
+                }
+                .card-container > * {
+                  margin: 0 10px;
+                }
+              `}</style>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
