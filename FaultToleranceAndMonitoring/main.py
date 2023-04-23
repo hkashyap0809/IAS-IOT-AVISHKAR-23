@@ -57,5 +57,13 @@ def get_logs():
     return {"logs": logs}
 
 
+@app.route("/all_services", methods=["GET"])
+@cross_origin()
+def all_services():
+    res = get_all_service_registry()
+    print(res)
+    return res
+
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8050, debug=True, use_reloader=False)

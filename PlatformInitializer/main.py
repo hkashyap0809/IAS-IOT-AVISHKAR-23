@@ -121,6 +121,7 @@ def schedule_and_upload_to_VM():
         with open('platform_status.json', 'w') as outfile:
             json.dump(data, outfile)
 
+        register_service("load_balancer", "20.21.102.175", "8050")
         return "Success"
 
     except Exception as e:
@@ -197,6 +198,7 @@ def status():
 @app.route("/all_services", methods=["GET"])
 @cross_origin()
 def all_services():
+    register_service("load_balancer", "20.21.102.175", "8050")
     res = get_all_service_registry()
     print(res)
     return res

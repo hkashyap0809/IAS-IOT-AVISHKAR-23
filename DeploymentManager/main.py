@@ -167,12 +167,12 @@ def generate_docker_file_and_service_start_shell(path, service, host_port, conta
     return service_start_file_name
 
 
-def deploy_app(vm_ip, vm_port, app_name):
+def deploy_app(node_name, vm_ip, vm_port, app_name):
     # Kafka code to get app name and other details from  Application Manager
     folder_name = f'{app_name}/'
     # Kafka code to get VM details from  Node Manager
     vm_username = "azureuser"
-    vm_key_path = "./VM-keys/VM1_key.cer"
+    vm_key_path = f"./VM-keys/{node_name}_key.cer"
     vm_service_path = f"/home/azureuser/{app_name}"
     # ...............................................................
 
@@ -279,14 +279,15 @@ def consume_requests():
         # M2 - message from node manager with ip and port
         if "ans-node" in request_data['msg']:
             res = json.loads(request_data['msg'].split("$")[1].replace('\'', '"'))
-            ip_deploy = "20.21.102.175"
+            ip_deploy = res["node_ip"]
             port_deploy = res["port"]
             app_name = res["app_name"]
-            print(ip_deploy, port_deploy, app_name)
+            node_name = res["node_name"]
+            print(ip_deploy, port_deploy, app_name, node_name)
 
             # deploy the app
             try:
-                container_id = deploy_app(ip_deploy, port_deploy, app_name)
+                container_id = deploy_app(node_name, ip_deploy, port_deploy, app_name)
                 params = {'appName': app_name, 'imageName': str(app_name).lower() + "_image", 'vmIp': ip_deploy,
                           'hostPort': port_deploy, 'containerPort': 8050, 'containerId': container_id}
 
