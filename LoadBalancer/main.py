@@ -34,7 +34,7 @@ def health():
 @cross_origin()
 def get_logs():
     logs = ""
-    with open("/logs/lb_logs.log", "r") as log_file:
+    with open("../../logs/lb_logs.log", "r") as log_file:
         for line in (log_file.readlines()[-100:]):
             logs += line
 
