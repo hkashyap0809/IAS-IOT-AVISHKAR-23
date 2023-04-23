@@ -110,10 +110,10 @@ def get_all_nodes():
 
 def get_node_health():
     res_json = {
-        "subscription_id": "8c3fa405-272b-48dd-b060-04e372623b8e",
-        "resource_group_name": "VM1_group",
-        "client_id": "dbc11291-a7a2-42c3-a401-448c1d7b1b53",
-        "client_secret": "vzz8Q~WGLvKVikEEJQdpek9eh5fbGLE3GIaajdvY",
+        "subscription_id": "db1bf5b9-f0c1-4638-92be-a7e273b6555f",
+        "resource_group_name": "IAS_Project",
+        "client_id": "c4c3713c-34db-4c2b-b239-05afa2341bf6",
+        "client_secret": "7e3dc2e4-901a-4a69-970d-5fa0812862bc",
         "tenant_id": "031a3bbc-cf7c-4e2b-96ec-867555540a1c"
     }
 
@@ -148,10 +148,10 @@ def get_node_health():
 
 def get_all_nodes_health():
     res_json = {
-        "subscription_id": "8c3fa405-272b-48dd-b060-04e372623b8e",
-        "resource_group_name": "VM1_group",
-        "client_id": "dbc11291-a7a2-42c3-a401-448c1d7b1b53",
-        "client_secret": "vzz8Q~WGLvKVikEEJQdpek9eh5fbGLE3GIaajdvY",
+        "subscription_id": "db1bf5b9-f0c1-4638-92be-a7e273b6555f",
+        "resource_group_name": "IAS_Project",
+        "client_id": "c4c3713c-34db-4c2b-b239-05afa2341bf6",
+        "client_secret": "7e3dc2e4-901a-4a69-970d-5fa0812862bc",
         "tenant_id": "031a3bbc-cf7c-4e2b-96ec-867555540a1c"
     }
 
@@ -173,10 +173,10 @@ def get_all_nodes_health():
 
 def monitor_nodes():
     res_json = {
-        "subscription_id": "8c3fa405-272b-48dd-b060-04e372623b8e",
-        "resource_group_name": "VM1_group",
-        "client_id": "dbc11291-a7a2-42c3-a401-448c1d7b1b53",
-        "client_secret": "vzz8Q~WGLvKVikEEJQdpek9eh5fbGLE3GIaajdvY",
+        "subscription_id": "db1bf5b9-f0c1-4638-92be-a7e273b6555f",
+        "resource_group_name": "IAS_Project",
+        "client_id": "c4c3713c-34db-4c2b-b239-05afa2341bf6",
+        "client_secret": "7e3dc2e4-901a-4a69-970d-5fa0812862bc",
         "tenant_id": "031a3bbc-cf7c-4e2b-96ec-867555540a1c"
     }
 
