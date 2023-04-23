@@ -26,7 +26,7 @@ def docker_file_raw_text():
     return docker_code
 
 
-def service_start_raw_text(docker_file_name, image_name, container_name, host_port, container_port):
+def service_start_raw_text(app_name, docker_file_name, image_name, container_name, host_port, container_port):
     service_start_shell_script = f'''
         docker stop {container_name}
         docker rm {container_name}
@@ -46,7 +46,7 @@ def service_end_raw_text(docker_file_name, image_name, container_name, host_port
     return service_end_shell_script
 
 
-def generate_docker_file_and_service_start_shell(path, service, host_port, container_port):
+def generate_docker_file_and_service_start_shell(app_name, path, service, host_port, container_port):
     docker_file_name = service + "_docker_file"
     image_file_name = service + "_img"
     container_name = service + "_container"
@@ -55,7 +55,7 @@ def generate_docker_file_and_service_start_shell(path, service, host_port, conta
 
     docker_code = docker_file_raw_text()
     create_file('./' + path, docker_file_name, docker_code)
-    service_start_code = service_start_raw_text(docker_file_name, image_file_name, container_name, host_port, container_port)
+    service_start_code = service_start_raw_text(app_name, docker_file_name, image_file_name, container_name, host_port, container_port)
     create_file('./' + path, service_start_file_name, service_start_code)
     service_end_code = service_end_raw_text(docker_file_name, image_file_name, container_name, host_port, container_port)
     create_file('./' + path, service_end_file_name, service_end_code)
@@ -82,7 +82,13 @@ def schedule_and_upload_to_VM():
     try:
         for service in services:
             vm = vm_keys[idx]
-            generate_docker_file_and_service_start_shell(service['host_src_path'], service['service_name'],
+
+            print("Unregistering by LB")
+            params = {"appName": service['folder_name']}
+            res = requests.get("http://20.21.102.175:8050/deregisterApp", params=params)
+            print(res.text)
+
+            generate_docker_file_and_service_start_shell(service['folder_name'], service['host_src_path'], service['service_name'],
                                                          service['host_port'], service['container_port'])
             req_file = "pip freeze > requirements.txt"
             command = f"scp -o StrictHostKeyChecking=no -r -i {vm['vm_key_path']}  {service['host_src_path']} {vm['vm_username']}@{vm['vm_ip']}:{vm['vm_service_path']}"

@@ -251,7 +251,11 @@ def consume_requests():
 
             # deploy the app
             try:
-                un_deploy_app(app_name, vm_ip)
+                print("Unregistering by LB")
+                params = {"appName": app_name}
+                res = requests.get("http://20.21.102.175:8050/deregisterApp", params=params)
+                logger.info(res.text)
+                # un_deploy_app(app_name, vm_ip)
 
                 msg = {
                     'to_topic': 'first_topic',
