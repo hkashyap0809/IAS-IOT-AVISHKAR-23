@@ -67,11 +67,12 @@ def verify_token(f):
             )
         try:
             data = jwt.decode(token, environ.get("SECRET_KEY"), algorithms=['HS256'])
+            print(data)
             userName = data['username']
-            role = data['role']
+            role = data['user_type']
             return f(userName, role, *args, **kwargs)
         except Exception as e:
-            print(e)
+            print("Error is: ", e)
             return generate_response(
                 data="Unauthorized access2",
                 message="Unauthorized access2",

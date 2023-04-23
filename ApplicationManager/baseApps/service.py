@@ -77,7 +77,6 @@ def extractZip(inpFile):
 
 @verify_token
 def validate_zip(userName, role, request, inpFile):
-    userName="Ujjwal"
     if inpFile:
         splittedFileName = (inpFile.filename).split('.')
         if len(splittedFileName) == 1 or splittedFileName[1] != "zip":
@@ -164,8 +163,8 @@ def validate_zip(userName, role, request, inpFile):
         saveBaseApp(appName, userName)
 
     return generate_response(
-        data="App validated and uploaded successfully",
-        message="App validated and uploaded successfully",
+        data=f"App {appName} validated and uploaded successfully",
+        message=f"App {appName} validated and uploaded successfully",
         status=HTTP_200_OK
     )
 
@@ -175,10 +174,10 @@ def get_apps(userName, role, request):
     Get all the apps owned by an application developer
     """
     apps = None
-    if role != "admin":
-        apps = BaseApp.query.filter_by(developer=userName).all()
-    else:
+    if role == "user" or role == "admin":
         apps = BaseApp.query.filter_by().all()
+    elif role == "dev":
+        apps = BaseApp.query.filter_by(developer=userName).all()
     apps = [{
         "id": app.id,
         "developer": app.developer,
@@ -196,7 +195,8 @@ def checkFileNameHandler(fileName):
     details = BaseApp.query.filter_by(appName=fileName).all()
     return len(details) == 0
 
-def checkFileName(request, inpFile):
+@verify_token
+def checkFileName(userName, role, request, inpFile):
     if inpFile:
         splittedFileName = (inpFile.filename).split('.')
         if len(splittedFileName) == 1 or splittedFileName[1] != "zip":

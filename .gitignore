@@ -1,5 +1,6 @@
 .env
 .idea
+.DS_Store
 
 Authenticator/__pycache__/
 Authenticator/users/__pycache__/
@@ -18,3 +19,5 @@ ApplicationManager/utils/__pycache__/
 
 frontend/node_modules
 frontend/package-lock.json
+frontendFinal/node_modules
+frontendFinal/package-lock.json

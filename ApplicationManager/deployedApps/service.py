@@ -46,6 +46,8 @@ def getDeployedApps(userName, role, request):
         apps = DeployedApp.query.filter_by(userName=userName).all()
     elif role == "dev":
         apps = DeployedApp.query.filter_by(developer=userName).all()
+    elif role == "admin":
+        apps = DeployedApp.query.filter_by().all()
     apps = [{
         "id": app.id,
         "baseAppId": app.baseAppId,
@@ -53,8 +55,7 @@ def getDeployedApps(userName, role, request):
         "deployedAppName": app.deployedAppName,
         "userName": app.userName,
         "created": app.created,
-        "url": app.url,
-        "status": app.status
+        "url": app.url
     } for app in apps]
     return generate_response(
         data=apps,
@@ -78,9 +79,9 @@ def deployApp(userName, role, request, inputData):
         )
     baseAppId = inputData.get('baseAppId')
     baseAppName = inputData.get('baseAppName')
+    developer = inputData.get('developer')
     print(baseAppName)
     location = inputData.get('location')
-    developer = inputData.get('developer')
     replicatedAppName = baseAppName + '_' + str(uuid1())
     appFolder = os.path.join(uploadFolder, replicatedAppName)
     os.mkdir(appFolder)
