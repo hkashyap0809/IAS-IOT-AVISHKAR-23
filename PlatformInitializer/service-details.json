@@ -106,17 +106,5 @@
         "host_port": "8100",
         "container_port": "8050",
         "host_src_path": "../Scheduler"
-    },
-    {
-        "folder_name": "LoadBalancer",
-        "service_name": "load_balancer",
-        "docker_file_name": "load_balancer_docker_file",
-        "image_file_name": "load_balancer_img",
-        "container_name": "load_balancer_container",
-        "service_start_shell_file": "load_balancer_start.sh",
-        "service_end_shell_file": "load_balancer_end.sh",
-        "host_port": "8110",
-        "container_port": "8050",
-        "host_src_path": "../LoadBalancer"
     }
 ]

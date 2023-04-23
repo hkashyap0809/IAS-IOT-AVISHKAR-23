@@ -146,6 +146,31 @@ def get_node_health():
     return res
 
 
+def get_all_nodes_health():
+    res_json = {
+        "subscription_id": "8c3fa405-272b-48dd-b060-04e372623b8e",
+        "resource_group_name": "VM1_group",
+        "client_id": "dbc11291-a7a2-42c3-a401-448c1d7b1b53",
+        "client_secret": "vzz8Q~WGLvKVikEEJQdpek9eh5fbGLE3GIaajdvY",
+        "tenant_id": "031a3bbc-cf7c-4e2b-96ec-867555540a1c"
+    }
+
+    vm_names, vm_info = get_all_nodes()
+    nodes_health = dict()
+    res = []
+
+    for i in range(len(vm_names)):
+        node = Node(res_json["subscription_id"], res_json["resource_group_name"], vm_names[i], res_json["client_id"],
+                    res_json["client_secret"], res_json["tenant_id"])
+        cpu_usage, memory_usage, disk_usage, health = node.get_health()
+        nodes_health[vm_names[i]] = health
+        vm_json = {"name": vm_names[i], "CPU Usage": cpu_usage, "Memory Usage": memory_usage, "Disk Usage": disk_usage,
+                   "Health": health}
+        res.append(vm_json)
+
+    return res
+
+
 def monitor_nodes():
     res_json = {
         "subscription_id": "8c3fa405-272b-48dd-b060-04e372623b8e",
@@ -178,6 +203,13 @@ def get_deploy_node():
     return flask.jsonify(res)
 
 
+@app.route("/nodemgr/get-all-nodes-health", methods=['GET'])
+@cross_origin()
+def get_all_nodes_health1():
+    res = get_all_nodes_health()
+    return flask.jsonify(res)
+
+
 @app.route("/nodemgr/log", methods=['GET'])
 @cross_origin()
 def get_log():
@@ -203,6 +235,18 @@ def home():
 def health():
     logger.info("Health Checked")
     return "Ok"
+
+
+@app.route("/get_logs", methods=['GET'])
+@cross_origin()
+def get_logs():
+    logs = ""
+    with open("/logs/nodemgr_logs.log", "r") as log_file:
+        for line in (log_file.readlines()[-10:]):
+            logs += line
+
+    print(logs)
+    return {"logs": logs}
 
 
 # ---------------------------- KAFKA  ------------------------------
@@ -268,18 +312,6 @@ def consume_requests():
                 'msg': f"ans-node${str(res)}"
             }
             send(request_data, msg, requests_m1_c, requests_m1_p)
-
-
-@app.route("/get_logs", methods=['GET'])
-@cross_origin()
-def get_logs():
-    logs = ""
-    with open("/logs/nodemgr_logs.log", "r") as log_file:
-        for line in (log_file.readlines()[-10:]):
-            logs += line
-
-    print(logs)
-    return {"logs": logs}
 
 
 if __name__ == "__main__":

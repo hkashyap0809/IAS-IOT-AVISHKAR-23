@@ -4,10 +4,12 @@ from kazoo.client import KazooClient
 def register_service(service_name, ip, port):
     zk = KazooClient(hosts='20.196.205.46:2181')
     zk.start()
-    if zk.exists(f"/services/{service_name}") is None:
-        zk.ensure_path(f"/services/{service_name}")
-        my_byte_string = f"{ip}:{port}".encode('utf-8')
-        zk.create(f"/services/{service_name}/my-instance1", my_byte_string)
+    if zk.exists(f"/services/{service_name}") is not None:
+        zk.delete(f'/services/{service_name}', recursive=True)
+
+    zk.ensure_path(f"/services/{service_name}")
+    my_byte_string = f"{ip}:{port}".encode('utf-8')
+    zk.create(f"/services/{service_name}/instance1", my_byte_string)
 
     zk.stop()
 
