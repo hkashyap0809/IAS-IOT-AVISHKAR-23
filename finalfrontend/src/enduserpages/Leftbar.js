@@ -62,6 +62,20 @@ function Leftbar() {
                   </span>
                 </a>
               </li>
+
+              <li>
+                <a className="nav-link px-1">
+                  <span className="me-1">
+                    <i className="bi bi-info-circle"></i>
+                  </span>
+                  <span
+                    className={tabIndex === 4 ? "btns selctedbtn" : "btns"}
+                    onClick={() => setTabIndex(4)}
+                  >
+                    About Us
+                  </span>
+                </a>
+              </li>
             </ul>
           </nav>
         </div>
@@ -86,6 +100,92 @@ function Leftbar() {
             <Cardview />
             <Cardview />
             <Cardview />
+          </div>
+        )}
+        {tabIndex === 4 && (
+          <div>
+            <main className="mt-5 pt-3">
+              <div className="container-fluid">
+                <div className="row">
+                  <div className="container">
+                    <div className="row">
+                      <div className="col-md-4">
+                        <div className="card">
+                          <div className="card-body">
+                            <h5 className="card-title">
+                              Ujjwal Prakash (2022202009)
+                            </h5>
+                            <p className="card-text">
+                              Mtech-CSIS IIIT Hyderabad 2022-2024
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-md-4">
+                        <div className="card">
+                          <div className="card-body">
+                            <h5 className="card-title">
+                              Harshit Kashyap (2022202009)
+                            </h5>
+                            <p className="card-text">
+                              Mtech-CSE IIIT Hyderabad 2022-2024
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-md-4">
+                        <div className="card">
+                          <div className="card-body">
+                            <h5 className="card-title">
+                              Yash Pathak (2022202009)
+                            </h5>
+                            <p className="card-text">
+                              Mtech-CS IIIT Hyderabad 2022-2024
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-md-4">
+                        <div className="card">
+                          <div className="card-body">
+                            <h5 className="card-title">
+                              Prashant Kumar (2022201058)
+                            </h5>
+                            <p className="card-text">
+                              Mtech-CS IIIT Hyderabad 2022-2024
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-md-4">
+                        <div className="card">
+                          <div className="card-body">
+                            <h5 className="card-title">
+                              Rishabh Gupta (2022202011)
+                            </h5>
+                            <p className="card-text">
+                              Mtech-CSIS IIIT Hyderabad 2022-2024
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-md-4">
+                        <div className="card">
+                          <div className="card-body">
+                            <h5 className="card-title">
+                              Priyank Mahour (2022201047)
+                            </h5>
+                            <p className="card-text">
+                              Mtech-CS IIIT Hyderabad 2022-2024
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </main>
           </div>
         )}
       </div>

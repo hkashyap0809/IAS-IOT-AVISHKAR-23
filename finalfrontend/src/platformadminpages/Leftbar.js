@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/style.css";
+import Logger from "./Logger";
+import Vmhealth from "./Vmhealth";
 function Leftbar() {
   const [tabIndex, setTabIndex] = useState(1);
   return (
@@ -43,7 +45,7 @@ function Leftbar() {
                     className={tabIndex === 2 ? "btns selctedbtn" : "btns"}
                     onClick={() => setTabIndex(2)}
                   >
-                    Module Status/Health
+                    Module Status/Logs
                   </span>
                 </a>
               </li>
@@ -107,13 +109,13 @@ function Leftbar() {
               <li>
                 <a className="nav-link px-1">
                   <span className="me-1">
-                    <i className="bi bi-pencil-square"></i>
+                    <i className="bi bi-heart-fill"></i>
                   </span>
                   <span
                     className={tabIndex === 7 ? "btns selctedbtn" : "btns"}
                     onClick={() => setTabIndex(7)}
                   >
-                    Logger/Logs
+                    VM's Health Info
                   </span>
                 </a>
               </li>
@@ -128,6 +130,20 @@ function Leftbar() {
                     onClick={() => setTabIndex(8)}
                   >
                     Sensor Live Data
+                  </span>
+                </a>
+              </li>
+
+              <li>
+                <a className="nav-link px-1">
+                  <span className="me-1">
+                    <i className="bi bi-info-circle"></i>
+                  </span>
+                  <span
+                    className={tabIndex === 9 ? "btns selctedbtn" : "btns"}
+                    onClick={() => setTabIndex(9)}
+                  >
+                    About Us
                   </span>
                 </a>
               </li>
@@ -155,51 +171,59 @@ function Leftbar() {
             <main className="mt-5 pt-5 ">
               <div className="container-fluid ">
                 <div className="card">
-                  <div className="card-header">Module Health</div>
+                  <button
+                    type="button"
+                    className="btn btn-secondary btn-sm "
+                    style={{ position: "fixed", top: "10%", right: "1%" }}
+                  >
+                    Refresh
+                  </button>
+                  <div className="card-header">Module Status/Logs</div>
                   <ul className="list-group list-group-flush">
-                    <li className="list-group-item d-flex justify-content-between align-items-center">
-                      Node Manager
-                      <span className="badge bg-success rounded-pill">OK</span>
-                    </li>
-                    <li className="list-group-item d-flex justify-content-between align-items-center">
-                      Sensor Manager
-                      <span className="badge bg-warning rounded-pill">
-                        Degraded
-                      </span>
-                    </li>
-                    <li className="list-group-item d-flex justify-content-between align-items-center">
-                      Application Manager
-                      <span className="badge bg-success rounded-pill">OK</span>
-                    </li>
-                    <li className="list-group-item d-flex justify-content-between align-items-center">
-                      Authenticator
-                      <span className="badge bg-success rounded-pill">OK</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                      Fault Tolrence And Monitoring
-                      <span className="badge bg-danger rounded-pill">Down</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                      Scheduler
-                      <span className="badge bg-danger rounded-pill">Down</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                      Workflow Manager
-                      <span className="badge bg-danger rounded-pill">Down</span>
-                    </li>
-                    <li className="list-group-item d-flex justify-content-between align-items-center">
-                      Servicelife cycle manager
-                      <span className="badge bg-warning rounded-pill">
-                        Degraded
-                      </span>
-                    </li>
+                    <Logger />
+                    <Logger />
                   </ul>
                 </div>
               </div>
             </main>
           </div>
         )}
-        {tabIndex === 3 && <div></div>}
+        {tabIndex === 7 && (
+          <div>
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm "
+              style={{ position: "absolute", top: "10%", right: "1%" }}
+            >
+              Refresh
+            </button>
+            <br />
+            <br />
+            <div>
+              <main className="mt-5 pt-1">
+                <div className="container-fluid">
+                  <div className="row">
+                    <div className="card-container">
+                      <Vmhealth />
+                      <Vmhealth />
+                      <Vmhealth />
+                    </div>
+                  </div>
+                </div>
+              </main>
+              <style jsx>{`
+                .card-container {
+                  display: flex;
+                  justify-content: space-between;
+                  margin: 10 -10px;
+                }
+                .card-container > * {
+                  margin: 0 10px;
+                }
+              `}</style>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
