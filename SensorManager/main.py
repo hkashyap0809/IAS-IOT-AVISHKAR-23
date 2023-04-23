@@ -90,36 +90,40 @@ def node_data(location, vertical):
     try:
         if nodename in nodes:
             n_last = request.args.get('last')
+            sensor_type = request.args.get('sensor') 
             topic_name = node_partition[nodename]['topic-name']
             partition_number = int(node_partition[nodename]['partition-number'])
-            if n_last > 1:
-                latest_data = get_latest_n_node_data(topic_name, partition_number, n_last)
-                latest_data = latest_data.decode('utf-8')
-                return json.loads(latest_data)
+            if n_last :
+                # fetches last n data
+                latest_data = get_latest_n_node_data(topic_name, partition_number, int(n_last))
+                latest_data = json.loads(latest_data)
+                if sensor_type:
+                    sensor_type = sensor_type.split(",")
+                    # final_data = [{sensor_type:data[sensor_type]} for data in latest_data]
+                    final_data = []
+                    for data in latest_data:
+                        final_dict={}
+                        for sensor in sensor_type:
+                            final_dict[sensor]=data[sensor]              
+                        final_data.append(final_dict)          
+
+                    return jsonify(final_data)
+                else:
+                    return jsonify(latest_data)
             else:
+                # fetches latest data
                 latest_data = get_latest_node_data(topic_name, partition_number)
-                latest_data = get_latest_node_data(topic_name, partition_number)
-                return json.dumps(latest_data)
+                if sensor_type:
+                    latest_data = json.loads(latest_data.decode('utf-8'))
+                    return jsonify({sensor_type:latest_data[sensor_type]})
+                else:
+                    return json.loads(latest_data.decode('utf-8'))
         else:
             return json.dumps({'statusCode': '400', 'message': 'node does not exist'})
     except Exception as e:
         print("Exception occurred ", e)
         return json.dumps({'statusCode': '400', 'message': 'some exception occurred'})
 
-
-# @app.route('/api/sensor/data/latest/<nodename>/<sensor>',methods=['GET'])
-# def sensor_node_data(nodename,sensor):
-#     try :
-#         if nodename in nodes and sensor in sensors:
-#             n_last = request.args.get('last')
-#             if n_last:
-#                 return json.dumps({'statusCode':'200','message':'last n data'})
-#             else:
-#                 return json.dumps({'statusCode':'200','message':'last data'})
-#         else:
-#             return json.dumps({'statusCode':'400','message':'error'})
-#     except:
-#         return json.dumps({'statusCode':'400','message':'error'})
 
 @app.route("/home", methods=['GET'])
 @cross_origin()
