@@ -1,6 +1,8 @@
 import os
 import json
+import subprocess
 from datetime import datetime
+import requests
 from flask import Flask
 from flask_cors import cross_origin
 from service_registry import *
@@ -85,15 +87,23 @@ def schedule_and_upload_to_VM():
             req_file = "pip freeze > requirements.txt"
             command = f"scp -o StrictHostKeyChecking=no -r -i {vm['vm_key_path']}  {service['host_src_path']} {vm['vm_username']}@{vm['vm_ip']}:{vm['vm_service_path']}"
             ssh_connect_command = f"""
-                ssh -o StrictHostKeyChecking=no -i {vm['vm_key_path']} {vm['vm_username']}@{vm['vm_ip']} "cd Services ; cd {service['folder_name']}; 
-                sudo bash ./{service['service_start_shell_file']}"
+                ssh -o StrictHostKeyChecking=no -i {vm['vm_key_path']} {vm['vm_username']}@{vm['vm_ip']} cd Services && cd {service['folder_name']} && sudo bash ./{service['service_start_shell_file']}
                 """
 
             os.system(req_file)
             os.system(command)
-            os.system(ssh_connect_command)
 
-            register_service(service["service_name"], vm["vm_ip"], service["host_port"])
+            output = subprocess.check_output(ssh_connect_command.split())
+            container_id = output.strip().decode('utf-8')
+
+            params = {'appName': service['folder_name'], 'imageName': str(service['folder_name']).lower() + "_image", 'vmIp': vm['vm_ip'],
+                      'hostPort': service['host_port'], 'containerPort': service['container_port'], 'containerId': container_id}
+
+            res = requests.get("http://20.21.102.175:8050/registerApp", params=params)
+            print(res.text)
+            ip = res.text.split(":")[0]
+            port = res.text.split(":")[1]
+            register_service(service["service_name"], ip, port)
 
             idx = (idx + 1) % 3
 

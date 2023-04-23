@@ -9,7 +9,7 @@ def register_app(app_name, ip, port):
 
     zk.ensure_path(f"/apps/{app_name}")
     my_byte_string = f"{ip}:{port}".encode('utf-8')
-    zk.create(f"/apps/{app_name}/my-instance1", my_byte_string)
+    zk.create(f"/apps/{app_name}/instance1", my_byte_string)
 
     zk.stop()
 
