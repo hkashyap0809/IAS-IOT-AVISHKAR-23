@@ -25,6 +25,7 @@
         "vm_key_path": "./VM-keys/VM3_key.cer",
         "vm_service_path": "/home/azureuser/LoadBalancerTesting",
         "latestAvailablePort": 49152,
-        "hosted_apps": []
+        "hosted_apps": [
+        ]
     }
 ]

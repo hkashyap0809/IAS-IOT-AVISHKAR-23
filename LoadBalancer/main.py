@@ -1,5 +1,5 @@
 import os
-
+import json
 from flask import Flask
 from flask_cors import cross_origin
 from flask import request
@@ -60,9 +60,45 @@ def registerApp():
     return lbb.registerApp(appName, imageName, vmIp, int(containerPort), int(hostPort), containerId, "VM1")
 
 
+@app.route("/deregisterApp", methods=['GET'])
+@cross_origin()
+def deregisterApp():
+    appName = request.args.get("appName")
+    lbb = LoadBalancer()
+    lbb.deregisterApp(appName)
+    return f'{appName} has been deregistered'
+
+
+@app.route("/getVmDetails", methods=['GET'])
+@cross_origin()
+def getVmDetails():
+    with open('VmDetails.json') as json_file:
+        dicts = json.load(json_file)
+
+    return dicts
+
+
+@app.route("/getAppsDetails", methods=['GET'])
+@cross_origin()
+def getAppsDetails():
+    with open('AppDetails.json') as json_file:
+        appDetailsDict = json.load(json_file)
+
+    return appDetailsDict
+
+
+@app.route("/getAppsHealth", methods=['GET'])
+@cross_origin()
+def getAppsHealth():
+    with open('AppHealth.json') as json_file:
+        appHealthDict = json.load(json_file)
+
+    return appHealthDict
+
+
 if __name__ == "__main__":
     lb = LoadBalancer()
     thread = threading.Thread(target=lb.balance, args=("VM1",))
     thread.start()
-    app.run(host='0.0.0.0', port=8050, debug=True, threaded=True,  use_reloader=False)
+    app.run(host='0.0.0.0', port=8050, debug=True, threaded=True, use_reloader=False)
     thread.join()

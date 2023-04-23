@@ -43,8 +43,21 @@ class LoadBalancer:
         LoadBalancer.__updateJson__("AppDetails.json", "appName", appName, "instances", instances + 1)
         In AppDetails.json where appName == appName, update key instances value to (instances + 1)
         """
+        if method == 'empty':
+            with open(fileName, 'w') as json_file:
+                json.dump([], json_file, indent=4)
+            return
+
+
         with open(fileName) as json_file:
             dicts = json.load(json_file)
+
+        if method == 'addDict':
+            dicts.append(newVal)
+            with open(fileName, 'w') as json_file:
+                json.dump(dicts, json_file, indent=4)
+            return
+
 
         for d in dicts:
             if d[keyId] == valId:
@@ -55,6 +68,10 @@ class LoadBalancer:
                     d[updateKey].append(newVal)
                 elif method == "addKey":
                     d[updateKey] = newVal
+                elif method == "removeDict":
+                    dicts.remove(d)
+                elif method == 'pop':
+                    d[updateKey].remove(newVal)
                 else:
                     raise Exception("invalid update method provided in updateJson!")
                 break
@@ -149,8 +166,7 @@ sudo nginx -s reload
         :param lbVmName: This is the name of VM on which load balancer is running
         :return: End point of the application
         """
-        with open("./AppDetails.json") as file:
-            apps = json.load(file)
+
         vm = LoadBalancer.__getDictFromJson__("VmDetails.json", 'vm_ip', vmIp)
         hostVm = vm['vm_name']
         newApp = {
@@ -163,6 +179,15 @@ sudo nginx -s reload
             "nginxPort": 0,
             "containerIds": [containerId]
         }
+        # logic to see if a same name app is being redeployed
+        LoadBalancer.__updateJson__('AppDetails.json', 'appName', appName, None, None, "removeDict")
+        try:
+            LoadBalancer.__updateJson__('VmDetails.json', 'vm_name', hostVm, 'hosted_apps', appName, 'pop')
+        except:
+            pass
+
+        with open("./AppDetails.json") as file:
+            apps = json.load(file)
 
         apps.append(newApp)
 
@@ -264,24 +289,37 @@ sudo nginx -s reload
 
     @staticmethod
     def __balanceOnce__(lbVmName):
+        LoadBalancer.__updateJson__('AppHealth.json', None, None, None, None, 'empty')
+
         with open('AppDetails.json') as json_file:
             allApps = json.load(json_file)
+
         for app in allApps:
             logger.info(f"checking load on {app['appName']}")
             appHostVm = LoadBalancer.__getDictFromJson__('VmDetails.json', 'vm_name', app["hostVm"])
-            for container in app["containerIds"]:
-                ramUsage = LoadBalancer.__getContainerRamUsage__(appHostVm, container)
-                cpuUsage = LoadBalancer.__getContainerCpuUsage__(appHostVm, container)
+            entry = {'appName': f'{app["appName"]}', 'stats': []}
+            LoadBalancer.__updateJson__('AppHealth.json', None, None, None, entry, 'addDict')
 
-                if ramUsage > 75 or cpuUsage > 80:
-                    logger.info(
-                        f'{app["appName"]}, container - {container} is unhealthy; RAM utilization = {ramUsage}% ; CPU utilization = {cpuUsage}%')
-                    LoadBalancer.addReplica(app["appName"], lbVmName)
-                    break  # don't create a new container for every unhealthy container. Just create one. If needed
-                    # create one more in the next round
-                else:
-                    logger.info(
-                        f'{app["appName"]}, container - {container} is healthy; RAM utilization = {ramUsage}% ; CPU utilization = {cpuUsage}%')
+            for container in app["containerIds"]:
+                try:
+                    ramUsage = LoadBalancer.__getContainerRamUsage__(appHostVm, container)
+                    cpuUsage = LoadBalancer.__getContainerCpuUsage__(appHostVm, container)
+
+                    if ramUsage > 75 or cpuUsage > 80:
+                        healthInfo = f'{app["appName"]}, container - {container} is unhealthy; RAM utilization = {ramUsage}% ; CPU utilization = {cpuUsage}% '
+                        logger.info(healthInfo)
+                        LoadBalancer.__updateJson__('AppHealth.json', 'appName', app['appName'], 'stats', healthInfo, 'append')
+                        logger.info('creating replica')
+                        LoadBalancer.addReplica(app["appName"], lbVmName)
+                        break  # don't create a new container for every unhealthy container. Just create one. If needed
+                        # create one more in the next round
+                    else:
+                        healthInfo = f'{app["appName"]}, container - {container} is healthy; RAM utilization = {ramUsage}% ; CPU utilization = {cpuUsage}%'
+                        logger.info(healthInfo)
+                        LoadBalancer.__updateJson__('AppHealth.json', 'appName', app['appName'], 'stats', healthInfo,
+                                                    'append')
+                except:
+                    logger.info("Exception encountered while load balancing, possible causes - container deleted, etc")
 
     @staticmethod
     def balance(lbVmName):
@@ -299,11 +337,10 @@ sudo nginx -s reload
             response = requests.get(f'{app["endpoint"]}/heartbeat')
             if response.status_code == 200:
                 logger.info(f'{app["appName"]} is alive!')
-                logger.info("Success! Response body:", response.text)
             else:
                 logger.info(f'{app["appName"]} is dead!')
                 logger.info("Failed with status code:", response.status_code)
-            time.sleep(5)
+            time.sleep(50)
 
     @staticmethod
     def listenHeartbeat():
@@ -315,16 +352,54 @@ sudo nginx -s reload
             if temCounter == 4:
                 break
 
+    @staticmethod
+    def __removeNginxEntry(appName, lbVmName: str):
+        """
+        This methods removes the config files created for appName.conf application
+        :param appName: The app to be deleted
+        :param lbVmName: Name of the VM on which load balancer is running
+        :return: None
+        """
+        lbVm = LoadBalancer.__getDictFromJson__('VmDetails.json', 'vm_name', lbVmName)
+        nginxPath = '/etc/nginx'
+        commandConnect = f'ssh -o StrictHostKeyChecking=no -i {lbVm["vm_key_path"]} {lbVm["vm_username"]}@{lbVm["vm_ip"]}'
+        commandRemove = f'cd {nginxPath}/conf.d; sudo rm {appName}.conf;'
+        commandRestart = 'sudo nginx -s reload;'
+        os.system(f'''{commandConnect} "{commandRemove} {commandRestart}"''')
+        logger.info(f"Removed config of {appName}")
 
-if __name__ == "__main__":
-    lb = LoadBalancer()
-    # lb.registerApp("testApp1", "test_app1_image", "VM1", 7200, 30000, "180b5f7b7ca8", "VM1")
-    lb.registerApp("testApp2", "test_app2_image", "20.173.88.38", 7200, 30000, "42412462b45a", "VM1")
-    # lb.registerApp("testApp3", "test_app3_image", "VM3", 7200, 30000, "87a09e0c621c", "VM1")
-    # lb.addReplica("testApp1", "VM1")  # forcefully create replica
-    # lb.addReplica("testApp1", "VM1")  # forcefully create replica
-    lb.addReplica("testApp2", "VM1")  # forcefully create replica
-    # lb.addReplica("testApp2", "VM1")  # forcefully create replica
-    # lb.addReplica("testApp2", "VM1")  # forcefully create replica
-    # lb.listenHeartbeat()  # listen heartbeat for three cycles (for now)
-    # lb.balance("VM1")  # balance load for three cycles (for now)
+    @staticmethod
+    def deregisterApp(appName: str):
+        """
+        This method will be called to remove a deployed app from the platform.
+        The methods assumes that appName is present in AppDetails.json, ie, the app is actually running on the VM.
+        No checks have been added if a app that is not in the VM is being deregistered
+        :param appName: The name of the app to be removed
+        :return: None
+        """
+        app, vm = LoadBalancer.__getAppAndVmDetails__(appName)
+        commandConnect = f'ssh -o StrictHostKeyChecking=no -i {vm["vm_key_path"]} {vm["vm_username"]}@{vm["vm_ip"]}'
+
+        # delete all app containers
+        for container in app['containerIds']:
+            commandDeleteContainer = f'sudo docker rm -f {container}'
+            os.system(f'''{commandConnect} "{commandDeleteContainer}"''')
+        logger.info(f"Deleted all containers of {appName}")
+
+        # delete the app's docker image
+        commandDeleteImage = f'''sudo docker image rm {app["imageName"]}'''
+        os.system(f'{commandConnect} "{commandDeleteImage}"')
+        logger.info(f"Deleted the image of {appName}")
+
+        # update the jsons
+        LoadBalancer.__updateJson__('AppDetails.json', 'appName', appName, None, None, 'removeDict')
+        LoadBalancer.__updateJson__('VmDetails.json', 'vm_name', app['hostVm'], 'hosted_apps', appName, 'pop')
+
+        # remove nginx entry and restart nginx
+        LoadBalancer.__removeNginxEntry(appName, "VM1")
+
+        logger.info(f'{appName} successfully deregistered!')
+
+
+
+
