@@ -9,6 +9,8 @@ import {
 } from "../utils/axiosInstance";
 import Loader from "../utils/Loader";
 import VmHealth from "./vmHealth";
+import AboutUs from "../AboutUs";
+import LoadBalancerCard from "./LoadBalancerCard";
 
 function Leftbar() {
   const [tabIndex, setTabIndex] = useState(1);
@@ -19,10 +21,14 @@ function Leftbar() {
   const [modules, setModules] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [currentModule, setCurrentModule] = useState("");
-  const [currentModuleLog, setCurrentModuleLog] = useState("");
+  const [currentModuleLog, setCurrentModuleLog] = useState([]);
   const [vmHealth, setVmHealth] = useState([]);
+  const [loadBalancerStats, setLoadBalancerStats] = useState([]);
+  const [loadBalancerServices, setLoadBalancerServices] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
   useEffect(() => {
     setLoading(true);
+    setErrorMessage("");
     const config = {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -30,6 +36,7 @@ function Leftbar() {
     };
     if (tabIndex === 1) {
       // Handle Platform Status
+      setLoading(false);
     } else if (tabIndex === 2) {
       // Handle Module Status / Logs
       getLatestModuleStatus();
@@ -47,6 +54,7 @@ function Leftbar() {
         .catch((err) => {
           console.log(err);
           setLoading(false);
+          setErrorMessage("Some Error Occurred");
         });
     } else if (tabIndex === 4) {
       setDeployedApps([]);
@@ -61,6 +69,7 @@ function Leftbar() {
         .catch((err) => {
           console.log(err);
           setLoading(false);
+          setErrorMessage("Some Error Occurred");
         });
     } else if (tabIndex === 5) {
       // Handle view workflows
@@ -68,38 +77,34 @@ function Leftbar() {
       // Handle View All Scheduled Apps
     } else if (tabIndex === 7) {
       // Handle VM Health
+      getLatestHealthVm();
+    } else if (tabIndex === 8) {
+      // Handle Live Sensor Data
+    } else if (tabIndex === 9) {
+      // Handle Load Balancer Status
       setLoading(true);
-      const url = "http://20.21.102.175:8050/getAppsDetails";
-      axios
-        .get(url)
+      const urlServices = "http://20.21.102.175:8050/getAppsDetails";
+      const urlStats = "http://20.21.102.175:8050/getAppsHealth";
+
+      const requestServices = axios.get(urlServices);
+      const requestStats = axios.get(urlStats);
+
+      Promise.all([requestServices, requestStats])
         .then((response) => {
           console.log(response);
-          const nodeManager = response.data.filter(
-            (r, idx) => r.appName === "NodeManager"
-          );
-          console.log(nodeManager);
-          const endPoint = nodeManager[0].endpoint;
-
-          axios
-            .get(`${endPoint}/nodemgr/get-all-nodes-health`)
-            .then((resp) => {
-              setLoading(false);
-              setVmHealth([...resp.data]);
-              console.log(resp);
-            })
-            .catch((err) => {
-              setLoading(false);
-              console.log(err);
-            });
+          const services = response[0].data;
+          const stats = response[1].data;
+          setLoadBalancerServices([...services]);
+          setLoadBalancerStats([...stats]);
+          setLoading(false);
         })
         .catch((err) => {
           console.log(err);
           setLoading(false);
+          setErrorMessage("Some Error Occurred");
         });
-    } else if (tabIndex === 8) {
-      // Handle Live Sensor Data
-    } else if (tabIndex === 9) {
-      // Handle
+    } else if (tabIndex === 10) {
+      // Handle We@Avishkar
     }
     setLoading(false);
   }, [tabIndex]);
@@ -124,6 +129,38 @@ function Leftbar() {
     }
   };
 
+  const getLatestHealthVm = () => {
+    setLoading(true);
+    const url = "http://20.21.102.175:8050/getAppsDetails";
+    axios
+      .get(url)
+      .then((response) => {
+        console.log(response);
+        const nodeManager = response.data.filter(
+          (r, idx) => r.appName === "NodeManager"
+        );
+        console.log(nodeManager);
+        const endPoint = nodeManager[0].endpoint;
+
+        axios
+          .get(`${endPoint}/nodemgr/get-all-nodes-health`)
+          .then((resp) => {
+            setLoading(false);
+            setVmHealth([...resp.data]);
+            console.log(resp);
+          })
+          .catch((err) => {
+            setLoading(false);
+            console.log(err);
+            setErrorMessage("Some Error Occurred");
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  };
+
   const getLatestModuleStatus = () => {
     // e.preventDefault();
     setLoading(true);
@@ -137,6 +174,7 @@ function Leftbar() {
       .catch((err) => {
         setLoading(false);
         console.log(err);
+        setErrorMessage("Some Error Occurred");
       });
   };
 
@@ -151,7 +189,8 @@ function Leftbar() {
       .then((response) => {
         console.log(response);
         const { logs } = response.data;
-        setCurrentModuleLog(logs);
+        const logsArray = logs.split("\n");
+        setCurrentModuleLog(logsArray);
         setLoading(false);
       })
       .catch((err) => {
@@ -224,17 +263,33 @@ function Leftbar() {
             ) : (
               <span className="badge bg-danger rounded-pill">Down</span>
             )}
-            {currentModule === moduleName && <p>{currentModuleLog}</p>}
           </li>
+          {currentModule === moduleName && (
+            <p>
+              {currentModuleLog.map((m, i) => (
+                <p key={i}>{m}</p>
+              ))}
+            </p>
+          )}
         </div>
       );
     })
   ) : (
-    <div>...Fetching status</div>
+    <div className="spinner-border m-2" role="status">
+      <span className="visullay-hidden"></span>
+    </div>
   );
 
   const vmHealthData = vmHealth.map((v, idx) => {
-    return <VmHealth data={v} />;
+    return <VmHealth key={idx} data={v} />;
+  });
+
+  const loadBalancerServicesData = loadBalancerServices.map((service, idx) => {
+    return <LoadBalancerCard key={idx} services={service} isServices={true} />;
+  });
+
+  const loadBalancerStatsData = loadBalancerStats.map((stat, idx) => {
+    return <LoadBalancerCard key={idx} services={stat} isServices={false} />;
   });
 
   return (
@@ -255,7 +310,11 @@ function Leftbar() {
               <li className="my-2">
                 <hr className="dropdown-divider bg-light" />
               </li>
-              <li>
+              <li
+                style={{
+                  backgroundColor: tabIndex === 1 ? "black" : "#212529",
+                }}
+              >
                 <a className="nav-link px-1">
                   <span className="me-1">
                     <i className="bi bi-check-circle-fill"></i>
@@ -269,7 +328,11 @@ function Leftbar() {
                   </span>
                 </a>
               </li>
-              <li>
+              <li
+                style={{
+                  backgroundColor: tabIndex === 2 ? "black" : "#212529",
+                }}
+              >
                 <a className="nav-link px-1">
                   <span className="me-1">
                     <i className="bi bi-heart-fill"></i>
@@ -284,7 +347,11 @@ function Leftbar() {
                 </a>
               </li>
 
-              <li>
+              <li
+                style={{
+                  backgroundColor: tabIndex === 3 ? "black" : "#212529",
+                }}
+              >
                 <a className="nav-link px-1">
                   <span className="me-1">
                     <i className="bi bi-eye"></i>
@@ -299,7 +366,11 @@ function Leftbar() {
                 </a>
               </li>
 
-              <li>
+              <li
+                style={{
+                  backgroundColor: tabIndex === 4 ? "black" : "#212529",
+                }}
+              >
                 <a className="nav-link px-1">
                   <span className="me-1">
                     <i className="bi bi-eye"></i>
@@ -314,7 +385,11 @@ function Leftbar() {
                 </a>
               </li>
 
-              <li>
+              <li
+                style={{
+                  backgroundColor: tabIndex === 5 ? "black" : "#212529",
+                }}
+              >
                 <a className="nav-link px-1">
                   <span className="me-1">
                     <i className="bi bi-eye"></i>
@@ -329,7 +404,11 @@ function Leftbar() {
                 </a>
               </li>
 
-              <li>
+              <li
+                style={{
+                  backgroundColor: tabIndex === 6 ? "black" : "#212529",
+                }}
+              >
                 <a className="nav-link px-1">
                   <span className="me-1">
                     <i className="bi bi-eye"></i>
@@ -344,7 +423,11 @@ function Leftbar() {
                 </a>
               </li>
 
-              <li>
+              <li
+                style={{
+                  backgroundColor: tabIndex === 7 ? "black" : "#212529",
+                }}
+              >
                 <a className="nav-link px-1">
                   <span className="me-1">
                     <i className="bi bi-heart-fill"></i>
@@ -359,7 +442,11 @@ function Leftbar() {
                 </a>
               </li>
 
-              <li>
+              <li
+                style={{
+                  backgroundColor: tabIndex === 8 ? "black" : "#212529",
+                }}
+              >
                 <a className="nav-link px-1">
                   <span className="me-1">
                     <i className="bi bi-lightning-charge"></i>
@@ -373,14 +460,36 @@ function Leftbar() {
                   </span>
                 </a>
               </li>
-              <li>
+              <li
+                style={{
+                  backgroundColor: tabIndex === 9 ? "black" : "#212529",
+                }}
+              >
+                <a className="nav-link px-1">
+                  <span className="me-1">
+                    <i className="bi bi-check-circle-fill"></i>
+                  </span>
+                  <span
+                    className={tabIndex === 9 ? "btns selctedbtn" : "btns"}
+                    onClick={() => setTabIndex(9)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    Load Balancer Status
+                  </span>
+                </a>
+              </li>
+              <li
+                style={{
+                  backgroundColor: tabIndex === 10 ? "black" : "#212529",
+                }}
+              >
                 <a className="nav-link px-1">
                   <span className="me-1">
                     <i className="bi bi-info-circle"></i>
                   </span>
                   <span
-                    className={tabIndex === 9 ? "btns selctedbtn" : "btns"}
-                    onClick={() => setTabIndex(9)}
+                    className={tabIndex === 10 ? "btns selctedbtn" : "btns"}
+                    onClick={() => setTabIndex(10)}
                     style={{ cursor: "pointer" }}
                   >
                     We@Avishkar
@@ -439,7 +548,9 @@ function Leftbar() {
                     {uploadedApps.length ? (
                       uploadedAppsData
                     ) : (
-                      <h2>Fetching uploaded apps</h2>
+                      <div className="spinner-border m-2" role="status">
+                        <span className="visullay-hidden"></span>
+                      </div>
                     )}
                   </div>
                 </Loader>
@@ -456,7 +567,9 @@ function Leftbar() {
                     {deployedApps.length ? (
                       deployedAppsData
                     ) : (
-                      <h2>Fetching deployed apps</h2>
+                      <div className="spinner-border m-2" role="status">
+                        <span className="visullay-hidden"></span>
+                      </div>
                     )}
                   </div>
                 </Loader>
@@ -470,6 +583,7 @@ function Leftbar() {
               type="button"
               className="btn btn-secondary btn-sm "
               style={{ position: "absolute", top: "10%", right: "1%" }}
+              onClick={getLatestHealthVm}
             >
               Refresh
             </button>
@@ -480,11 +594,17 @@ function Leftbar() {
                 <div className="container-fluid">
                   <div className="row">
                     <Loader spinning={isLoading}>
-                      <div className="card-container">
-                        {vmHealth.length ? (
+                      <div className="card-container mt-5">
+                        {!isLoading ? (
                           vmHealthData
                         ) : (
-                          <h2>Fetching VM's health</h2>
+                          <>
+                            <h4>Fetching VM's health</h4>
+                            <br />
+                            <div className="spinner-border m-2" role="status">
+                              <span className="visullay-hidden"></span>
+                            </div>
+                          </>
                         )}
                       </div>
                     </Loader>
@@ -504,6 +624,26 @@ function Leftbar() {
             </div>
           </div>
         )}
+        {tabIndex === 9 && (
+          <main className="mt-5 pt-3">
+            <div className="container-fluid ml-5">
+              <div className="row">
+                {isLoading ? (
+                  <div className="spinner-border m-2" role="status">
+                    <span className="visullay-hidden"></span>
+                  </div>
+                ) : (
+                  <>
+                    {" "}
+                    <div>{loadBalancerServicesData}</div>
+                    <div>{loadBalancerStatsData}</div>
+                  </>
+                )}
+              </div>
+            </div>
+          </main>
+        )}
+        {tabIndex === 10 && <AboutUs />}
       </div>
     </div>
   );

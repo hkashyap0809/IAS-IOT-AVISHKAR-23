@@ -6,6 +6,7 @@ from flask import Flask
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+
 db = SQLAlchemy()
 
 
@@ -13,6 +14,7 @@ def create_app():
     """Construct the core application."""
     app = Flask(__name__, instance_relative_config=False)
     CORS(app)
+
     app.config["UPLOAD_FOLDER"] = "static/uploads"
     app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
     app.config.from_object("config.Config")

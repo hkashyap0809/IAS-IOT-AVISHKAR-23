@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const axiosAuthInstance = axios.create({
-  baseURL: "http://192.168.43.27:5000",
+  baseURL: "http://192.168.43.210:5000",
 });
 
 export const axiosAppInstance = axios.create({

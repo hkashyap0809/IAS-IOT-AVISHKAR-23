@@ -43,11 +43,14 @@ def wait_for_message(from_topic, appName, uid):
 def getDeployedApps(userName, role, request):
     apps = None
     if role == "user":
-        apps = DeployedApp.query.filter_by(userName=userName).all()
+        with db.session() as session:
+            apps = DeployedApp.query.filter_by(userName=userName).all()
     elif role == "dev":
-        apps = DeployedApp.query.filter_by(developer=userName).all()
+        with db.session() as session:
+            apps = DeployedApp.query.filter_by(developer=userName).all()
     elif role == "admin":
-        apps = DeployedApp.query.filter_by().all()
+        with db.session() as session:
+            apps = DeployedApp.query.filter_by().all()
     apps = [{
         "id": app.id,
         "baseAppId": app.baseAppId,
@@ -167,6 +170,7 @@ def deployApp(userName, role, request, inputData):
     try:
         db.session.add(deployedApp)
         db.session.commit()
+        db.session.close()
     except Exception as e:
         print(e)
         return generate_response(
@@ -174,10 +178,12 @@ def deployApp(userName, role, request, inputData):
             status=HTTP_400_BAD_REQUEST
         )
     # **************************** Change the status of baseApp to deployed in baseApps table ****************************
-    baseApp = BaseApp.query.filter_by(appName=inputData.get('baseAppName')).first()
+    with db.session() as session:
+        baseApp = BaseApp.query.filter_by(appName=inputData.get('baseAppName')).first()
     try:
         baseApp.status = 'deployed'
         db.session.commit()
+        db.session.close()
     except Exception as e:
         print(e)
         return generate_response(

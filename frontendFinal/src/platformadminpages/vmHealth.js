@@ -2,12 +2,11 @@ import React from "react";
 
 function VmHealth(props) {
   const { data } = props;
-  const cpuUsage = data["CPU Usage"];
-  const diskUsage = data["Disk Usage"];
-  const health = data["Health"];
-  const memory = data["Memory Usage"];
+  const cpuUsage = Math.ceil(data["CPU Usage"]);
+  const diskUsage = Math.ceil(data["Disk Usage"]);
+  const health = Math.ceil(data["Health"]);
+  const memory = Math.ceil(data["Memory Usage"]);
   const name = data["name"];
-  console.log(props);
   return (
     <div>
       <div className="card">

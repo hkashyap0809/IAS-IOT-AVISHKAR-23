@@ -33,6 +33,7 @@ def saveBaseApp(appName, userName):
     try:
         db.session.add(baseApp)
         db.session.commit()
+        db.session.close()
     except Exception as e:
         print(e)
         return generate_response(
@@ -175,9 +176,11 @@ def get_apps(userName, role, request):
     """
     apps = None
     if role == "user" or role == "admin":
-        apps = BaseApp.query.filter_by().all()
+        with db.session() as session:
+            apps = BaseApp.query.filter_by().all()
     elif role == "dev":
-        apps = BaseApp.query.filter_by(developer=userName).all()
+        with db.session() as session:
+            apps = BaseApp.query.filter_by(developer=userName).all()
     apps = [{
         "id": app.id,
         "developer": app.developer,
@@ -192,7 +195,8 @@ def get_apps(userName, role, request):
     )
 
 def checkFileNameHandler(fileName):
-    details = BaseApp.query.filter_by(appName=fileName).all()
+    with db.session() as session:
+        details = BaseApp.query.filter_by(appName=fileName).all()
     return len(details) == 0
 
 @verify_token
