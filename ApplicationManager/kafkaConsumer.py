@@ -5,7 +5,7 @@ import os
 from deployedApps.models import DeployedApp
 from main import db
 
-consumer = KafkaConsumer("ApplicationManager", bootstrap_servers=['20.196.205.46:9092'],
+consumer = KafkaConsumer("Scheduler", bootstrap_servers=['20.196.205.46:9092'],
                         value_deserializer=lambda m: json.loads(m.decode('utf-8')))
         
 def saveScheduledAppKafka():

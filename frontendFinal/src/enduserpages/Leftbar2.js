@@ -126,7 +126,7 @@ function Leftbar2() {
                     disabled={!isDateTimeEnabled}
                     style={{ display: isDateTimeEnabled ? "block" : "none" }}
                   >
-                    <label for="starttime">Start (date and time):</label>
+                    <label htmlFor="starttime">Start (date and time):</label>
                     <input
                       type="datetime-local"
                       id="starttime"
@@ -134,7 +134,7 @@ function Leftbar2() {
                     />
                     <br />
                     <br />
-                    <label for="endtime">End (date and time):</label>
+                    <label htmlFor="endtime">End (date and time):</label>
                     <input type="datetime-local" id="endtime" name="endtime" />
                     <br />
                     <br />

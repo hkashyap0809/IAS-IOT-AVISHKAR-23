@@ -19,6 +19,10 @@ function Leftbar() {
   const [appToDeploy, setAppToDeploy] = useState("");
   const [applicationType, setApplicationType] = useState("");
   const [location, setLocation] = useState("");
+  const [mode, setMode] = useState("deploy");
+  const [userEmail, setUserEmail] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
   const handleTabIndex = (e) => {
     e.preventDefault();
     setAppToDeploy("");
@@ -26,6 +30,10 @@ function Leftbar() {
     if (e.target.id === "view") setTabIndex(2);
     if (e.target.id === "schedule") setTabIndex(3);
     if (e.target.id === "we") setTabIndex(4);
+  };
+  const handleUserEmail = (e) => {
+    e.preventDefault();
+    setUserEmail(e.target.value);
   };
 
   useEffect(() => {
@@ -66,6 +74,7 @@ function Leftbar() {
         });
     } else if (tabIndex === 0) {
       setLoading(true);
+      setMode("deploy");
       // const url = `http://20.21.102.175:2041/api/sensor/location/${applicationType}`;
       // const url = `http://192.168.202.134:8050/api/sensor/location/${applicationType}`;
       axiosLocationInstance
@@ -106,6 +115,21 @@ function Leftbar() {
       });
     } else if (tabIndex === 2) {
       window.open(url, "_blank");
+    }
+  };
+
+  const handleModeChange = (e) => {
+    console.log(e.target.value);
+    e.preventDefault();
+    setMode(e.target.value);
+  };
+
+  const handleTimeChange = (e) => {
+    e.preventDefault();
+    if (e.target.name === "starttime") {
+      setStartTime(e.target.value);
+    } else if (e.target.name === "endtime") {
+      setEndTime(e.target.value);
     }
   };
 
@@ -154,7 +178,7 @@ function Leftbar() {
 
   const handleDeploy = (e) => {
     e.preventDefault();
-    if (appToDeploy) {
+    if (appToDeploy && userEmail) {
       setLoading(true);
       setValidationMsg("");
       const token = localStorage.getItem("token");
@@ -164,27 +188,42 @@ function Leftbar() {
         },
       };
       const { baseAppId, baseAppName, developer } = appToDeploy;
-      axiosAppInstance
-        .post(
-          "/api/deployedApps/deployApp/",
-          {
-            baseAppId,
-            baseAppName,
-            location,
-            developer,
-          },
-          config
-        )
-        .then((response) => {
-          setLoading(false);
-          console.log(response);
-          const { message } = response.data;
-          setValidationMsg(message);
-        })
-        .catch((err) => {
-          setLoading(false);
-          console.log(err);
-        });
+      const obj = {
+        baseAppId,
+        baseAppName,
+        location,
+        developer,
+        userEmail,
+      };
+      if (mode === "deploy") {
+        axiosAppInstance
+          .post("/api/deployedApps/deployApp/", obj, config)
+          .then((response) => {
+            setLoading(false);
+            console.log(response);
+            const { message } = response.data;
+            setValidationMsg(message);
+          })
+          .catch((err) => {
+            setLoading(false);
+            console.log(err);
+          });
+      } else if (mode === "schedule") {
+        obj["startTime"] = startTime;
+        obj["endTime"] = endTime;
+        axiosAppInstance
+          .post("/api/deployedApps/scheduleApp/", obj, config)
+          .then((response) => {
+            setLoading(false);
+            console.log(response);
+            const { message } = response.data;
+            setValidationMsg(message);
+          })
+          .catch((err) => {
+            setLoading(false);
+            console.log(err);
+          });
+      }
     }
   };
 
@@ -358,29 +397,42 @@ function Leftbar() {
                       <br />
                     </div>
 
-                    <button
+                    {/* <button
                       onClick={toggleDateTime}
                       type="button"
                       className="btn btn-info"
                     >
                       Schedule
-                    </button>
+                    </button> */}
+                    <label htmlFor="userEmail">Email: </label>
+                    <input
+                      type="email"
+                      name="userEmail"
+                      value={userEmail}
+                      onChange={handleUserEmail}
+                    />
                     <br />
                     <br />
+                    <select onChange={handleModeChange}>
+                      <option value="deploy">Deploy</option>
+                      <option value="schedule">Schedule</option>
+                    </select>
                     <div
                       className="datetime"
-                      disabled={!isDateTimeEnabled}
-                      style={{ display: isDateTimeEnabled ? "block" : "none" }}
+                      style={{
+                        display: mode === "schedule" ? "block" : "none",
+                      }}
                     >
-                      <label for="starttime">Start (date and time):</label>
+                      <label htmlFor="starttime">Start (date and time):</label>
                       <input
                         type="datetime-local"
                         id="starttime"
                         name="starttime"
+                        onChange={handleTimeChange}
                       />
                       <br />
                       <br />
-                      <label for="endtime">End (date and time):</label>
+                      <label htmlFor="endtime">End (date and time):</label>
                       <input
                         type="datetime-local"
                         id="endtime"
@@ -394,7 +446,7 @@ function Leftbar() {
                       className="btn btn-success"
                       onClick={handleDeploy}
                     >
-                      Run App
+                      {mode === "deploy" ? "Deploy App" : "Schedule App"}
                     </button>
                     <p>{validationMsg}</p>
                   </Loader>

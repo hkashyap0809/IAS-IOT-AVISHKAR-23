@@ -1,7 +1,7 @@
 from flask import Response
 from flask_restful import Resource
 from flask import request, make_response
-from deployedApps.service import getDeployedApps, deployApp
+from deployedApps.service import getDeployedApps, deployApp, scheduleApp
 
 class GetDeployedAppsApi(Resource):
     @staticmethod
@@ -25,3 +25,13 @@ class DeployApp(Resource):
         inputData = request.get_json()
         response, status = deployApp(request, inputData)
         return make_response(response, status)
+    
+class ScheduleApp(Resource):
+    @staticmethod
+    def post() -> Response:
+        """
+        POST response method for scheduling the app by the user
+        """
+        inputData = request.get_json()
+        response, status = scheduleApp(request, inputData)
+        return make_response
