@@ -17,7 +17,7 @@ class DeployedApp(db.Model):
     developer = db.Column(db.String(64), nullable=False)
     deployedAppName = db.Column(db.String(128), index=True, unique=True, nullable=False)
     userName = db.Column(db.String(64), index=True, unique=False, nullable=False)
-    url = db.Column(db.String(64), index=True, unique=True, nullable=False)
+    url = db.Column(db.String(64), index=True, unique=True, nullable=True)
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=True)
     # baseApp = db.relationship('BaseApp', backref=db.backref('deployed_apps', lazy=True))
 

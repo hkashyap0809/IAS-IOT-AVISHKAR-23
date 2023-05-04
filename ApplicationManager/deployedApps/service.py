@@ -25,8 +25,9 @@ import threading
 basedir = path.abspath(path.dirname(__file__))
 uploadFolder = path.join(basedir, "..", "static", "uploads")
 response = None
+scheduleResponse = None
 
-def wait_for_message(from_topic, appName, uid):
+def deployAppKafka(from_topic, appName, uid):
     global response
     consumer = KafkaConsumer(from_topic, bootstrap_servers=[environ.get("KAFKA_SERVER")])
     for msg in consumer:
@@ -36,6 +37,19 @@ def wait_for_message(from_topic, appName, uid):
             # Do something with received message
             response = received_message
             print("App deployed")
+            consumer.close()
+            break
+
+def scheduleAppKafka(from_topic, appName, uid):
+    global scheduleResponse
+    consumer = KafkaConsumer(from_topic, bootstrap_servers=[environ.get("KAFKA_SERVER")])
+    for msg in consumer:
+        received_message = json.loads(msg.value.decode('utf-8'))
+        print(received_message)
+        if f'scheduled app {appName}' in received_message['msg'] and received_message['request_id'] == uid:
+            scheduleResponse = received_message
+            print("App scheduled")
+            consumer.close()
             break
 
 def upload_app(target_directory):
@@ -126,6 +140,7 @@ def deployApp(userName, role, request, inputData):
     developer = inputData.get('developer')
     print(baseAppName)
     location = inputData.get('location')
+    userEmail = inputData.get('userEmail')
     replicatedAppName = baseAppName + '_' + str(uuid1())
     appFolder = os.path.join(uploadFolder, replicatedAppName)
     os.mkdir(appFolder)
@@ -138,6 +153,7 @@ def deployApp(userName, role, request, inputData):
     data = json.load(f)
     print(data)
     data["location"] = location
+    data["userEmail"] = userEmail
     serializeDataObj = json.dumps(data, indent=2)
     with open(jsonFilePath, 'w') as f:
         f.write(serializeDataObj)
@@ -149,7 +165,7 @@ def deployApp(userName, role, request, inputData):
     to_topic, from_topic = 'DeploymentManager', 'first_topic'
     producer = KafkaProducer(bootstrap_servers=[environ.get("KAFKA_SERVER")])
     uid = str(uuid1())
-    print("UID is: ", uid)
+    print("Deploy UID is: ", uid)
     message = {
         'to_topic': to_topic,
         'from_topic': from_topic,
@@ -158,9 +174,10 @@ def deployApp(userName, role, request, inputData):
     }
     producer.send(to_topic, json.dumps(message).encode('utf-8'))
 
-    t = threading.Thread(target=wait_for_message, args=(from_topic, replicatedAppName, uid))
+    t = threading.Thread(target=deployAppKafka, args=(from_topic, replicatedAppName, uid))
     t.start()
     t.join()
+    producer.close()
     print(response)
     if "done" in response["msg"]:
         url = response['msg'].split("deploy - ")
@@ -193,7 +210,7 @@ def deployApp(userName, role, request, inputData):
         )
     # **************************** Change the status of baseApp to deployed in baseApps table ****************************
     with db.session() as session:
-        baseApp = BaseApp.query.filter_by(appName=inputData.get('baseAppName')).first()
+        baseApp = BaseApp.query.filter_by(appName=baseAppName).first()
         try:
             baseApp.status = 'deployed'
             session.commit()
@@ -210,4 +227,95 @@ def deployApp(userName, role, request, inputData):
         status=HTTP_201_CREATED
     )
 
+@verify_token
+def scheduleApp(userName, role, request, inputData):
+    baseAppId = inputData.get('baseAppId')
+    baseAppName = inputData.get('baseAppName')
+    developer = inputData.get('developer')
+    print(baseAppName)
+    location = inputData.get('location')
+    startTime = inputData.get('startTime')
+    endTime = inputData.get('endTime')
+    userEmail = inputData.get('userEmail')
 
+
+    replicatedAppName = baseAppName + '_' + str(uuid1())
+    appFolder = os.path.join(uploadFolder, replicatedAppName)
+    os.mkdir(appFolder)
+    # **************************** Download baseApp folder from azure ****************************
+    download_blob(appFolder, baseAppName)
+    # **************************** Add Location to json file ****************************
+    jsonFileName = 'app.json'
+    jsonFilePath = os.path.join(uploadFolder, replicatedAppName, jsonFileName)
+    f = open(jsonFilePath)
+    data = json.load(f)
+    print(data)
+    data["location"] = location
+    data["userEmail"] = userEmail
+    serializeDataObj = json.dumps(data, indent=2)
+    with open(jsonFilePath, 'w') as f:
+        f.write(serializeDataObj)
+    # **************************** Upload folder back to azure ****************************
+    upload_app(appFolder)
+    # **************************** Delete the folder from static folder ****************************
+    shutil.rmtree(appFolder)
+    # **************************** Now ask the scheduler to schedule the app ****************************
+    to_topic, from_topic = 'Scheduler', 'first_topic'
+    producer = KafkaProducer(bootstrap_servers=[environ.get("KAFKA_SERVER")])
+    uid = str(uuid1())
+    print("Schedule UID is: ", uid)
+    message = {
+        'to_topic': to_topic,
+        'from_topic': from_topic,
+        'request_id': uid,
+        'msg': f'schedule app${replicatedAppName}${startTime}${endTime}'
+    }
+    producer.send(to_topic, json.dumps(message).encode('utf-8'))
+
+    t = threading.Thread(target=scheduleAppKafka, args=(from_topic, replicatedAppName, uid))
+    t.start()
+    t.join()
+    producer.close()
+    print(scheduleResponse)
+
+    if not "scheduled app" in scheduleResponse["msg"]:
+        return generate_response(
+            message="Some error occurred... App not scheduled",
+            status=HTTP_400_BAD_REQUEST
+        )
+    # **************************** Save the url into deployedApps table  ****************************
+    obj = {
+        'baseAppId': baseAppId,
+        'developer': developer,
+        'deployedAppName': replicatedAppName,
+        'userName': userName,
+    }
+    deployedApp = DeployedApp(**obj)
+    try:
+        db.session.add(deployedApp)
+        db.session.commit()
+        db.session.close()
+    except Exception as e:
+        print(e)
+        return generate_response(
+            message="Error occurred while saving the replicated app to deployed database",
+            status=HTTP_400_BAD_REQUEST
+        )
+    # **************************** Change the status of baseApp to deployed in baseApps table ****************************
+    with db.session() as session:
+        baseApp = BaseApp.query.filter_by(appName=baseAppName).first()
+        try:
+            baseApp.status = 'deployed'
+            session.commit()
+        except Exception as e:
+            print(e)
+            session.close()
+            return generate_response(
+                message="Error occurred while updating status of baseApp",
+                status=HTTP_400_BAD_REQUEST
+            )
+    # **************************** Send response to user ****************************
+    return generate_response(
+        message=f'{baseAppName} scheduled successfully',
+        status=HTTP_201_CREATED
+    )

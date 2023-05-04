@@ -6,6 +6,8 @@ from flask import Flask
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+import threading
+from kafkaConsumer import saveScheduledAppKafka
 
 db = SQLAlchemy()
 
@@ -38,5 +40,6 @@ def create_app():
 
 if __name__ == "__main__":
     app = create_app()
+    thread = threading.Thread(target=saveScheduledAppKafka)
     app.run(host="0.0.0.0", port=5001)
-    print("Application manager now running!!")
+    thread.join()
