@@ -7,7 +7,7 @@ import {
   axiosLocationInstance,
 } from "../utils/axiosInstance";
 import AboutUs from "../AboutUs";
-import axios from "axios";
+
 function Leftbar() {
   const [tabIndex, setTabIndex] = useState(1);
   const [uploadedApps, setUploadedApps] = useState([]);
@@ -75,8 +75,10 @@ function Leftbar() {
     } else if (tabIndex === 0) {
       setLoading(true);
       setMode("deploy");
-      // const url = `http://20.21.102.175:2041/api/sensor/location/${applicationType}`;
-      // const url = `http://192.168.202.134:8050/api/sensor/location/${applicationType}`;
+      setUserEmail("");
+      setStartTime("");
+      setEndTime("");
+      setSensorLocation([]);
       axiosLocationInstance
         .get(`/api/sensor/location/${applicationType}`)
         .then((response) => {

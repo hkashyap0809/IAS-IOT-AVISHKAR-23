@@ -13,3 +13,5 @@ class CreateDeployAppInputSchema(Schema):
     developer = fields.Str(required=True, validate=validate.Length(min=1))
     location = fields.Str(required=True, validate=validate.Length(min=1))
     userEmail = fields.Str(required=True, validate=validate.Email())
+    startTime = fields.Str(required=False)
+    endTime = fields.Str(required=False)

@@ -97,15 +97,16 @@ def download_blob(appFolder, baseAppName):
 @verify_token
 def getDeployedApps(userName, role, request):
     apps = None
+    status = "deployed"
     if role == "user":
         with db.session() as session:
-            apps = DeployedApp.query.filter_by(userName=userName).all()
+            apps = DeployedApp.query.filter_by(userName=userName, status=status).all()
     elif role == "dev":
         with db.session() as session:
-            apps = DeployedApp.query.filter_by(developer=userName).all()
+            apps = DeployedApp.query.filter_by(developer=userName, status=status).all()
     elif role == "admin":
         with db.session() as session:
-            apps = DeployedApp.query.filter_by().all()
+            apps = DeployedApp.query.filter_by(status=status).all()
     apps = [{
         "id": app.id,
         "baseAppId": app.baseAppId,
@@ -114,6 +115,37 @@ def getDeployedApps(userName, role, request):
         "userName": app.userName,
         "created": app.created,
         "url": app.url
+    } for app in apps]
+    return generate_response(
+        data=apps,
+        message="Apps fetched successfully",
+        status=HTTP_200_OK
+    )
+
+@verify_token
+def getScheduledApps(userName, role, request):
+    apps = None
+    status = "scheduled"
+    if role == "user":
+        with db.session() as session:
+            apps = DeployedApp.query.filter_by(userName=userName, status=status).all()
+    elif role == "dev":
+        with db.session() as session:
+            apps = DeployedApp.query.filter_by(developer=userName, status=status).all()
+    elif role == "admin":
+        with db.session() as session:
+            apps = DeployedApp.query.filter_by(status=status).all()
+    apps = [{
+        "id": app.id,
+        "baseAppId": app.baseAppId,
+        "developer": app.developer,
+        "deployedAppName": app.deployedAppName,
+        "userName": app.userName,
+        "created": app.created,
+        "url": app.url,
+        "status": app.url,
+        "startTime": app.startTime,
+        "endTime": app.endTime
     } for app in apps]
     return generate_response(
         data=apps,
@@ -195,7 +227,9 @@ def deployApp(userName, role, request, inputData):
         'developer': developer,
         'deployedAppName': replicatedAppName,
         'userName': userName,
-        'url': 'http://' + url
+        'url': 'http://' + url,
+        'status': 'deployed',
+        'userEmail': userEmail
     }
     deployedApp = DeployedApp(**obj)
     try:
@@ -289,6 +323,10 @@ def scheduleApp(userName, role, request, inputData):
         'developer': developer,
         'deployedAppName': replicatedAppName,
         'userName': userName,
+        'startTime': startTime,
+        'endTime': endTime,
+        'status': 'scheduled',
+        'userEmail': userEmail
     }
     deployedApp = DeployedApp(**obj)
     try:
@@ -298,7 +336,7 @@ def scheduleApp(userName, role, request, inputData):
     except Exception as e:
         print(e)
         return generate_response(
-            message="Error occurred while saving the replicated app to deployed database",
+            message="Error occurred while saving the scheduled app to deployed database",
             status=HTTP_400_BAD_REQUEST
         )
     # **************************** Change the status of baseApp to deployed in baseApps table ****************************

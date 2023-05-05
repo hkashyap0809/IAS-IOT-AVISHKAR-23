@@ -17,8 +17,12 @@ class DeployedApp(db.Model):
     developer = db.Column(db.String(64), nullable=False)
     deployedAppName = db.Column(db.String(128), index=True, unique=True, nullable=False)
     userName = db.Column(db.String(64), index=True, unique=False, nullable=False)
-    url = db.Column(db.String(64), index=True, unique=True, nullable=True)
+    url = db.Column(db.String(64), default="", index=True, unique=True, nullable=True)
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=True)
+    startTime = db.Column(db.String(32), default="", nullable=True)
+    endTime = db.Column(db.String(32), default="", nullable=True)
+    status = db.Column(db.String(16), unique=False, default="scheduled", nullable=False)
+    userEmail = db.Column(db.String(64), unique=False, nullable=False)
     # baseApp = db.relationship('BaseApp', backref=db.backref('deployed_apps', lazy=True))
 
     def __init__(self, **kwargs):
@@ -31,6 +35,10 @@ class DeployedApp(db.Model):
         self.deployedAppName = kwargs.get('deployedAppName')
         self.userName = kwargs.get('userName')
         self.url = kwargs.get('url')
+        self.startTime = kwargs.get('startTime')
+        self.endTime = kwargs.get('endTime')
+        self.status = kwargs.get('status')
+        self.userEmail = kwargs.get('userEmail')
         
 
     # def __repr__(self):

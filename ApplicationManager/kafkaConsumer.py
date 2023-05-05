@@ -5,7 +5,7 @@ import os
 from deployedApps.models import DeployedApp
 from main import db
 
-consumer = KafkaConsumer("Scheduler", bootstrap_servers=['20.196.205.46:9092'],
+consumer = KafkaConsumer("first_topic", bootstrap_servers=['20.196.205.46:9092'],
                         value_deserializer=lambda m: json.loads(m.decode('utf-8')))
         
 def saveScheduledAppKafka():
@@ -20,6 +20,7 @@ def saveScheduledAppKafka():
                 app = DeployedApp.query.filter_by(deployedAppName=appName).first()
                 try:
                     app.url = "http://" + url
+                    app.status = "deployed"
                     session.commit()
                 except Exception as e:
                     print(e)
