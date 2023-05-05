@@ -50,38 +50,72 @@ def delete_local_file(app_name):
 def download_from_blob(app_name, folder_name):
     STORAGE_CONTAINER = 'iascontainer'
     AZURE_BLOB_CONN_STRING = 'DefaultEndpointsProtocol=https;AccountName=iot3storage;AccountKey=u3yqnLbhzlY+AQLJspkYm679Ivav12oAtt0f7allcFReHvcZVbAdCL9nD6Xkb0Ls3MaxNfXIQ2p2+ASt23CK7w==;EndpointSuffix=core.windows.net'
+    # FOLDER_NAME = 'sampleApp4_fa5801d2-e21b-11ed-a400-3035adbc6520'
 
-    # Create the blob service client
+    # Create a directory with the same name as the folder on Azure Blob Storage
+    os.makedirs(app_name, exist_ok=True)
+
+    # Create the subdirectories inside the main directory
+    os.makedirs(os.path.join(app_name, 'static', 'css'), exist_ok=True)
+    os.makedirs(os.path.join(app_name, 'static', 'js'), exist_ok=True)
+
+    # Connect to the Azure Blob Storage container
     blob_service_client = BlobServiceClient.from_connection_string(AZURE_BLOB_CONN_STRING)
-
-    # Get a reference to the container
     container_client = blob_service_client.get_container_client(STORAGE_CONTAINER)
 
     # List all the blobs in the folder
     blob_list = container_client.list_blobs(name_starts_with=folder_name)
 
-    # Loop through the blob list and print out the name of each blob
-    os.mkdir(app_name)
-    print("####### Directory made #######")
-
+    # Loop through the blob list and download each file to the local directory
     for blob in blob_list:
-        # Download the blob to a file
-        # Define the name of the file to download
-        file_name = blob.name.replace(folder_name, '', 1)
+        # Define the path to save the file locally
+        file_path = os.path.join(app_name, blob.name.replace(folder_name + '/', ''))
 
         # Download the blob to a file
-        with open(app_name + "/" + file_name, "wb") as my_blob:
+        with open(file_path, "wb") as my_blob:
             download_stream = container_client.download_blob(blob)
             my_blob.write(download_stream.readall())
-        with open(app_name + "/" + file_name, "wb") as my_blob:
-            download_stream = container_client.download_blob(blob)
-            my_blob.write(download_stream.readall())
-            print(file_name + " #### Copied ####")
-            my_blob.close()
 
-    # Copying the hard-coded shell file in our local app name folder
+        print(f"{file_path} downloaded successfully.")
 
-    print("########## Deployment code also copied ##########")
+
+
+# def download_from_blob(app_name, folder_name):
+#     STORAGE_CONTAINER = 'iascontainer'
+#     AZURE_BLOB_CONN_STRING = 'DefaultEndpointsProtocol=https;AccountName=iot3storage;AccountKey=u3yqnLbhzlY+AQLJspkYm679Ivav12oAtt0f7allcFReHvcZVbAdCL9nD6Xkb0Ls3MaxNfXIQ2p2+ASt23CK7w==;EndpointSuffix=core.windows.net'
+
+#     # Create the blob service client
+#     blob_service_client = BlobServiceClient.from_connection_string(AZURE_BLOB_CONN_STRING)
+
+#     # Get a reference to the container
+#     container_client = blob_service_client.get_container_client(STORAGE_CONTAINER)
+
+#     # List all the blobs in the folder
+#     blob_list = container_client.list_blobs(name_starts_with=folder_name)
+
+#     # Loop through the blob list and print out the name of each blob
+#     os.mkdir(app_name)
+#     print("####### Directory made #######")
+
+#     for blob in blob_list:
+#         # Download the blob to a file
+#         # Define the name of the file to download
+#         file_name = blob.name.replace(folder_name, '', 1)
+
+#         # Download the blob to a file
+#         with open(app_name + "/" + file_name, "wb") as my_blob:
+#             download_stream = container_client.download_blob(blob)
+#             my_blob.write(download_stream.readall())
+#         with open(app_name + "/" + file_name, "wb") as my_blob:
+#             download_stream = container_client.download_blob(blob)
+#             my_blob.write(download_stream.readall())
+#             print(file_name + " #### Copied ####")
+#             my_blob.close()
+
+#     # Copying the hard-coded shell file in our local app name folder
+
+#     print("########## Deployment code also copied ##########")
+
 
 
 def deployInVM(service_start_shell_file, app_name, vm_ip, vm_username, vm_key_path, vm_service_path):
