@@ -247,7 +247,6 @@ def consume_requests():
         # M3 - message from app manager to stop app
         if "stop app" in request_data['msg']:
             app_name = request_data['msg'].split("$")[1]
-            vm_ip = request_data['msg'].split("$")[2]
 
             # deploy the app
             try:
@@ -261,7 +260,7 @@ def consume_requests():
                     'to_topic': 'first_topic',
                     'from_topic': 'DeploymentManager',
                     'request_id': request_data['request_id'],
-                    'msg': f'done {app_name} stopped - {vm_ip}'
+                    'msg': f'done stopped${app_name}'
                 }
 
                 unregister_app(app_name)
@@ -293,6 +292,7 @@ def consume_requests():
 
                 logger.info(str(params))
                 res = requests.get("http://20.21.102.175:8050/registerApp", params=params)
+                logger.log(str(res))
 
                 msg = {
                     'to_topic': 'first_topic',

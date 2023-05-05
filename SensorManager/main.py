@@ -1,7 +1,7 @@
 import sys
 import os
 from flask import Flask, request, abort, jsonify, make_response
-from flask_cors import cross_origin
+from flask_cors import cross_origin, CORS
 
 from kafka_consumer_sensor import get_latest_node_data, get_latest_n_node_data
 from json_utilities import read_JSON, FOLDER_PATH
@@ -17,10 +17,11 @@ os.chdir(os.path.join(script_dir, '..'))
 print(os.getcwd())
 
 app = Flask(__name__)
-
+CORS(app)
 
 # SENSOR REGISTRY APIs - TODO later
 @app.route('/api/sensor/register/vertical', methods=['POST'])
+@cross_origin()
 def vertical_registration():
     req_body = request.get_json()
     vertical = req_body['vertical']
@@ -45,6 +46,7 @@ def vertical_registration():
 #         return make_response(jsonify(response), 400)
 
 @app.route('/api/sensor/location/<vertical>', methods=['GET'])
+@cross_origin()
 def get_vertical_vise_location(vertical):
     vertical_location = read_JSON(FOLDER_PATH, 'vertical_location.json')
     if vertical in vertical_location:
@@ -55,6 +57,7 @@ def get_vertical_vise_location(vertical):
 
 # LOCATION VALIDATION AND SENSOR BINDING API
 @app.route('/api/sensor/validate', methods=['POST'])
+@cross_origin()
 def validate_binding():
     request_body = request.get_json()
     # entered by the user
@@ -83,6 +86,7 @@ def validate_binding():
 
 # SENSOR DATA APIs
 @app.route('/api/sensor/data/latest/<location>/<vertical>', methods=['GET'])
+@cross_origin()
 def node_data(location, vertical):
     nodename = vertical + '-' + location
     nodes = read_JSON(FOLDER_PATH, 'nodes.json')

@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 # Create a file handler and add it to the logger
-file_handler = logging.FileHandler('/logs/schd_logs.log')
+file_handler = logging.FileHandler('../logs/schd_logs.log')
 file_handler.setLevel(logging.DEBUG)
 logger.addHandler(file_handler)
 
