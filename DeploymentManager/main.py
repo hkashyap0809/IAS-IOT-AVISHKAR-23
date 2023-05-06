@@ -64,12 +64,13 @@ def download_from_blob(app_name, folder_name):
     container_client = blob_service_client.get_container_client(STORAGE_CONTAINER)
 
     # List all the blobs in the folder
-    blob_list = container_client.list_blobs(name_starts_with=folder_name)
+    blob_list = container_client.list_blobs(name_starts_with=app_name)
 
     # Loop through the blob list and download each file to the local directory
     for blob in blob_list:
         # Define the path to save the file locally
-        file_path = os.path.join(app_name, blob.name.replace(folder_name + '/', ''))
+        file_path = os.path.join(app_name, blob.name.replace(app_name + '/', ''))
+        print(file_path)
 
         # Download the blob to a file
         with open(file_path, "wb") as my_blob:
@@ -77,7 +78,6 @@ def download_from_blob(app_name, folder_name):
             my_blob.write(download_stream.readall())
 
         print(f"{file_path} downloaded successfully.")
-
 
 
 # def download_from_blob(app_name, folder_name):
@@ -117,7 +117,6 @@ def download_from_blob(app_name, folder_name):
 #     print("########## Deployment code also copied ##########")
 
 
-
 def deployInVM(service_start_shell_file, app_name, vm_ip, vm_username, vm_key_path, vm_service_path):
     file_copy_command = f"scp -o StrictHostKeyChecking=no -r -i {vm_key_path}  {app_name} {vm_username}@{vm_ip}:{vm_service_path}"
 
@@ -128,7 +127,7 @@ def deployInVM(service_start_shell_file, app_name, vm_ip, vm_username, vm_key_pa
     os.system(file_copy_command)
     print("Folder copied")
 
-    delete_local_file(app_name)
+    # delete_local_file(app_name)
 
     output = subprocess.check_output(execute_command.split())
     container_id = output.strip().decode('utf-8')
@@ -326,7 +325,7 @@ def consume_requests():
 
                 logger.info(str(params))
                 res = requests.get("http://20.21.102.175:8050/registerApp", params=params)
-                logger.log(str(res))
+                logger.info(str(res))
 
                 msg = {
                     'to_topic': 'first_topic',

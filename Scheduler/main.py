@@ -42,7 +42,7 @@ def health():
 @cross_origin()
 def get_logs():
     logs = ""
-    with open("../logs/schd_logs.log", "r") as log_file:
+    with open("/logs/schd_logs.log", "r") as log_file:
         for line in (log_file.readlines()[-10:]):
             logs += line
 
@@ -57,7 +57,7 @@ lock = threading.Lock()
 
 
 def start_setup_job(app_name, request_data, start_time, msg_id, requests_c, requests_p):
-    logger.log(f"App starting after scheduled time - {app_name}. Start time {str(start_time)}")
+    logger.info(f"App starting after scheduled time - {app_name}. Start time {str(start_time)}")
     msg = {
         "to_topic": "first_topic",
         "from_topic": "Scheduler",
@@ -65,19 +65,23 @@ def start_setup_job(app_name, request_data, start_time, msg_id, requests_c, requ
         "msg": f"its time${app_name}"
     }
 
+    print(msg)
+
     if send(request_data, msg, requests_c, requests_p) == -1:
         print("Duplicate message!")
         return
 
 
 def end_setup_job(app_name, request_data, end_time, msg_id, requests_c, requests_p):
-    logger.log(f"App ending after scheduled time - {app_name}. End time {str(end_time)}")
+    logger.info(f"App ending after scheduled time - {app_name}. End time {str(end_time)}")
     msg = {
         "to_topic": "first_topic",
         "from_topic": "Scheduler",
         "request_id": msg_id,
         "msg": f"its end time${app_name}"
     }
+
+    print(msg)
 
     if send(request_data, msg, requests_c, requests_p) == -1:
         print("Duplicate message!")
@@ -118,10 +122,10 @@ def consume_requests():
 
         # M2 - message from node manager with ip and port
         if "schedule app" in request_data['msg']:
-            res = json.loads(request_data['msg'].split("$")[1].replace('\'', '"'))
-            start_time = res["start_time"]
-            end_time = res["end_time"]
-            app_name = res["app_name"]
+            res = request_data['msg'].split("$")
+            start_time = res[2]
+            end_time = res[3]
+            app_name = res[1]
             msg_id = request_data['request_id']
 
             msg = {
@@ -138,8 +142,18 @@ def consume_requests():
             end_time = datetime.datetime.strptime(end_time, "%Y-%m-%dT%H:%M")
 
             # calculate time difference in seconds
-            start_sleep = datetime.datetime.now() - start_time
-            end_sleep = datetime.datetime.now() - end_time
+            start_sleep = start_time - datetime.datetime.now()
+            end_sleep = end_time - datetime.datetime.now()
+
+            # Subtract 5 hours and 30 minutes from start_sleep and end_sleep
+            time_difference = datetime.timedelta(hours=5, minutes=30)
+            start_sleep -= time_difference
+            end_sleep -= time_difference
+
+            print(datetime.datetime.now())
+            print(start_sleep)
+            print(end_sleep)
+
             start_sleep = int(start_sleep.total_seconds())
             end_sleep = int(end_sleep.total_seconds())
 
