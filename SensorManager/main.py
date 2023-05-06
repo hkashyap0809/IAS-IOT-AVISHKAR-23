@@ -21,50 +21,25 @@ CORS(app)
 
 
 def filter_location(sensor_type, locations):
-    if sensor_type == 'SR':
+    if sensor_type == 'SR-OC':
         locations = [location[-7:] for location in locations]
     return locations
 
 
-# SENSOR REGISTRY APIs - TODO later
-@app.route('/api/sensor/register/vertical', methods=['POST'])
-@cross_origin()
-@app.route('/api/sensor/register/vertical', methods=['GET'])
-def vertical_registration():
-    req_body = request.get_json()
-    vertical = req_body['vertical']
-    node_name = req_body['node_name']
-    descriptor = req_body['descriptor']
-    print(descriptor)
-    return "vertical registration"
 
-
-# @app.route('/api/sensor/register/node',methods=['POST'])
-# def node_registration():
-#     return "node registration"
-
-# @app.route('/api/sensor/register/sensor',methods=['POST'])
-# def sensor_registration():
-#     return "sensor registration"
-# message = "Bad request. Please check your input."
-#         response = {
-#             "status": 400,
-#             "message": message
-#         }
-#         return make_response(jsonify(response), 400)
-
-@app.route('/api/sensor/location/<vertical>', methods=['GET'])
-@cross_origin()
-def get_vertical_vise_location(vertical):
-    vertical_location = read_JSON(FOLDER_PATH, 'vertical_location.json')
-    if vertical in vertical_location:
-        return jsonify(vertical_location[vertical])
-    else:
-        return jsonify({'statusCode': '400', 'message': 'Invalid Vertical'})
+# @app.route('/api/sensor/location/<vertical>', methods=['GET'])
+# @cross_origin()
+# def get_vertical_vise_location(vertical):
+#     vertical_location = read_JSON(FOLDER_PATH, 'vertical_location.json')
+#     if vertical in vertical_location:
+#         return jsonify(vertical_location[vertical])
+#     else:
+#         return jsonify({'statusCode': '400', 'message': 'Invalid Vertical'})
 
 
 # localhost:8050/api/sensor/intersection/verticals?applicationType=AQ,SR-OC,SR-QA,SR-AC
 @app.route('/api/sensor/intersection/verticals', methods=['GET'])
+@cross_origin()
 def get_vertical_vise_location():
     applicationTypes = request.args.get('applicationType')
     applicationTypes = applicationTypes.split(",")
@@ -75,8 +50,6 @@ def get_vertical_vise_location():
         nodes = [node[-7:-3] for node in nodes]
         list_list_location.append(nodes)
 
-    # print(list_list_location)
-
     intersection_location = set(list_list_location[0]).intersection(*list_list_location[1:])
     intersection_location = list(intersection_location)
     print(intersection_location)
@@ -85,6 +58,7 @@ def get_vertical_vise_location():
 
 # localhost:8050/api/sensor/intersection/verticals?applicationType=AQ,SR-OC,SR-QA,SR-AC&location=KH03
 @app.route('/api/sensor/intersection/nodes', methods=['GET'])
+@cross_origin()
 def get_location_vise_nodes():
     applicationTypes = request.args.get('applicationType')
     location = request.args.get('location')
@@ -105,6 +79,7 @@ def get_location_vise_nodes():
 
 # SENSOR LISTING APIS
 @app.route('/api/platform/sensor/types', methods=['GET'])
+@cross_origin()
 def get_all_sensor_types():
     verticals = read_JSON(FOLDER_PATH, 'vertical_partition.json')
     vertical_list = list(verticals.keys())
@@ -112,6 +87,7 @@ def get_all_sensor_types():
 
 
 @app.route('/api/platform/sensor/nodes/<sensor_type>', methods=['GET'])
+@cross_origin()
 def get_all_nodes_of_sensor_types(sensor_type):
     vertical_location = read_JSON(FOLDER_PATH, 'vertical_location.json')
     locations = vertical_location[sensor_type]
@@ -120,6 +96,7 @@ def get_all_nodes_of_sensor_types(sensor_type):
 
 
 @app.route('/api/platform/sensor/data/<sensor_type>/<location>', methods=['GET'])
+@cross_origin()
 def get_latest_sensor_data(sensor_type, location):
     if sensor_type == 'SR-OC':
         location = 'GW-' + location
