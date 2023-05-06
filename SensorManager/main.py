@@ -27,9 +27,8 @@ def filter_location(sensor_type, locations):
 
 
 # SENSOR REGISTRY APIs - TODO later
-@app.route('/api/sensor/register/vertical', methods=['POST'])
+@app.route('/api/sensor/register/vertical', methods=['GET', 'POST'])
 @cross_origin()
-@app.route('/api/sensor/register/vertical', methods=['GET'])
 def vertical_registration():
     req_body = request.get_json()
     vertical = req_body['vertical']
