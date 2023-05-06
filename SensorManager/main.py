@@ -21,14 +21,15 @@ CORS(app)
 
 
 def filter_location(sensor_type, locations):
-    if sensor_type == 'SR':
+    if sensor_type == 'SR-OC':
         locations = [location[-7:] for location in locations]
     return locations
 
 
 # SENSOR REGISTRY APIs - TODO later
-@app.route('/api/sensor/register/vertical', methods=['GET', 'POST'])
+@app.route('/api/sensor/register/vertical', methods=['POST'])
 @cross_origin()
+@app.route('/api/sensor/register/vertical', methods=['GET'])
 def vertical_registration():
     req_body = request.get_json()
     vertical = req_body['vertical']
@@ -38,28 +39,14 @@ def vertical_registration():
     return "vertical registration"
 
 
-# @app.route('/api/sensor/register/node',methods=['POST'])
-# def node_registration():
-#     return "node registration"
-
-# @app.route('/api/sensor/register/sensor',methods=['POST'])
-# def sensor_registration():
-#     return "sensor registration"
-# message = "Bad request. Please check your input."
-#         response = {
-#             "status": 400,
-#             "message": message
-#         }
-#         return make_response(jsonify(response), 400)
-
-@app.route('/api/sensor/location/<vertical>', methods=['GET'])
-@cross_origin()
-def get_vertical_vise_location(vertical):
-    vertical_location = read_JSON(FOLDER_PATH, 'vertical_location.json')
-    if vertical in vertical_location:
-        return jsonify(vertical_location[vertical])
-    else:
-        return jsonify({'statusCode': '400', 'message': 'Invalid Vertical'})
+# @app.route('/api/sensor/location/<vertical>', methods=['GET'])
+# @cross_origin()
+# def get_vertical_vise_location(vertical):
+#     vertical_location = read_JSON(FOLDER_PATH, 'vertical_location.json')
+#     if vertical in vertical_location:
+#         return jsonify(vertical_location[vertical])
+#     else:
+#         return jsonify({'statusCode': '400', 'message': 'Invalid Vertical'})
 
 
 # localhost:8050/api/sensor/intersection/verticals?applicationType=AQ,SR-OC,SR-QA,SR-AC
