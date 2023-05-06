@@ -261,7 +261,7 @@ def send(request_data, msg, c_list, p_list):
 
 # Define the function for consuming requests and sending responses
 def consume_requests():
-    global requests_m1_c, requests_m1_p, requests_m2_c, requests_m2_p
+    global requests_m1_c, requests_m1_p, requests_m2_c, requests_m2_p, requests_m3_c, requests_m3_p
     global consumer, producer
     for message in consumer:
         request_data = message.value

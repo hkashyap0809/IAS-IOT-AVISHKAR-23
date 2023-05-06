@@ -1,13 +1,33 @@
 import os
 import json
 import subprocess
+import threading
 from datetime import datetime
 import requests
 from flask import Flask
 from flask_cors import cross_origin
+from kafka import KafkaProducer, KafkaConsumer
+
 from service_registry import *
 
 app = Flask(__name__)
+
+producer = KafkaProducer(
+    bootstrap_servers=['20.196.205.46:9092'],
+    value_serializer=lambda v: json.dumps(v).encode('utf-8'),
+    retries=5,  # Number of times to retry a message in case of failure
+    max_in_flight_requests_per_connection=1,  # Ensure only one request is in-flight
+    acks='all',  # Wait for all replicas to acknowledge the message
+)
+
+consumer = KafkaConsumer("Bootstrapper", bootstrap_servers=['20.196.205.46:9092'],
+                         value_deserializer=lambda m: json.loads(m.decode('utf-8')))
+
+
+requests_m1_c, requests_m1_p = [], []  # For message 1
+requests_m2_c, requests_m2_p = [], []  # For message 2
+requests_m3_c, requests_m3_p = [], []  # For message 3
+lock = threading.Lock()
 
 
 def create_file(path, file_name, docker_code):
@@ -204,5 +224,63 @@ def all_services():
     return res
 
 
+def send(request_data, msg, c_list, p_list):
+    request_id = request_data['request_id']
+
+    lock.acquire()
+    if request_id in c_list:
+        print("Duplicate message!")
+        lock.release()
+        return
+    c_list.append(request_id)
+    lock.release()
+
+    print(f"Request : {request_data}")
+
+    # Check if request ID has already been processed before sending message
+    lock.acquire()
+    if request_id in p_list:
+        print("Duplicate message!")
+        lock.release()
+        return
+    p_list.append(request_id)
+    lock.release()
+
+    producer.send(msg['to_topic'], msg)
+
+
+def consume_request():
+    global requests_m1_c, requests_m1_p, requests_m2_c, requests_m2_p, requests_m3_c, requests_m3_p
+    global consumer, producer
+    for message in consumer:
+        request_data = message.value
+
+        # M1 - start message from app manager
+        if "start platform" in request_data['msg']:
+            res = schedule_and_upload_to_VM()
+            msg = {
+                'to_topic': 'first_topic',
+                'from_topic': 'Bootstrapper',
+                'request_id': request_data['request_id'],
+                'msg': f'Bootstrapper start response - {res}'
+            }
+            send(request_data, msg, requests_m1_c, requests_m1_p)
+
+        # M2 - stop message from app manager
+        if "stop platform" in request_data['msg']:
+            res = stop_service_in_VM()
+            msg = {
+                'to_topic': 'first_topic',
+                'from_topic': 'Bootstrapper',
+                'request_id': request_data['request_id'],
+                'msg': f'Bootstrapper stop response - {res}'
+            }
+            send(request_data, msg, requests_m2_c, requests_m2_p)
+
+
 if __name__ == "__main__":
+    thread = threading.Thread(target=consume_request)
+    thread.start()
     app.run(host='0.0.0.0', port=9050, debug=True, use_reloader=False)
+    thread.join()
+
