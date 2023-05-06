@@ -27,9 +27,8 @@ def filter_location(sensor_type, locations):
 
 
 # SENSOR REGISTRY APIs - TODO later
-@app.route('/api/sensor/register/vertical', methods=['POST'])
+@app.route('/api/sensor/register/vertical', methods=['GET', 'POST'])
 @cross_origin()
-@app.route('/api/sensor/register/vertical', methods=['GET'])
 def vertical_registration():
     req_body = request.get_json()
     vertical = req_body['vertical']
@@ -65,6 +64,7 @@ def get_vertical_vise_location(vertical):
 
 # localhost:8050/api/sensor/intersection/verticals?applicationType=AQ,SR-OC,SR-QA,SR-AC
 @app.route('/api/sensor/intersection/verticals', methods=['GET'])
+@cross_origin()
 def get_vertical_vise_location():
     applicationTypes = request.args.get('applicationType')
     applicationTypes = applicationTypes.split(",")
@@ -85,6 +85,7 @@ def get_vertical_vise_location():
 
 # localhost:8050/api/sensor/intersection/verticals?applicationType=AQ,SR-OC,SR-QA,SR-AC&location=KH03
 @app.route('/api/sensor/intersection/nodes', methods=['GET'])
+@cross_origin()
 def get_location_vise_nodes():
     applicationTypes = request.args.get('applicationType')
     location = request.args.get('location')
@@ -105,6 +106,7 @@ def get_location_vise_nodes():
 
 # SENSOR LISTING APIS
 @app.route('/api/platform/sensor/types', methods=['GET'])
+@cross_origin()
 def get_all_sensor_types():
     verticals = read_JSON(FOLDER_PATH, 'vertical_partition.json')
     vertical_list = list(verticals.keys())
@@ -112,6 +114,7 @@ def get_all_sensor_types():
 
 
 @app.route('/api/platform/sensor/nodes/<sensor_type>', methods=['GET'])
+@cross_origin()
 def get_all_nodes_of_sensor_types(sensor_type):
     vertical_location = read_JSON(FOLDER_PATH, 'vertical_location.json')
     locations = vertical_location[sensor_type]
@@ -120,6 +123,7 @@ def get_all_nodes_of_sensor_types(sensor_type):
 
 
 @app.route('/api/platform/sensor/data/<sensor_type>/<location>', methods=['GET'])
+@cross_origin()
 def get_latest_sensor_data(sensor_type, location):
     if sensor_type == 'SR-OC':
         location = 'GW-' + location
