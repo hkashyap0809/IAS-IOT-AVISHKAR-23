@@ -19,9 +19,17 @@ print(os.getcwd())
 app = Flask(__name__)
 CORS(app)
 
+
+def filter_location(sensor_type, locations):
+    if sensor_type == 'SR':
+        locations = [location[-7:] for location in locations]
+    return locations
+
+
 # SENSOR REGISTRY APIs - TODO later
 @app.route('/api/sensor/register/vertical', methods=['POST'])
 @cross_origin()
+@app.route('/api/sensor/register/vertical', methods=['GET'])
 def vertical_registration():
     req_body = request.get_json()
     vertical = req_body['vertical']
@@ -53,6 +61,78 @@ def get_vertical_vise_location(vertical):
         return jsonify(vertical_location[vertical])
     else:
         return jsonify({'statusCode': '400', 'message': 'Invalid Vertical'})
+
+
+# localhost:8050/api/sensor/intersection/verticals?applicationType=AQ,SR-OC,SR-QA,SR-AC
+@app.route('/api/sensor/intersection/verticals', methods=['GET'])
+def get_vertical_vise_location():
+    applicationTypes = request.args.get('applicationType')
+    applicationTypes = applicationTypes.split(",")
+    vertical_nodes = read_JSON(FOLDER_PATH, 'vertical_location.json')
+    list_list_location = []
+    for applicationType in applicationTypes:
+        nodes = vertical_nodes[applicationType]
+        nodes = [node[-7:-3] for node in nodes]
+        list_list_location.append(nodes)
+
+    # print(list_list_location)
+
+    intersection_location = set(list_list_location[0]).intersection(*list_list_location[1:])
+    intersection_location = list(intersection_location)
+    print(intersection_location)
+    return jsonify(intersection_location)
+
+
+# localhost:8050/api/sensor/intersection/verticals?applicationType=AQ,SR-OC,SR-QA,SR-AC&location=KH03
+@app.route('/api/sensor/intersection/nodes', methods=['GET'])
+def get_location_vise_nodes():
+    applicationTypes = request.args.get('applicationType')
+    location = request.args.get('location')
+    applicationTypes = applicationTypes.split(",")
+    vertical_nodes = read_JSON(FOLDER_PATH, 'vertical_location.json')
+
+    all_location_nodes = []
+    for applicationType in applicationTypes:
+        nodes = vertical_nodes[applicationType]
+        for node in nodes:
+            if node.startswith(location) or applicationType == 'SR-OC' and node.startswith('GW-' + location):
+                option = f"Type : {applicationType}, Location : {location}, Node : {node[-2:]}"
+                all_location_nodes.append(option)
+
+    print(all_location_nodes)
+    return jsonify(all_location_nodes)
+
+
+# SENSOR LISTING APIS
+@app.route('/api/platform/sensor/types', methods=['GET'])
+def get_all_sensor_types():
+    verticals = read_JSON(FOLDER_PATH, 'vertical_partition.json')
+    vertical_list = list(verticals.keys())
+    return jsonify(vertical_list)
+
+
+@app.route('/api/platform/sensor/nodes/<sensor_type>', methods=['GET'])
+def get_all_nodes_of_sensor_types(sensor_type):
+    vertical_location = read_JSON(FOLDER_PATH, 'vertical_location.json')
+    locations = vertical_location[sensor_type]
+    locations = filter_location(sensor_type, locations)
+    return jsonify(locations)
+
+
+@app.route('/api/platform/sensor/data/<sensor_type>/<location>', methods=['GET'])
+def get_latest_sensor_data(sensor_type, location):
+    if sensor_type == 'SR-OC':
+        location = 'GW-' + location
+    node_partition = read_JSON(FOLDER_PATH, 'node_partition.json')
+    location_node = read_JSON(FOLDER_PATH, 'location_node.json')
+    verticals_JSON = read_JSON(FOLDER_PATH, 'verticals.json')
+    nodename = sensor_type + "-" + location
+
+    topic_name = node_partition[nodename]['topic-name']
+    partition_number = int(node_partition[nodename]['partition-number'])
+    latest_data = get_latest_node_data(topic_name, partition_number)
+    latest_data = json.loads(latest_data.decode('utf-8'))
+    return latest_data
 
 
 # LOCATION VALIDATION AND SENSOR BINDING API
@@ -94,10 +174,10 @@ def node_data(location, vertical):
     try:
         if nodename in nodes:
             n_last = request.args.get('last')
-            sensor_type = request.args.get('sensor') 
+            sensor_type = request.args.get('sensor')
             topic_name = node_partition[nodename]['topic-name']
             partition_number = int(node_partition[nodename]['partition-number'])
-            if n_last :
+            if n_last:
                 # fetches last n data
                 latest_data = get_latest_n_node_data(topic_name, partition_number, int(n_last))
                 latest_data = json.loads(latest_data)
@@ -106,10 +186,10 @@ def node_data(location, vertical):
                     # final_data = [{sensor_type:data[sensor_type]} for data in latest_data]
                     final_data = []
                     for data in latest_data:
-                        final_dict={}
+                        final_dict = {}
                         for sensor in sensor_type:
-                            final_dict[sensor]=data[sensor]              
-                        final_data.append(final_dict)          
+                            final_dict[sensor] = data[sensor]
+                        final_data.append(final_dict)
 
                     return jsonify(final_data)
                 else:
@@ -119,7 +199,7 @@ def node_data(location, vertical):
                 latest_data = get_latest_node_data(topic_name, partition_number)
                 if sensor_type:
                     latest_data = json.loads(latest_data.decode('utf-8'))
-                    return jsonify({sensor_type:latest_data[sensor_type]})
+                    return jsonify({sensor_type: latest_data[sensor_type]})
                 else:
                     return json.loads(latest_data.decode('utf-8'))
         else:
