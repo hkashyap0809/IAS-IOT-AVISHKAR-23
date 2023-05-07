@@ -3,7 +3,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.image import MIMEImage
 
-def trigger_email(receiver_email,email_body,value):
+def trigger_email(receiver_email,email_body):
     # set up the SMTP server
     smtp_server = "smtp-relay.sendinblue.com"
     smtp_port = 587
@@ -15,8 +15,8 @@ def trigger_email(receiver_email,email_body,value):
     message = MIMEMultipart()
     message['From'] = sender_email
     message['To'] = receiver_email
-    message['Subject'] = "Test email"
-    body = email_body+value
+    message['Subject'] = "AVISHKAR-23 NOTIFICATION"
+    body = email_body
     message.attach(MIMEText(body, 'plain'))
 
 
