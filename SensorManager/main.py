@@ -85,12 +85,14 @@ def get_location_vise_nodes():
             if node.startswith(location) or applicationType == 'SR-OC' and node.startswith('GW-' + location):
                 val = {}
                 option = f"Type : {applicationType}, Location : {location}, Node : {node[-2:]}"
+                sensorType = applicationType
                 option_node = location+"-"+node[-2:]
-                val['option']=option
-                val['option_node']=option_node
+                val['text']=option
+                val['sensorType']=applicationType
+                val['node']=option_node
                 all_location_nodes.append(val)
 
-    print(all_location_nodes)
+    # print(all_location_nodes)
     return jsonify(all_location_nodes)
 
 
