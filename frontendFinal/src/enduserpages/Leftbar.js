@@ -12,6 +12,8 @@ function Leftbar() {
   const [tabIndex, setTabIndex] = useState(1);
   const [uploadedApps, setUploadedApps] = useState([]);
   const [deployedApps, setDeployedApps] = useState([]);
+  const [scheduledApps, setScheduledApps] = useState([]);
+  const [deploymentInProgressApps, setDeploymentInProgressApps] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [isDateTimeEnabled, setIsDateTimeEnabled] = useState(false);
   const [sensorLocation, setSensorLocation] = useState([]);
@@ -23,13 +25,20 @@ function Leftbar() {
   const [userEmail, setUserEmail] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
+  const [allNodes, setAllNodes] = useState([]);
+  const [allNodesCheckBox, setNodesCheckBox] = useState([]);
+  const [typeLocationBinding, setTypeLocationBinding] = useState([]);
+  const [sensorLocationBinding, setSensorLocationBinding] = useState({});
+  const [allCheckBoxes, setAllCheckBoxes] = useState([]);
+  const [checkboxStatus, toggleCheckboxStatus] = useState([]);
   const handleTabIndex = (e) => {
     e.preventDefault();
     setAppToDeploy("");
     if (e.target.id === "upload") setTabIndex(1);
     if (e.target.id === "view") setTabIndex(2);
-    if (e.target.id === "schedule") setTabIndex(3);
+    if (e.target.id === "schedule") setTabIndex(5);
     if (e.target.id === "we") setTabIndex(4);
+    if (e.target.id === "deployProgress") setTabIndex(3);
   };
   const handleUserEmail = (e) => {
     e.preventDefault();
@@ -79,8 +88,11 @@ function Leftbar() {
       setStartTime("");
       setEndTime("");
       setSensorLocation([]);
+      setTypeLocationBinding([]);
+      const url =
+        "/api/sensor/intersection/verticals?applicationType=" + applicationType;
       axiosLocationInstance
-        .get(`/api/sensor/location/${applicationType}`)
+        .get(url)
         .then((response) => {
           console.log(response);
           const { data } = response;
@@ -92,11 +104,92 @@ function Leftbar() {
           console.log(err);
           setLoading(false);
         });
+    } else if (tabIndex === 5) {
+      setScheduledApps([]);
+      axiosAppInstance
+        .get("/api/deployedApps/getScheduledApps/", config)
+        .then((response) => {
+          const { data } = response.data;
+          console.log(data);
+          setScheduledApps([...data]);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
+    } else if (tabIndex === 3) {
+      setLoading(true);
+      setDeploymentInProgressApps([]);
+      axiosAppInstance
+        .get("/api/deployedApps/getDeployInProgressApps/", config)
+        .then((response) => {
+          const { data } = response.data;
+          console.log(data);
+          setDeploymentInProgressApps([...data]);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
     }
-    setLoading(false);
+    // setLoading(false);
   }, [tabIndex]);
 
+  useEffect(() => {
+    const url =
+      "/api/sensor/intersection/nodes?applicationType=" +
+      applicationType +
+      "&location=" +
+      location;
+    axiosLocationInstance
+      .get(url)
+      .then((response) => {
+        console.log(response);
+        const { data } = response;
+        const arr = data.map((d) => {
+          return {
+            ...d,
+            [d["checked"]]: false,
+          };
+        });
+        setAllCheckBoxes([...arr]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [location]);
+
   const toggleDateTime = (e) => setIsDateTimeEnabled(!isDateTimeEnabled);
+  const handleToggleCheckbox = (e) => {
+    let copyArr = [...allCheckBoxes];
+    let elt = copyArr.find((c) => c["text"] === e.target.id);
+    if (elt["checked"]) {
+      // Checkbox is selected
+      // Uncheck it
+      let obj = { ...sensorLocationBinding };
+      let filteredArr = obj[e.target.name].filter((f) => f !== e.target.id);
+      obj[e.target.name] = filteredArr;
+      setSensorLocationBinding(obj);
+      elt["checked"] = false;
+      setAllCheckBoxes(copyArr);
+    } else {
+      // Checkbox is not selected
+      // Check it
+      let obj = { ...sensorLocationBinding };
+      console.log(obj);
+      console.log(e.target.name);
+      if (e.target.name in obj) {
+        obj[e.target.name].push(e.target.value);
+      } else {
+        obj[e.target.name] = [e.target.value];
+      }
+      setSensorLocationBinding(obj);
+      elt["checked"] = true;
+      setAllCheckBoxes(copyArr);
+    }
+  };
 
   const switchToLocationInput = (
     e,
@@ -128,6 +221,7 @@ function Leftbar() {
 
   const handleTimeChange = (e) => {
     e.preventDefault();
+    console.log(e.target.value);
     if (e.target.name === "starttime") {
       setStartTime(e.target.value);
     } else if (e.target.name === "endtime") {
@@ -135,6 +229,28 @@ function Leftbar() {
     }
   };
 
+  const stopDeployedApp = (e, appId) => {
+    e.preventDefault();
+    const token = localStorage.getItem("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    axiosAppInstance(
+      "/api/deployedApps/stopApp/",
+      {
+        appId,
+      },
+      config
+    )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const uploadedAppsData = uploadedApps.length ? (
     uploadedApps.map((app, idx) => (
       <Cardview
@@ -158,25 +274,64 @@ function Leftbar() {
   );
   const deployedAppsData = deployedApps.length ? (
     deployedApps.map((app, idx) => (
-      <Cardview
-        key={idx}
-        appName={app.deployedAppName}
-        switchToLocationInput={(e) =>
-          switchToLocationInput(
-            e,
-            false,
-            app.baseAppId,
-            app.deployedAppName,
-            app.developer,
-            app.url,
-            app.appType
-          )
-        }
-      />
+      <>
+        <Cardview
+          key={idx}
+          appName={app.deployedAppName}
+          switchToLocationInput={(e) =>
+            switchToLocationInput(
+              e,
+              false,
+              app.baseAppId,
+              app.deployedAppName,
+              app.developer,
+              app.url,
+              app.appType
+            )
+          }
+        />
+        <button onClick={(e) => stopDeployedApp(e, app.deployedAppName)}>
+          Stop App
+        </button>
+      </>
     ))
   ) : (
     <p>No deployed apps!</p>
   );
+
+  const scheduledAppsData = scheduledApps.map((app, idx) => (
+    <Cardview
+      key={idx}
+      appName={app.deployedAppName}
+      switchToLocationInput={(e) => console.log("Scheduled App")}
+    />
+  ));
+
+  const deployInProgressData = deploymentInProgressApps.map((app, idx) => (
+    <Cardview
+      key={idx}
+      appName={app.deployedAppName}
+      switchToLocationInput={(e) => console.log("Deploy in progress app")}
+    />
+  ));
+
+  const nodeCheckBoxes = allCheckBoxes.map((s, idx) => {
+    return (
+      <>
+        <input
+          key={idx}
+          type="checkbox"
+          id={s.text}
+          value={s.node}
+          name={s.sensorType}
+          onChange={handleToggleCheckbox}
+          checked={allCheckBoxes[idx]["checked"]}
+        />
+        <label htmlFor={s.node}>{s.text}</label>
+        <br />
+      </>
+    );
+  });
 
   const handleDeploy = (e) => {
     e.preventDefault();
@@ -190,10 +345,12 @@ function Leftbar() {
         },
       };
       const { baseAppId, baseAppName, developer } = appToDeploy;
+      console.log(JSON.stringify(sensorLocationBinding));
+      console.log(sensorLocationBinding);
       const obj = {
         baseAppId,
         baseAppName,
-        location,
+        location: JSON.stringify(sensorLocationBinding),
         developer,
         userEmail,
       };
@@ -241,6 +398,7 @@ function Leftbar() {
   ));
   console.log("Location is: ", location);
   console.log("Location array is: ", sensorLocation);
+  console.log(sensorLocationBinding);
   return (
     <div>
       <div
@@ -300,6 +458,26 @@ function Leftbar() {
 
               <li
                 style={{
+                  backgroundColor: tabIndex === 5 ? "black" : "#212529",
+                }}
+              >
+                <a className="nav-link px-1">
+                  <span className="me-1">
+                    <i className="bi bi-eye"></i>
+                  </span>
+                  <span
+                    className={tabIndex === 5 ? "btns selctedbtn" : "btns"}
+                    onClick={handleTabIndex}
+                    id="schedule"
+                    style={{ cursor: "pointer" }}
+                  >
+                    View Scheduled Apps
+                  </span>
+                </a>
+              </li>
+
+              <li
+                style={{
                   backgroundColor: tabIndex === 3 ? "black" : "#212529",
                 }}
               >
@@ -310,10 +488,10 @@ function Leftbar() {
                   <span
                     className={tabIndex === 3 ? "btns selctedbtn" : "btns"}
                     onClick={handleTabIndex}
-                    id="schedule"
+                    id="deployProgress"
                     style={{ cursor: "pointer" }}
                   >
-                    Scheduling/Deployment
+                    Deployment In Progress
                   </span>
                 </a>
               </li>
@@ -369,10 +547,12 @@ function Leftbar() {
                   <div className="card-container">
                     {deployedAppsData.length ? (
                       deployedAppsData
-                    ) : (
+                    ) : isLoading ? (
                       <div className="spinner-border m-2" role="status">
                         <span className="visullay-hidden"></span>
                       </div>
+                    ) : (
+                      <h2>No deployed Apps</h2>
                     )}
                   </div>
                 </Loader>
@@ -380,7 +560,27 @@ function Leftbar() {
             </div>
           </main>
         )}
-        {tabIndex === 3 && <div></div>}
+        {tabIndex === 3 && (
+          <main className="mt-5 pt-1">
+            <div className="container-fluid">
+              <div className="row mt-5">
+                <Loader spinning={isLoading}>
+                  <div className="card-container">
+                    {deployInProgressData.length ? (
+                      deployInProgressData
+                    ) : isLoading ? (
+                      <div className="spinner-border m-2" role="status">
+                        <span className="visullay-hidden"></span>
+                      </div>
+                    ) : (
+                      <h2>No apps currently under deployment</h2>
+                    )}
+                  </div>
+                </Loader>
+              </div>
+            </div>
+          </main>
+        )}
         {tabIndex === 0 && (
           <div>
             <main className="mt-5 pt-3">
@@ -396,6 +596,7 @@ function Leftbar() {
                       >
                         {optionsData}
                       </select>
+                      {nodeCheckBoxes}
                       <br />
                     </div>
 
@@ -439,6 +640,7 @@ function Leftbar() {
                         type="datetime-local"
                         id="endtime"
                         name="endtime"
+                        onChange={handleTimeChange}
                       />
                       <br />
                       <br />
@@ -458,6 +660,27 @@ function Leftbar() {
           </div>
         )}
         {tabIndex === 4 && <AboutUs />}
+        {tabIndex === 5 && (
+          <main className="mt-5 pt-1">
+            <div className="container-fluid">
+              <div className="row mt-5">
+                <Loader spinning={isLoading}>
+                  <div className="card-container">
+                    {scheduledAppsData.length ? (
+                      scheduledAppsData
+                    ) : isLoading ? (
+                      <div className="spinner-border m-2" role="status">
+                        <span className="visullay-hidden"></span>
+                      </div>
+                    ) : (
+                      <h2>No scheduled Apps</h2>
+                    )}
+                  </div>
+                </Loader>
+              </div>
+            </div>
+          </main>
+        )}
       </div>
     </div>
   );

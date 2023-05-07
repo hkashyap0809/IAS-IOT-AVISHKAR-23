@@ -83,84 +83,84 @@ def extractZip(inpFile):
 def validate_zip(userName, role, request, inpFile):
     if inpFile:
         splittedFileName = (inpFile.filename).split('.')
-        if len(splittedFileName) == 1 or splittedFileName[1] != "zip":
-            return generate_response(
-                data="Only zip files allowed to be uploaded",
-                message="Only zip files allowed to be uploaded",
-                status=HTTP_400_BAD_REQUEST
-            )
+        # if len(splittedFileName) == 1 or splittedFileName[1] != "zip":
+        #     return generate_response(
+        #         data="Only zip files allowed to be uploaded",
+        #         message="Only zip files allowed to be uploaded",
+        #         status=HTTP_400_BAD_REQUEST
+        #     )
         fileName = splittedFileName[0]
-        file_list = []
-        expected_file_list = ['app.json', 'main.py', 'requirements.txt', 'index.html']
-        with StringIO() as buffer:
-            # redirect the stdout to the buffer
-            with redirect_stdout(buffer):
-                # print some output
-                with ZipFile(inpFile, 'r') as zip:
-                    zip.printdir()
-            # append the output to the list
-            file_list.append(buffer.getvalue())
+        # file_list = []
+        # expected_file_list = ['app.json', 'main.py', 'requirements.txt', 'index.html']
+        # with StringIO() as buffer:
+        #     # redirect the stdout to the buffer
+        #     with redirect_stdout(buffer):
+        #         # print some output
+        #         with ZipFile(inpFile, 'r') as zip:
+        #             zip.printdir()
+        #     # append the output to the list
+        #     file_list.append(buffer.getvalue())
 
-        for file in expected_file_list:
-            if file not in file_list[0]:
-                return generate_response(
-                    data=f'Expected file {file} to be a present in zip',
-                    message=f'Expected file {file} to be a present in zip',
-                    status=HTTP_400_BAD_REQUEST
-                )
+        # for file in expected_file_list:
+        #     if file not in file_list[0]:
+        #         return generate_response(
+        #             data=f'Expected file {file} to be a present in zip',
+        #             message=f'Expected file {file} to be a present in zip',
+        #             status=HTTP_400_BAD_REQUEST
+        #         )
         with ZipFile(inpFile, 'r') as zip:
             data = zip.read(fileName + '/app.json')
             data = json.loads(data.decode())
-            expected_keys = ["applicationType", "sensorTypes", "location", "applicationName", "applicationDescription"]
-            keys = data.keys()
-            # Check if json file has same number of keys as expected_keys
-            if len(keys) != len(expected_keys):
-                return generate_response(
-                    data="Expected %d keys but got %d" % (len(expected_keys), len(keys)),
-                    message="Expected %d keys but got %d" % (len(expected_keys), len(keys)),
-                    status=HTTP_400_BAD_REQUEST
-                )
-            # Check if json file has same keys as expected_keys.. Not more not less
-            for k in expected_keys:
-                if k not in keys:
-                    return generate_response(
-                        data="Missing key: %s" % (k),
-                        message="Missing key: %s" % (k),
-                        status=HTTP_400_BAD_REQUEST
-                    )
+            # expected_keys = ["applicationType", "sensorTypes", "location", "applicationName", "applicationDescription", "userEmail"]
+            # keys = data.keys()
+            # # Check if json file has same number of keys as expected_keys
+            # if len(keys) != len(expected_keys):
+            #     return generate_response(
+            #         data="Expected %d keys but got %d" % (len(expected_keys), len(keys)),
+            #         message="Expected %d keys but got %d" % (len(expected_keys), len(keys)),
+            #         status=HTTP_400_BAD_REQUEST
+            #     )
+            # # Check if json file has same keys as expected_keys.. Not more not less
+            # for k in expected_keys:
+            #     if k not in keys:
+            #         return generate_response(
+            #             data="Missing key: %s" % (k),
+            #             message="Missing key: %s" % (k),
+            #             status=HTTP_400_BAD_REQUEST
+            #         )
             # appName = data["app_name"]
             appName = data["applicationName"]
             # Check if app_name property inside JSON file and name of zipFile is same or not
-            if appName != fileName:
-                return generate_response(
-                    data="app_name is not same as filename",
-                    message="app_name is not same as filename",
-                    status=HTTP_400_BAD_REQUEST
-                )
-            if not isinstance(data["sensorTypes"], list):
-                return generate_response(
-                    data="sensorTypes property should be a list containing sensors",
-                    message="sensorTypes property should be a list containing sensors",
-                    status=HTTP_400_BAD_REQUEST
-                )
-            if len(data["sensorTypes"]) == 0:
-                return generate_response(
-                    data="No sensors provided",
-                    message="No sensors provided",
-                    status=HTTP_400_BAD_REQUEST
-                )
-            if len(data["applicationType"]) == 0:
-                return generate_response(
-                    data="Application Type cannot be empty",
-                    status="Application Type cannot be empty",
-                    message=HTTP_400_BAD_REQUEST
-                )
-            if len(data["applicationDescription"]) == 0:
-                return generate_response(
-                    data="Application Description cannot be empty",
-                    message="Application Description cannot be empty",
-                    status=HTTP_400_BAD_REQUEST
-                )
+            # if appName != fileName:
+            #     return generate_response(
+            #         data="app_name is not same as filename",
+            #         message="app_name is not same as filename",
+            #         status=HTTP_400_BAD_REQUEST
+            #     )
+            # if not isinstance(data["sensorTypes"], list):
+            #     return generate_response(
+            #         data="sensorTypes property should be a list containing sensors",
+            #         message="sensorTypes property should be a list containing sensors",
+            #         status=HTTP_400_BAD_REQUEST
+            #     )
+            # if len(data["sensorTypes"]) == 0:
+            #     return generate_response(
+            #         data="No sensors provided",
+            #         message="No sensors provided",
+            #         status=HTTP_400_BAD_REQUEST
+            #     )
+            # if len(data["applicationType"]) == 0:
+            #     return generate_response(
+            #         data="Application Type cannot be empty",
+            #         status="Application Type cannot be empty",
+            #         message=HTTP_400_BAD_REQUEST
+            #     )
+            # if len(data["applicationDescription"]) == 0:
+            #     return generate_response(
+            #         data="Application Description cannot be empty",
+            #         message="Application Description cannot be empty",
+            #         status=HTTP_400_BAD_REQUEST
+            #     )
             print("Validation done successfully!!")
         # Extract the zip file and store it
         extractZip(inpFile)
@@ -179,8 +179,13 @@ def validate_zip(userName, role, request, inpFile):
         # Save the baseApp to the db
         appDescription = data["applicationDescription"]
         applicationType = data["applicationType"]
+        modAppType = ""
+        for ele in applicationType:
+            modAppType = modAppType + ele + ','
+        modAppType = modAppType[:-1]
         sensorTypes = data["sensorTypes"]
-        saveBaseApp(appName, userName, appDescription, applicationType, sensorTypes)
+        # saveBaseApp(appName, userName, appDescription, applicationType, sensorTypes)
+        saveBaseApp(appName, userName, appDescription, modAppType, sensorTypes)
 
     return generate_response(
         data=f"App {appName} validated and uploaded successfully",

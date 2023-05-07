@@ -13,6 +13,8 @@ function Leftbar() {
   const [isLoading, setLoading] = useState(false);
   const [uploadedApps, setUploadedApps] = useState([]);
   const [deployedApps, setDeployedApps] = useState([]);
+  const [scheduledApps, setScheduledApps] = useState([]);
+  const [deploymentInProgressApps, setDeploymentInProgressApps] = useState([]);
   const [inpFile, setFile] = useState();
   const [submitBtnStatus, setSubmitBtnStatus] = useState(false);
   const [validationMsg, setValidationMsg] = useState("");
@@ -29,6 +31,8 @@ function Leftbar() {
     if (e.target.id === "viewWorkflows") setTabIndex(5);
     if (e.target.id === "docs") setTabIndex(6);
     if (e.target.id === "we") setTabIndex(7);
+    if (e.target.id === "viewDeployInProgress") setTabIndex(12);
+    if (e.target.id === "viewScheduled") setTabIndex(11);
   };
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -37,7 +41,6 @@ function Leftbar() {
         Authorization: `Bearer ${token}`,
       },
     };
-    setLoading(true);
     if (tabIndex === 3) {
       // Fetch uploadedApps
       setUploadedApps([]);
@@ -66,8 +69,36 @@ function Leftbar() {
         });
     } else if (tabIndex === 5) {
       // Fetch workflows
+    } else if (tabIndex === 11) {
+      setScheduledApps([]);
+      axiosAppInstance
+        .get("/api/deployedApps/getScheduledApps/", config)
+        .then((response) => {
+          const { data } = response.data;
+          console.log(data);
+          setScheduledApps([...data]);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
+    } else if (tabIndex === 12) {
+      setLoading(true);
+      setDeploymentInProgressApps([]);
+      axiosAppInstance
+        .get("/api/deployedApps/getDeployInProgressApps/", config)
+        .then((response) => {
+          const { data } = response.data;
+          console.log(data);
+          setDeploymentInProgressApps([...data]);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
     }
-    setLoading(false);
   }, [tabIndex]);
 
   const handleFileNameCheck = () => {
@@ -201,6 +232,23 @@ function Leftbar() {
   ) : (
     <p>No deployed apps!</p>
   );
+
+  const scheduledAppsData = scheduledApps.map((app, idx) => (
+    <Cardview
+      key={idx}
+      appName={app.deployedAppName}
+      switchToLocationInput={(e) => console.log("Scheduled App")}
+    />
+  ));
+
+  const deployInProgressData = deploymentInProgressApps.map((app, idx) => (
+    <Cardview
+      key={idx}
+      appName={app.deployedAppName}
+      switchToLocationInput={(e) => console.log("Deploy in progress app")}
+    />
+  ));
+
   return (
     <div>
       <div
@@ -294,6 +342,46 @@ function Leftbar() {
                     style={{ cursor: "pointer" }}
                   >
                     View Deployed Apps
+                  </span>
+                </a>
+              </li>
+
+              <li
+                style={{
+                  backgroundColor: tabIndex === 11 ? "black" : "#212529",
+                }}
+              >
+                <a className="nav-link px-1">
+                  <span className="me-1">
+                    <i className="bi bi-eye"></i>
+                  </span>
+                  <span
+                    className={tabIndex === 11 ? "btns selctedbtn" : "btns"}
+                    onClick={() => setTabIndex(11)}
+                    style={{ cursor: "pointer" }}
+                    id="viewScheduled"
+                  >
+                    View All Scheduled Apps
+                  </span>
+                </a>
+              </li>
+
+              <li
+                style={{
+                  backgroundColor: tabIndex === 12 ? "black" : "#212529",
+                }}
+              >
+                <a className="nav-link px-1">
+                  <span className="me-1">
+                    <i className="bi bi-eye"></i>
+                  </span>
+                  <span
+                    className={tabIndex === 12 ? "btns selctedbtn" : "btns"}
+                    onClick={() => setTabIndex(12)}
+                    style={{ cursor: "pointer" }}
+                    id="viewDeployInProgress"
+                  >
+                    Deployment In Progress
                   </span>
                 </a>
               </li>
@@ -452,10 +540,12 @@ function Leftbar() {
                   <div className="card-container">
                     {deployedAppsData.length ? (
                       deployedAppsData
-                    ) : (
+                    ) : isLoading ? (
                       <div className="spinner-border m-2" role="status">
                         <span className="visullay-hidden"></span>
                       </div>
+                    ) : (
+                      <h2>No deployed Apps</h2>
                     )}
                   </div>
                 </Loader>
@@ -464,6 +554,48 @@ function Leftbar() {
           </main>
         )}
         {tabIndex === 7 && <AboutUs />}
+        {tabIndex === 11 && (
+          <main className="mt-5 pt-1">
+            <div className="container-fluid">
+              <div className="row mt-5">
+                <Loader spinning={isLoading}>
+                  <div className="card-container">
+                    {scheduledAppsData.length ? (
+                      scheduledAppsData
+                    ) : isLoading ? (
+                      <div className="spinner-border m-2" role="status">
+                        <span className="visullay-hidden"></span>
+                      </div>
+                    ) : (
+                      <h2>No scheduled Apps</h2>
+                    )}
+                  </div>
+                </Loader>
+              </div>
+            </div>
+          </main>
+        )}
+        {tabIndex === 12 && (
+          <main className="mt-5 pt-1">
+            <div className="container-fluid">
+              <div className="row mt-5">
+                <Loader spinning={isLoading}>
+                  <div className="card-container">
+                    {deployInProgressData.length ? (
+                      deployInProgressData
+                    ) : isLoading ? (
+                      <div className="spinner-border m-2" role="status">
+                        <span className="visullay-hidden"></span>
+                      </div>
+                    ) : (
+                      <h2>No apps currently under deployment</h2>
+                    )}
+                  </div>
+                </Loader>
+              </div>
+            </div>
+          </main>
+        )}
       </div>
     </div>
   );

@@ -38,9 +38,9 @@ def create_app():
 
 
 if __name__ == "__main__":
-    from kafkaConsumer import saveScheduledAppKafka
     app = create_app()
-    thread = threading.Thread(target=saveScheduledAppKafka)
+    from kafkaConsumer import waitForKafkaMessage
+    thread = threading.Thread(target=waitForKafkaMessage)
     thread.start()
     app.run(host="0.0.0.0", port=5001)
-    thread.join()
+    # thread.join()

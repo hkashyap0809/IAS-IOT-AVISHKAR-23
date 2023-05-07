@@ -5,6 +5,7 @@ import axios from "axios";
 
 import {
   axiosAppInstance,
+  axiosLocationInstance,
   axiosModuleHealthInstance,
 } from "../utils/axiosInstance";
 import Loader from "../utils/Loader";
@@ -14,9 +15,11 @@ import LoadBalancerCard from "./LoadBalancerCard";
 
 function Leftbar() {
   const [tabIndex, setTabIndex] = useState(1);
-  const [platformStatus, switchPlatformStatus] = useState(false);
+  const [platformStatus, setPlatformStatus] = useState("");
   const [uploadedApps, setUploadedApps] = useState([]);
   const [deployedApps, setDeployedApps] = useState([]);
+  const [scheduledApps, setScheduledApps] = useState([]);
+  const [deploymentInProgressApps, setDeploymentInProgressApps] = useState([]);
   const [appToDeploy, setAppToDeploy] = useState("");
   const [modules, setModules] = useState([]);
   const [isLoading, setLoading] = useState(false);
@@ -25,7 +28,13 @@ function Leftbar() {
   const [vmHealth, setVmHealth] = useState([]);
   const [loadBalancerStats, setLoadBalancerStats] = useState([]);
   const [loadBalancerServices, setLoadBalancerServices] = useState([]);
+  const [sensorTypes, setSensorTypes] = useState([]);
+  const [sensorType, setSensorType] = useState("");
+  const [nodeTypes, setNodeTypes] = useState([]);
+  const [nodeType, setNodeType] = useState("");
+  const [nodeData, setNodeData] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
   useEffect(() => {
     setLoading(true);
     setErrorMessage("");
@@ -36,7 +45,8 @@ function Leftbar() {
     };
     if (tabIndex === 1) {
       // Handle Platform Status
-      setLoading(false);
+      const currStatus = localStorage.getItem("platformStatus");
+      setPlatformStatus(currStatus);
     } else if (tabIndex === 2) {
       // Handle Module Status / Logs
       getLatestModuleStatus();
@@ -73,14 +83,16 @@ function Leftbar() {
         });
     } else if (tabIndex === 5) {
       // Handle view workflows
-    } else if (tabIndex === 6) {
-      // Handle View All Scheduled Apps
     } else if (tabIndex === 7) {
       // Handle VM Health
       setLoading(true);
       getLatestHealthVm();
     } else if (tabIndex === 8) {
       // Handle Live Sensor Data
+      setSensorTypes([]);
+      setNodeTypes([]);
+      setNodeData("");
+      fetchSensorTypes();
     } else if (tabIndex === 9) {
       // Handle Load Balancer Status
       setLoading(true);
@@ -106,9 +118,57 @@ function Leftbar() {
         });
     } else if (tabIndex === 10) {
       // Handle We@Avishkar
+    } else if (tabIndex === 11) {
+      setScheduledApps([]);
+      axiosAppInstance
+        .get("/api/deployedApps/getScheduledApps/", config)
+        .then((response) => {
+          const { data } = response.data;
+          console.log(data);
+          setScheduledApps([...data]);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
+    } else if (tabIndex === 12) {
+      setLoading(true);
+      setDeploymentInProgressApps([]);
+      axiosAppInstance
+        .get("/api/deployedApps/getDeployInProgressApps/", config)
+        .then((response) => {
+          const { data } = response.data;
+          console.log(data);
+          setDeploymentInProgressApps([...data]);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
     }
-    setLoading(false);
+    // setLoading(false);
   }, [tabIndex]);
+  useEffect(() => {
+    if (sensorType !== "") fetchNodeTypes();
+  }, [sensorType]);
+  useEffect(() => {
+    setNodeData("");
+    if (sensorType !== "") fetchNodeData();
+  }, [nodeType]);
+
+  const togglePlatformStatus = (e) => {
+    e.preventDefault();
+    const currStatus = platformStatus;
+    if (currStatus === "up") {
+      localStorage.setItem("platformStatus", "down");
+      setPlatformStatus("down");
+    } else {
+      localStorage.setItem("platformStatus", "up");
+      setPlatformStatus("up");
+    }
+  };
 
   const switchToLocationInput = (
     e,
@@ -200,6 +260,81 @@ function Leftbar() {
       });
   };
 
+  const fetchSensorTypes = () => {
+    setLoading(true);
+    setSensorTypes([]);
+    axiosLocationInstance
+      .get("/api/platform/sensor/types")
+      .then((response) => {
+        console.log(response);
+        const { data } = response;
+        setSensorTypes([...data]);
+        setSensorType(data[0]);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  };
+
+  const fetchNodeTypes = () => {
+    setLoading(true);
+    setNodeTypes([]);
+    axiosLocationInstance
+      .get("/api/platform/sensor/nodes/" + sensorType)
+      .then((response) => {
+        console.log(response);
+        const { data } = response;
+        setNodeTypes([...data]);
+        setNodeType(data[0]);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  };
+
+  const fetchNodeData = () => {
+    setLoading(true);
+    setNodeData("");
+    const url = "/api/platform/sensor/data/" + sensorType + "/" + nodeType;
+    axiosLocationInstance
+      .get(url)
+      .then((response) => {
+        setLoading(false);
+        console.log(response);
+        const { data } = response;
+        setNodeData(JSON.stringify(data));
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  };
+
+  const handleSensorChange = (e) => {
+    e.preventDefault();
+    setSensorType(e.target.value);
+  };
+  const handleNodeChange = (e) => {
+    e.preventDefault();
+    setNodeType(e.target.value);
+  };
+
+  const allSensorTypes = sensorTypes.map((sensor, idx) => (
+    <option key={idx} value={sensor}>
+      {sensor}
+    </option>
+  ));
+  const allNodeTypes = nodeTypes.map((node, idx) => (
+    <option key={idx} value={node}>
+      {node}
+    </option>
+  ));
+
   const uploadedAppsData = uploadedApps.length ? (
     uploadedApps.map((app, idx) => (
       <Cardview
@@ -281,10 +416,26 @@ function Leftbar() {
     </div>
   );
 
+  const scheduledAppsData = scheduledApps.map((app, idx) => (
+    <Cardview
+      key={idx}
+      appName={app.deployedAppName}
+      switchToLocationInput={(e) => console.log("Scheduled App")}
+    />
+  ));
+
+  const deployInProgressData = deploymentInProgressApps.map((app, idx) => (
+    <Cardview
+      key={idx}
+      appName={app.deployedAppName}
+      switchToLocationInput={(e) => console.log("Deploy in progress app")}
+    />
+  ));
+
   const vmHealthData = vmHealth.map((v, idx) => {
     return <VmHealth key={idx} data={v} />;
   });
-
+  console.log(platformStatus);
   // const loadBalancerServicesData = loadBalancerServices.map((service, idx) => {
   //   return <LoadBalancerCard key={idx} services={service} isServices={true} />;
   // });
@@ -324,6 +475,7 @@ function Leftbar() {
                     className={tabIndex === 1 ? "btns selctedbtn" : "btns"}
                     onClick={() => setTabIndex(1)}
                     style={{ cursor: "pointer" }}
+                    ch
                   >
                     Platform Status
                   </span>
@@ -388,6 +540,44 @@ function Leftbar() {
 
               <li
                 style={{
+                  backgroundColor: tabIndex === 11 ? "black" : "#212529",
+                }}
+              >
+                <a className="nav-link px-1">
+                  <span className="me-1">
+                    <i className="bi bi-eye"></i>
+                  </span>
+                  <span
+                    className={tabIndex === 11 ? "btns selctedbtn" : "btns"}
+                    onClick={() => setTabIndex(11)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    View All Scheduled Apps
+                  </span>
+                </a>
+              </li>
+
+              <li
+                style={{
+                  backgroundColor: tabIndex === 12 ? "black" : "#212529",
+                }}
+              >
+                <a className="nav-link px-1">
+                  <span className="me-1">
+                    <i className="bi bi-eye"></i>
+                  </span>
+                  <span
+                    className={tabIndex === 12 ? "btns selctedbtn" : "btns"}
+                    onClick={() => setTabIndex(12)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    Deployment In Progress
+                  </span>
+                </a>
+              </li>
+
+              <li
+                style={{
                   backgroundColor: tabIndex === 5 ? "black" : "#212529",
                 }}
               >
@@ -401,25 +591,6 @@ function Leftbar() {
                     style={{ cursor: "pointer" }}
                   >
                     View All Workflows
-                  </span>
-                </a>
-              </li>
-
-              <li
-                style={{
-                  backgroundColor: tabIndex === 6 ? "black" : "#212529",
-                }}
-              >
-                <a className="nav-link px-1">
-                  <span className="me-1">
-                    <i className="bi bi-eye"></i>
-                  </span>
-                  <span
-                    className={tabIndex === 6 ? "btns selctedbtn" : "btns"}
-                    onClick={() => setTabIndex(6)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    View All Scheduled Apps
                   </span>
                 </a>
               </li>
@@ -509,7 +680,11 @@ function Leftbar() {
               <div className="container-fluid ">
                 <h4 className="nav-link px-2  fs-4">Platform Status</h4>
                 <label className="switch">
-                  <input type="checkbox" />
+                  <input
+                    type="checkbox"
+                    checked={platformStatus === "up" ? true : false}
+                    onChange={togglePlatformStatus}
+                  />
                   <span className="slider round"></span>
                 </label>
               </div>
@@ -546,12 +721,14 @@ function Leftbar() {
               <div className="row mt-5">
                 <Loader spinning={isLoading}>
                   <div className="card-container">
-                    {uploadedApps.length ? (
+                    {uploadedAppsData.length ? (
                       uploadedAppsData
-                    ) : (
+                    ) : isLoading ? (
                       <div className="spinner-border m-2" role="status">
                         <span className="visullay-hidden"></span>
                       </div>
+                    ) : (
+                      <h2>No Uploaded Apps</h2>
                     )}
                   </div>
                 </Loader>
@@ -565,12 +742,56 @@ function Leftbar() {
               <div className="row mt-5">
                 <Loader spinning={isLoading}>
                   <div className="card-container">
-                    {deployedApps.length ? (
+                    {deployedAppsData.length ? (
                       deployedAppsData
-                    ) : (
+                    ) : isLoading ? (
                       <div className="spinner-border m-2" role="status">
                         <span className="visullay-hidden"></span>
                       </div>
+                    ) : (
+                      <h2>No deployed Apps</h2>
+                    )}
+                  </div>
+                </Loader>
+              </div>
+            </div>
+          </main>
+        )}
+        {tabIndex === 11 && (
+          <main className="mt-5 pt-1">
+            <div className="container-fluid">
+              <div className="row mt-5">
+                <Loader spinning={isLoading}>
+                  <div className="card-container">
+                    {scheduledAppsData.length ? (
+                      scheduledAppsData
+                    ) : isLoading ? (
+                      <div className="spinner-border m-2" role="status">
+                        <span className="visullay-hidden"></span>
+                      </div>
+                    ) : (
+                      <h2>No scheduled Apps</h2>
+                    )}
+                  </div>
+                </Loader>
+              </div>
+            </div>
+          </main>
+        )}
+        {tabIndex === 12 && (
+          <main className="mt-5 pt-1">
+            <div className="container-fluid">
+              <div className="row mt-5">
+                <Loader spinning={isLoading}>
+                  <div className="card-container">
+                    {deployInProgressData.length ? (
+                      deployInProgressData
+                    ) : isLoading ? (
+                      <div className="spinner-border m-2" role="status">
+                        <span className="visullay-hidden"></span>
+                      </div>
+                    ) : (
+                      <h2>No apps currently under deployment</h2>
                     )}
                   </div>
                 </Loader>
@@ -620,6 +841,38 @@ function Leftbar() {
                 }
               `}</style>
             </div>
+          </div>
+        )}
+        {tabIndex === 8 && (
+          <div>
+            <main className="mt-5 pt-3">
+              <div className="container-fluid">
+                <div className="main">
+                  <Loader spinning={tabIndex === 8 && isLoading}>
+                    <div className="location">
+                      <h2>Sensor Types</h2>
+                      <select
+                        className="form-select form-select-lg mb-3"
+                        aria-label=".form-select-lg example location-selected"
+                        onChange={handleSensorChange}
+                      >
+                        {allSensorTypes}
+                      </select>
+                      <h2>Node Types</h2>
+                      <select
+                        className="form-select form-select-lg mb-3"
+                        aria-label=".form-select-lg example location-selected"
+                        onChange={handleNodeChange}
+                      >
+                        {allNodeTypes}
+                      </select>
+                      {nodeData}
+                      <br />
+                    </div>
+                  </Loader>
+                </div>
+              </div>
+            </main>
           </div>
         )}
         {tabIndex === 9 && (

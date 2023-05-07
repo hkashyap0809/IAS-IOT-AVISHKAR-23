@@ -2,7 +2,7 @@ from deployedApps.models import DeployedApp
 from baseApps.models import BaseApp
 from main import db
 from utils.common import generate_response, verify_token
-from utils.http_code import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED
+from utils.http_code import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED, HTTP_500_INTERNAL_SERVER_ERROR
 from deployedApps.validation import CreateDeployAppInputSchema
 from zipfile import ZipFile
 from contextlib import redirect_stdout
@@ -21,6 +21,7 @@ from functools import wraps
 from azure.storage.blob import BlobServiceClient
 from kafka import KafkaConsumer, KafkaProducer
 import threading
+from kafkaConsumer import send, requests_m3_c, requests_m3_p, requests_m4_c, requests_m4_p, waitForKafkaMessage, requests_m5_c, requests_m5_p
 
 basedir = path.abspath(path.dirname(__file__))
 uploadFolder = path.join(basedir, "..", "static", "uploads")
@@ -39,6 +40,11 @@ def deployAppKafka(from_topic, appName, uid):
             print("App deployed")
             consumer.close()
             break
+        elif f'not deployed' in received_message['msg'] and received_message['request_id'] == uid:
+            response = received_message
+            print("App not deployed")
+            consumer.close()
+            break
 
 def scheduleAppKafka(from_topic, appName, uid):
     global scheduleResponse
@@ -46,7 +52,7 @@ def scheduleAppKafka(from_topic, appName, uid):
     for msg in consumer:
         received_message = json.loads(msg.value.decode('utf-8'))
         print(received_message)
-        if f'scheduled app {appName}' in received_message['msg'] and received_message['request_id'] == uid:
+        if f'done schedule app${appName}' in received_message['msg'] and received_message['request_id'] == uid:
             scheduleResponse = received_message
             print("App scheduled")
             consumer.close()
@@ -154,13 +160,39 @@ def getScheduledApps(userName, role, request):
     )
 
 @verify_token
+def getDeployInProgressApps(userName, role, request):
+    apps = None
+    status = "deployment in progress"
+    if role == "user":
+        with db.session() as session:
+            apps = DeployedApp.query.filter_by(userName=userName, status=status).all()
+    elif role == "dev":
+        with db.session() as session:
+            apps = DeployedApp.query.filter_by(developer=userName, status=status).all()
+    elif role == "admin":
+        with db.session() as session:
+            apps = DeployedApp.query.filter_by(status=status).all()
+    apps = [{
+        "id": app.id,
+        "baseAppId": app.baseAppId,
+        "developer": app.developer,
+        "deployedAppName": app.deployedAppName,
+        "userName": app.userName,
+        "created": app.created,
+        "url": app.url,
+        "status": app.url,
+        "startTime": app.startTime,
+        "endTime": app.endTime
+    } for app in apps]
+    return generate_response(
+        data=apps,
+        message="Apps fetched successfully",
+        status=HTTP_200_OK
+    )
+
+@verify_token
 def deployApp(userName, role, request, inputData):
-    # if role != 'dev':
-    #     return generate_response(
-    #         data="Unauthorized access",
-    #         message="Unauthorized access",
-    #         status=HTTP_401_UNAUTHORIZED
-    #     )
+    print(inputData)
     createValidationSchema = CreateDeployAppInputSchema()
     errors = createValidationSchema.validate(inputData)
     if errors:
@@ -184,7 +216,7 @@ def deployApp(userName, role, request, inputData):
     f = open(jsonFilePath)
     data = json.load(f)
     print(data)
-    data["location"] = location
+    data["location"] = json.loads(location)
     data["userEmail"] = userEmail
     serializeDataObj = json.dumps(data, indent=2)
     with open(jsonFilePath, 'w') as f:
@@ -195,7 +227,7 @@ def deployApp(userName, role, request, inputData):
     shutil.rmtree(appFolder)
     # **************************** Now ask the deployment manager to deploy the app ****************************
     to_topic, from_topic = 'DeploymentManager', 'first_topic'
-    producer = KafkaProducer(bootstrap_servers=[environ.get("KAFKA_SERVER")])
+
     uid = str(uuid1())
     print("Deploy UID is: ", uid)
     message = {
@@ -204,61 +236,71 @@ def deployApp(userName, role, request, inputData):
         'request_id': uid,
         'msg': f'deploy app${replicatedAppName}'
     }
-    producer.send(to_topic, json.dumps(message).encode('utf-8'))
 
-    t = threading.Thread(target=deployAppKafka, args=(from_topic, replicatedAppName, uid))
-    t.start()
-    t.join()
-    producer.close()
-    print(response)
-    if "done" in response["msg"]:
-        url = response['msg'].split("deploy - ")
-        url = url[1].strip()
-        print(url)
-    else:
-        return generate_response(
-            message="Some error occurred... App not deployed",
-            status=HTTP_400_BAD_REQUEST
-        )
-    # url = "localhost:4000"
-    # **************************** Save the url into deployedApps table  ****************************
     obj = {
         'baseAppId': baseAppId,
         'developer': developer,
         'deployedAppName': replicatedAppName,
         'userName': userName,
-        'url': 'http://' + url,
-        'status': 'deployed',
+        'status': 'deployment in progress',
         'userEmail': userEmail
     }
+
     deployedApp = DeployedApp(**obj)
     try:
         db.session.add(deployedApp)
         db.session.commit()
         db.session.close()
     except Exception as e:
-        print(e)
         return generate_response(
             message="Error occurred while saving the replicated app to deployed database",
-            status=HTTP_400_BAD_REQUEST
+            status=HTTP_500_INTERNAL_SERVER_ERROR
         )
-    # **************************** Change the status of baseApp to deployed in baseApps table ****************************
-    with db.session() as session:
-        baseApp = BaseApp.query.filter_by(appName=baseAppName).first()
-        try:
-            baseApp.status = 'deployed'
-            session.commit()
-        except Exception as e:
-            print(e)
-            session.close()
-            return generate_response(
-                message="Error occurred while updating status of baseApp",
-                status=HTTP_400_BAD_REQUEST
-            )
-    # **************************** Send response to user ****************************
+    send(message, requests_m3_c, requests_m3_p)
+    # producer = KafkaProducer(bootstrap_servers=['20.196.205.46:9092'])
+    # producer.send(to_topic, json.dumps(message).encode('utf-8'))
+    # producer.close()
+
+    # t = threading.Thread(target=deployAppKafka, args=(from_topic, replicatedAppName, uid))
+    # t.start()
+    # t.join()
+    # if "done" in response['msg']:
+    #     url = response['msg'].split('deploy - ')[1].strip()
+    # else:
+    #     return generate_response(
+    #         message="Error occurred while saving the replicated app to deployed database",
+    #         status=HTTP_500_INTERNAL_SERVER_ERROR
+    #     )
+    # # obj = {
+    # #     'baseAppId': baseAppId,
+    # #     'developer': developer,
+    # #     'deployedAppName': replicatedAppName,
+    # #     'userName': userName,
+    # #     'status': 'deployment in progress',
+    # #     'userEmail': userEmail
+    # # }
+    # obj = {
+    #     'baseAppId': baseAppId,
+    #     'developer': developer,
+    #     'deployedAppName': replicatedAppName,
+    #     'userName': userName,
+    #     'status': 'deployed',
+    #     'userEmail': userEmail,
+    #     'url': 'http://' + url,
+    # }
+    # deployedApp = DeployedApp(**obj)
+    # try:
+    #     db.session.add(deployedApp)
+    #     db.session.commit()
+    #     db.session.close()
+    # except Exception as e:
+    #     return generate_response(
+    #         message="Error occurred while saving the replicated app to deployed database",
+    #         status=HTTP_500_INTERNAL_SERVER_ERROR
+    #     )
     return generate_response(
-        message=f'{baseAppName} deployed succesfully on {url}',
-        status=HTTP_201_CREATED
+        message=f'{replicatedAppName} is being deployed. Please check after sometime.',
+        status=HTTP_200_OK
     )
 
 @verify_token
@@ -271,7 +313,8 @@ def scheduleApp(userName, role, request, inputData):
     startTime = inputData.get('startTime')
     endTime = inputData.get('endTime')
     userEmail = inputData.get('userEmail')
-
+    print("Start time is: ", startTime)
+    print("End time is: ", endTime)
 
     replicatedAppName = baseAppName + '_' + str(uuid1())
     appFolder = os.path.join(uploadFolder, replicatedAppName)
@@ -284,7 +327,7 @@ def scheduleApp(userName, role, request, inputData):
     f = open(jsonFilePath)
     data = json.load(f)
     print(data)
-    data["location"] = location
+    data["location"] = json.loads(location)
     data["userEmail"] = userEmail
     serializeDataObj = json.dumps(data, indent=2)
     with open(jsonFilePath, 'w') as f:
@@ -295,7 +338,7 @@ def scheduleApp(userName, role, request, inputData):
     shutil.rmtree(appFolder)
     # **************************** Now ask the scheduler to schedule the app ****************************
     to_topic, from_topic = 'Scheduler', 'first_topic'
-    producer = KafkaProducer(bootstrap_servers=[environ.get("KAFKA_SERVER")])
+
     uid = str(uuid1())
     print("Schedule UID is: ", uid)
     message = {
@@ -304,20 +347,7 @@ def scheduleApp(userName, role, request, inputData):
         'request_id': uid,
         'msg': f'schedule app${replicatedAppName}${startTime}${endTime}'
     }
-    producer.send(to_topic, json.dumps(message).encode('utf-8'))
-
-    t = threading.Thread(target=scheduleAppKafka, args=(from_topic, replicatedAppName, uid))
-    t.start()
-    t.join()
-    producer.close()
-    print(scheduleResponse)
-
-    if not "scheduled app" in scheduleResponse["msg"]:
-        return generate_response(
-            message="Some error occurred... App not scheduled",
-            status=HTTP_400_BAD_REQUEST
-        )
-    # **************************** Save the url into deployedApps table  ****************************
+    # producer.send(to_topic, json.dumps(message).encode('utf-8'))
     obj = {
         'baseAppId': baseAppId,
         'developer': developer,
@@ -334,26 +364,33 @@ def scheduleApp(userName, role, request, inputData):
         db.session.commit()
         db.session.close()
     except Exception as e:
-        print(e)
         return generate_response(
-            message="Error occurred while saving the scheduled app to deployed database",
-            status=HTTP_400_BAD_REQUEST
+            message="Error occurred while saving the replicated app to deployed database",
+            status=HTTP_500_INTERNAL_SERVER_ERROR
         )
-    # **************************** Change the status of baseApp to deployed in baseApps table ****************************
-    with db.session() as session:
-        baseApp = BaseApp.query.filter_by(appName=baseAppName).first()
-        try:
-            baseApp.status = 'deployed'
-            session.commit()
-        except Exception as e:
-            print(e)
-            session.close()
-            return generate_response(
-                message="Error occurred while updating status of baseApp",
-                status=HTTP_400_BAD_REQUEST
-            )
-    # **************************** Send response to user ****************************
+    send(message, requests_m4_c, requests_m4_p)
     return generate_response(
-        message=f'{baseAppName} scheduled successfully',
+        message=f'{replicatedAppName} is being scheduled. Please check after sometime.',
+        status=HTTP_200_OK
+    )
+
+@verify_token
+def stopDeployedApp(userName, role, request, inputData):
+    appId = inputData['appId']
+    to_topic, from_topic = 'DeploymentManager', 'first_topic'
+
+    uid = str(uuid1())
+    print("Stop UID is: ", uid)
+    message = {
+        'to_topic': to_topic,
+        'from_topic': from_topic,
+        'request_id': uid,
+        'msg': f'stop app${appId}'
+    }
+    send(message, requests_m5_c, requests_m5_p)
+    return generate_response(
+        message="Deleted app",
         status=HTTP_201_CREATED
     )
+
+# @verify
