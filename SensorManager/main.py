@@ -83,10 +83,16 @@ def get_location_vise_nodes():
         nodes = vertical_nodes[applicationType]
         for node in nodes:
             if node.startswith(location) or applicationType == 'SR-OC' and node.startswith('GW-' + location):
+                val = {}
                 option = f"Type : {applicationType}, Location : {location}, Node : {node[-2:]}"
-                all_location_nodes.append(option)
+                sensorType = applicationType
+                option_node = location+"-"+node[-2:]
+                val['text']=option
+                val['sensorType']=applicationType
+                val['node']=option_node
+                all_location_nodes.append(val)
 
-    print(all_location_nodes)
+    # print(all_location_nodes)
     return jsonify(all_location_nodes)
 
 
@@ -158,6 +164,8 @@ def validate_binding():
 @app.route('/api/sensor/data/latest/<location>/<vertical>', methods=['GET'])
 @cross_origin()
 def node_data(location, vertical):
+    if vertical == 'SR-OC':
+        vertical = vertical+'-GW'
     nodename = vertical + '-' + location
     nodes = read_JSON(FOLDER_PATH, 'nodes.json')
     node_partition = read_JSON(FOLDER_PATH, 'node_partition.json')
