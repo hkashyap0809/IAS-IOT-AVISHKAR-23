@@ -106,5 +106,17 @@
         "host_port": "8060",
         "container_port": "8050",
         "host_src_path": "../SensorManager"
+    },
+    {
+        "folder_name": "PlatformServices",
+        "service_name": "platform_services",
+        "docker_file_name": "platform_services_docker_file",
+        "image_file_name": "platform_services_img",
+        "container_name": "platform_services_container",
+        "service_start_shell_file": "platform_services_start.sh",
+        "service_end_shell_file": "platform_services_end.sh",
+        "host_port": "8110",
+        "container_port": "8050",
+        "host_src_path": "../PlatformServices"
     }
 ]
