@@ -44,3 +44,17 @@ python3 SensorManager/main.py
 GET localhost:8000/api/sensordata/latest/<sensor_type>/<nodename>/<n_messages>
 ### To fetch the latest value of a node of specific sensor type
 GET localhost:8000/api/sensordata/latest/<sensor_type>/<nodename>
+
+#### .env file should have these fields
+DB_URL=
+DB_USER=
+DB_PASSWORD=
+DB_NAME=
+SECRET_KEY=
+SQLALCHEMY_DATABASE_URI=
+SQLALCHEMY_DATABASE_URII=
+FLASK_ENV=
+DEPLOYED_APPS_CONTAINER=
+AZURE_BLOB_CONN_STRING=
+KAFKA_SERVER=
+BASE_APPS_CONTAINER=
