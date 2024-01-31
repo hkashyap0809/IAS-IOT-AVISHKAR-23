@@ -1,4 +1,4 @@
-# INTENRALS OF APPLICATION SERVER | DISTRIBUTED IOT PLATFORM - AVISHKAR
+# INTERNALS OF APPLICATION SERVER | DISTRIBUTED IOT PLATFORM - AVISHKAR
 
 <!-- Message highlighted in pink are doubts. -->
 
@@ -20,21 +20,18 @@
   def health():
       return "Ok"
 
-  # DOUBT - Why is this used when we are using Kafka to call schedule_and_upload_to_VM()?
   @app.route("/start", methods=["GET"])
   @cross_origin()
   def start():
       print("Initializing the platform.......")
       return schedule_and_upload_to_VM()
 
-  # DOUBT - Why is this used when we are using Kafka ?
   @app.route("/stop", methods=["GET"])
   @cross_origin()
   def stop():
       print("Stopping the platform.......")
       return stop_service_in_VM()
 
-  # DOUBT - What does this do?
   @app.route("/status", methods=["GET"])
   @cross_origin()
   def status():
@@ -42,7 +39,6 @@
           conn_json = json.load(f)
       return conn_json
 
-  # DOUBT - When is this used?
   @app.route("/all_services", methods=["GET"])
   @cross_origin()
   def all_services():
