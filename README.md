@@ -1,6 +1,6 @@
-# IAS
+# INTENRAL OF APPLICATIONS SERVER | DISTRIBUTED IOT PLATFORM - AVISHKAR
 
-Message highlighted in pink are doubts.
+<!-- Message highlighted in pink are doubts. -->
 
 # Platform initializer
 
@@ -55,8 +55,8 @@ Message highlighted in pink are doubts.
 ## Starting the services
 
 - The toggle button in the UI sends a message ‘start server’ to this flask server. Upon receiving this message, the method `schedule_and_upload_toVM()` gets called.
-- DOUBT - क्या हर application जो user deploy करेगा उसका भी मेसिज यहीं आएगा?
-  - No. This is done by deployment manager.
+<!-- - DOUBT - क्या हर application जो user deploy करेगा उसका भी मेसिज यहीं आएगा?
+  - No. This is done by deployment manager. -->
 
 ### `**schedule_and_upload_toVM**`
 
@@ -165,7 +165,7 @@ Message highlighted in pink are doubts.
 ### `register_service()`
 
 - The `register_service` method registers this service with the zookeeper.
-  - DOUBT - WHAT DOES THIS MEAN. MATLAB EK RECORD HOGA ZOOKEEPER ME KI KYA KYA REGISTERED HAI WHICH CAN BE ACCESSED FROM ITS SHELL? How do you access this registry and what kind of information do you get from it?
+  <!-- - DOUBT - WHAT DOES THIS MEAN. MATLAB EK RECORD HOGA ZOOKEEPER ME KI KYA KYA REGISTERED HAI WHICH CAN BE ACCESSED FROM ITS SHELL? How do you access this registry and what kind of information do you get from it? -->
 - This acts as a central register for our application. That JSON with the load balancer is for its internal purpose. It is not the central registry.
 
 ## Stopping the applications
@@ -173,8 +173,8 @@ Message highlighted in pink are doubts.
 - When it receives a message with `stop platform`, it calls `stop_service_in_VM` to stop these services.
 - This simply goes into the directory inside the VM where that service is running (the folder that was created during deployment) and runs the end-service shell script.
 - It then unregisters the service from the zookeeper.
-- DOUBT - Why does not it calls `deregisterApp()` of load balancer? Or I missed it?
-- DOUBT - Is it also responsible for stopping the user application? - नो
+<!-- - DOUBT - Why does not it calls `deregisterApp()` of load balancer? Or I missed it?
+- DOUBT - Is it also responsible for stopping the user application? - नो -->
 
 ## Other details about platform initializer
 
@@ -182,7 +182,7 @@ Message highlighted in pink are doubts.
   - Append each message with a unique random id.
   - The id stays constant for the message when it travels from one module to the other (platform initializer → deployment manager → some other module → … → back to platform initializer).
   - We check this list before consuming a message. If ID is already present in this, do nothing.
-  - DOUBT - But why did we had multiple lists, and that too some for producers and some for consumers? We could have kept a single global list.
+  <!-- - DOUBT - But why did we had multiple lists, and that too some for producers and some for consumers? We could have kept a single global list. -->
 
 # Application Manager
 
@@ -307,7 +307,7 @@ Message highlighted in pink are doubts.
 
 - The deployment manager receives a message from application manager to stop the application → `stop app`. It receives the app name from the message.
 - It first calls `/deregisterApp` of the load balancer. The load balancer removes all the container of this specific app.
-  - DOUBT - the problem is that how will the services from the platform initializer get unregistered. Because that did not call this API.
+  <!-- - DOUBT - the problem is that how will the services from the platform initializer get unregistered. Because that did not call this API. -->
 - Depending upon whether the de-registering process was successful or not, it sends message to `first_topic`.
   ```python
   msg = {
@@ -339,8 +339,9 @@ Message highlighted in pink are doubts.
   ```
 - API’s exposed from this module are -
 
+<!-- # DOUBT - ये क्या कर रहा है और कौन इसे कोल कर रहा है? -->
   ```python
-  # DOUBT - ये क्या कर रहा है और कौन इसे कोल कर रहा है?
+  
   @app.route("/nodemgr/get-deploy-node", methods=['GET'])
   @cross_origin()
   def get_deploy_node():
@@ -388,8 +389,8 @@ Message highlighted in pink are doubts.
       return {"logs": logs}
   ```
 
-  - DOUBT - What is the use of this api `@app.route("/nodemgr/get-deploy-node", methods=['GET'])`
-  - DOUBT - Are these api’s called from the UI to display information?
+  <!-- - DOUBT - What is the use of this api `@app.route("/nodemgr/get-deploy-node", methods=['GET'])`
+  - DOUBT - Are these api’s called from the UI to display information? -->
   - The platform initializer boots up all the services of the application by spinning their containers onto VMs. The deployment manager deploys the first instance of every user application by spinning a container on the healthiest VM. Both of these modules get endpoint for their deployments from load balancer.
   - The load balancer constantly keeps monitoring CPU and RAM usage of every container that exists on any VM. If the containers are unhealthy, a replica of the container gets created on the same VM.
 
@@ -652,7 +653,7 @@ def get_logs():
     return {"logs": logs}
 ```
 
-# To do
+<!-- # To do
 
 - Understand every exposed API, and who calls it.
 -
@@ -675,4 +676,4 @@ DOUBT - Who consumes data from first topic. भेज तो सब रहे �
 
 # Interview questions
 
--
+- -->
