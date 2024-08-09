@@ -1,6 +1,10 @@
 # INTERNALS OF APPLICATION SERVER | DISTRIBUTED IOT PLATFORM - AVISHKAR
 
+## Video link
+https://drive.google.com/file/d/1rEoYPiM4tjGdLRrKFRS9YjO-kZfzG9-d/view?usp=sharing
 <!-- Message highlighted in pink are doubts. -->
+We, tean AVISHKAR, from IIIT Hyderabad have developed a scalable distributed IoT platform enabling app developers to create and deploy IoT applications tailored to sectors like smart homes and healthcare. The platform uses a microservices architecture with Kafka, REST, and Docker for communication and containerization, NGINX for load balancing, and Azure for cloud deployment. It also features a load balancer and service registry for dynamic resource management, ensuring high availability and fault tolerance across the system.
+Below are the description about each and every module that the project comprises of in detail.
 
 # Platform initializer
 
